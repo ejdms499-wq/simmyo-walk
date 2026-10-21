@@ -642,3 +642,19 @@ body.opn-on{overflow:hidden}
 .pin[data-p=stadium] .pb{width:clamp(80px,12vw,140px)}
 .pin:hover .pb{transform:translateY(-6px) scale(1.08)}
 .pin .pb+b{position:relative;z-index:1}
+
+/* 사람들이 본 고양이 — 신문 스크랩 4장 */
+.scraps{display:grid;grid-template-columns:1fr;gap:18px;margin:14px 0 6px}
+.scrap{position:relative;background:#f7eedb;border:1px solid rgba(35,28,22,.35);padding:16px 16px 12px;box-shadow:0 2px 0 rgba(35,28,22,.12);clip-path:polygon(0 2%,3% 0,22% 1.5%,48% 0,71% 1.2%,100% 0,99% 30%,100% 62%,98.6% 100%,70% 98.8%,40% 100%,12% 98.6%,0 100%,1.2% 64%,0 33%)}
+.scrap:nth-child(odd){transform:rotate(-.7deg)}.scrap:nth-child(even){transform:rotate(.6deg)}
+.sc-d{margin:0;font:700 11px/1.4 var(--sans);letter-spacing:.06em;color:var(--teal-d)}
+.sc-t{margin:6px 0 8px;font:900 17px/1.45 var(--serif);word-break:keep-all}
+.sc-q{margin:0 0 8px;padding:6px 10px;border-left:3px solid var(--coral);background:rgba(217,166,71,.14);font:600 15px/1.6 var(--serif)}
+.sc-v{margin:0;font:500 13px var(--sans);color:var(--ink2)}.sc-v b{color:var(--coral)}
+.sc-n{margin:4px 0 0;font:400 12.5px/1.6 var(--sans);color:var(--ink2)}
+.sc-cat{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(35,28,22,.3)}
+.sc-cat img{width:64px;height:auto}
+.sc-cat b{position:relative;background:#fffaf0;border:2px solid var(--ink);border-radius:14px;padding:5px 12px;font:700 14px var(--serif)}
+.sc-cat b::before{content:"";position:absolute;left:-8px;top:50%;margin-top:-5px;border:5px solid transparent;border-right:7px solid var(--ink);border-left:0}
+.sc-src{margin:8px 0 0;font:400 11.5px/1.6 var(--sans);color:var(--ink2)}
+@media (min-width:700px){.scraps{grid-template-columns:1fr 1fr}}
