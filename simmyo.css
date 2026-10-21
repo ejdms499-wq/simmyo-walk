@@ -635,3 +635,10 @@ body.opn-on{overflow:hidden}
 .cm-cat i{position:absolute;left:50%;bottom:-4px;width:70px;height:14px;margin-left:-35px;border-radius:50%;background:rgba(40,25,10,.22);filter:blur(2px)}
 @media (min-width:900px){.v-map .mp-art.city{width:auto;box-shadow:0 30px 60px -34px rgba(40,25,10,.55)}}
 @media (max-width:899px){.v-map .mp-art.city{padding-top:56px}.cm-l{font-size:34px}}
+
+/* 핀 = 건물 그림 */
+.pin .pb{display:block;width:clamp(58px,9vw,104px);margin-bottom:-6px;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.pin .pb img,.pin .pb svg{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 4px rgba(40,25,10,.35))}
+.pin[data-p=stadium] .pb{width:clamp(80px,12vw,140px)}
+.pin:hover .pb{transform:translateY(-6px) scale(1.08)}
+.pin .pb+b{position:relative;z-index:1}

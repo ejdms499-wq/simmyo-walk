@@ -49,6 +49,12 @@
   var PATH = [[24, 52], [36, 52], [36, 58], [42, 61], [43, 70], [45, 58], [45, 30], [57, 30], [68, 30], [86, 30], [86, 47], [100, 47], [86, 47], [86, 30], [68, 30], [57, 30], [45, 30], [45, 47], [36, 47], [36, 52]];
 
   var art = $('#mpArt'); if (!art) return;
+  /* (1021 저녁) 어제 지도 그림은 그대로 두고, 핀 자리에 건물 그림만 박아 넣음 */
+  var PINIMG = { hwasin: 'hwasin', record: 'ymca', dansung: 'dansung', stadium: 'stadium', jodk: 'jodk', nakrang: 'nakrang', mitsu: 'mitsu', tram: '' };
+  function pinB() { [].forEach.call(D.querySelectorAll('#mpArt .pin[data-p]'), function (b) { var k = PINIMG[b.dataset.p]; if (b.querySelector('.pb')) return; var w = D.createElement('span'); w.className = 'pb'; w.innerHTML = k ? '<img src="' + C + k + '.webp" alt="">' : '<svg viewBox="0 0 160 110"><rect x="10" y="30" width="140" height="56" rx="6" fill="#e9c66a" stroke="#231c16" stroke-width="4"/><rect x="10" y="66" width="140" height="20" fill="#5f9a8f" stroke="#231c16" stroke-width="4"/><g fill="#f6eedb" stroke="#231c16" stroke-width="3"><rect x="22" y="38" width="20" height="20"/><rect x="50" y="38" width="20" height="20"/><rect x="78" y="38" width="20" height="20"/><rect x="106" y="38" width="20" height="20"/></g><path d="M80 30 L96 6" stroke="#231c16" stroke-width="4"/><circle cx="40" cy="92" r="9" fill="#231c16"/><circle cx="120" cy="92" r="9" fill="#231c16"/></svg>'; b.insertBefore(w, b.firstChild); }); }
+  W.addEventListener('hashchange', function () { if (location.hash === '#map') setTimeout(pinB, 40); });
+  setTimeout(pinB, 80);
+  if (!/[?&]city=1/.test(location.search)) return;
   art.classList.add('city');
   var box = D.createElement('div'); box.className = 'cm'; box.id = 'cityMap';
   var world = D.createElement('div'); world.className = 'cm-w'; box.appendChild(world); art.appendChild(box);
