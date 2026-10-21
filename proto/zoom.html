@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f0c09">
+<title>심묘한 산책 · 눈 속으로</title>
+<link rel="stylesheet" href="../fonts/fonts-m.css?v=2">
+<style>
+:root{--paper:#ece3cf;--ink:#1d1813;--ink2:#6b5d4c;--shu:#c4512a;--amber:#e9a93b;--serif:'Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#0f0c09;color:var(--paper);font-family:var(--serif);overflow:hidden;overscroll-behavior:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+svg.defs{position:absolute;width:0;height:0}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.35;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+
+/* 무대 : 장면은 화면 가운데 3:4, 남는 곳은 같은 그림을 흐리게 깔아 끊김 없이 */
+#world{position:fixed;inset:0;overflow:hidden}
+.amb{position:absolute;inset:-60px;background-size:cover;background-position:center;filter:blur(40px) saturate(.8) brightness(.45);transform:scale(1.1);transition:background-image .6s}
+.sc{position:absolute;left:50%;top:50%;height:100vh;aspect-ratio:3/4;transform:translate(-50%,-50%);overflow:hidden;will-change:transform}
+.layer{position:absolute;inset:0;will-change:transform,clip-path}
+.layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none}
+.layer .cv{filter:url(#catvision) saturate(1.1) brightness(1.05);opacity:0;transition:opacity .35s}
+.cat .layer .cv{opacity:1}
+.iris{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at var(--ex) var(--ey),transparent 0,transparent 6%,rgba(233,169,59,.0) 7%,rgba(233,169,59,.75) 12%,rgba(120,70,10,.95) 30%,#120d08 60%)}
+@media (max-width:760px){.sc{width:100vw;height:100vh;aspect-ratio:auto}}
+
+/* 글자 : 최소한 */
+.hud{position:fixed;inset:0;pointer-events:none;z-index:20}
+.logo{position:absolute;left:28px;top:24px;font:900 17px var(--serif);letter-spacing:-.01em;color:var(--paper);text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.logo small{font:600 10px var(--sans);letter-spacing:.24em;margin-left:10px;opacity:.7}
+.year{position:absolute;left:28px;bottom:22px;font:900 clamp(64px,10vw,150px)/.9 var(--serif);letter-spacing:-.03em;color:var(--paper);text-shadow:0 4px 30px rgba(0,0,0,.45);font-variant-numeric:tabular-nums}
+.year small{display:block;font:700 12px var(--sans);letter-spacing:.3em;margin:0 0 12px 4px;opacity:.85}
+.card{position:absolute;right:28px;bottom:26px;width:min(340px,30vw);pointer-events:auto;background:rgba(236,227,207,.94);color:var(--ink);padding:18px 20px 16px;border-radius:2px;box-shadow:0 20px 40px -20px rgba(0,0,0,.7);transition:opacity .5s,transform .5s}
+.card h3{margin:0 0 4px;font:900 26px/1.2 var(--serif)}
+.card .w{margin:0 0 12px;font:700 10.5px var(--sans);letter-spacing:.2em;color:var(--ink2)}
+.card .say{margin:0 0 10px;font:600 15px/1.75 var(--serif)}
+.card .say::before{content:"「"}.card .say::after{content:"」"}
+.card .f{margin:0;font:400 12.5px/1.75 var(--sans);color:#3b3127;word-break:keep-all}
+.hide .card,.hide .year,.hide .go,.hide .hint{opacity:0;transform:translateY(8px)}
+.go{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:8px;font:700 12px var(--sans);letter-spacing:.14em;color:var(--paper);transition:opacity .5s,transform .5s;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.go i{width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(236,227,207,.9);display:grid;place-items:center;font-style:normal;font-size:18px;animation:bob 2s ease-in-out infinite;background:rgba(15,12,9,.35);backdrop-filter:blur(4px)}
+@keyframes bob{50%{transform:translateY(5px)}}
+.hint{position:absolute;left:50%;top:22px;transform:translateX(-50%);font:600 11.5px var(--sans);letter-spacing:.08em;background:rgba(15,12,9,.55);padding:8px 14px;border-radius:30px;backdrop-filter:blur(4px);transition:opacity .5s;white-space:nowrap}
+.eyepin{position:fixed;z-index:15;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:auto;cursor:pointer;border:1.5px solid rgba(255,240,210,.85);box-shadow:0 0 0 6px rgba(233,169,59,.18),0 0 24px rgba(233,169,59,.5);animation:pulse 1.8s ease-in-out infinite;transition:opacity .4s}
+@keyframes pulse{50%{transform:scale(1.18);box-shadow:0 0 0 10px rgba(233,169,59,.08),0 0 34px rgba(233,169,59,.6)}}
+.hide .eyepin,.eyepin.off{opacity:0;pointer-events:none}
+.dots{position:absolute;right:28px;top:28px;display:flex;gap:6px}
+.dots b{width:7px;height:7px;border-radius:50%;background:rgba(236,227,207,.3);transition:background .4s}
+.dots b.on{background:var(--amber)}
+@media (max-width:760px){
+ .logo{left:18px;top:16px}.dots{right:18px;top:20px}
+ .year{left:18px;bottom:auto;top:52px;font-size:58px}
+ .card{left:14px;right:14px;bottom:96px;width:auto;padding:14px 16px 12px}
+ .card h3{font-size:21px}.card .say{font-size:14px;margin-bottom:6px}.card .f{font-size:12px}
+ .go{bottom:22px}
+ .card{transition:max-height .5s,opacity .5s,transform .5s;max-height:320px;overflow:hidden}
+ .card.mini{max-height:50px;padding-top:12px}
+ .card.mini .w,.card.mini .say,.card.mini .f{opacity:0}
+ .card.mini h3::after{content:" ⌃";font:700 13px var(--sans);opacity:.6}
+ .hint{top:auto;bottom:calc(96px + 10px);display:none}
+}
+
+/* 오프닝 수배지 */
+#op{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:#0f0c09;transition:opacity .6s}
+#op.gone{opacity:0;pointer-events:none}
+.notice{position:relative;width:min(400px,82vw);padding:20px 22px 18px;background:transparent;color:var(--ink);transition:background .2s,box-shadow .2s;will-change:transform}
+.shot .notice{background:#ebe2cc;box-shadow:0 30px 60px -24px rgba(0,0,0,.8)}
+.n-top,.n-bot,.mug .h,.plate{opacity:0}
+.shot .n-top,.shot .n-bot,.shot .mug .h,.shot .plate{opacity:1}
+.n-top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px double var(--ink);padding-bottom:8px;margin-bottom:12px}
+.n-top h2{margin:0;font:900 40px/1 var(--serif);letter-spacing:.18em}
+.n-top p{margin:0;font:700 10.5px/1.5 var(--sans);letter-spacing:.14em;text-align:right;color:var(--ink2)}
+.n-bot{margin:12px 0 0;font:500 12.5px/1.75 var(--serif);text-align:center;word-break:keep-all}
+.mug{position:relative;aspect-ratio:1056/828}
+.mug img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mug .eyes{-webkit-mask:radial-gradient(ellipse 7% 3.8% at 34.1% 55%,#000 45%,transparent 100%),radial-gradient(ellipse 7% 3.8% at 57.8% 49.5%,#000 45%,transparent 100%);mask:radial-gradient(ellipse 7% 3.8% at 34.1% 55%,#000 45%,transparent 100%),radial-gradient(ellipse 7% 3.8% at 57.8% 49.5%,#000 45%,transparent 100%);filter:saturate(1.3) brightness(1.15);opacity:0;transform-origin:50% 52%}
+.eye1 .mug .eyes{animation:blink 2.2s ease forwards}
+@keyframes blink{0%{opacity:0;transform:scaleY(.05)}18%{opacity:1;transform:scaleY(.05)}30%{transform:scaleY(1)}62%{transform:scaleY(1)}68%{transform:scaleY(.08)}75%{transform:scaleY(1)}100%{opacity:1;transform:scaleY(1)}}
+.plate{position:absolute;left:50%;bottom:-4%;transform:translateX(-50%);font:700 14px/1 var(--sans);letter-spacing:.2em;background:#2a241d;color:#efe5cc;padding:6px 9px 6px 12px;border:2px solid #efe5cc;outline:1.5px solid #2a241d}
+.flash{position:fixed;inset:0;background:#fffaf0;opacity:0;pointer-events:none;z-index:50}
+.shot .flash{animation:flash 1s ease-out forwards}
+@keyframes flash{0%{opacity:0}5%{opacity:1}100%{opacity:0}}
+.op-t{position:absolute;left:0;right:0;bottom:7vh;text-align:center;opacity:0;transition:opacity 1s}
+.ready .op-t{opacity:1}
+.op-t h1{margin:0 0 10px;font:900 clamp(30px,4vw,48px)/1 var(--serif);color:var(--paper)}
+.op-t h1 span{position:relative}
+.op-t h1 span::after{content:"";position:absolute;right:-.12em;top:.1em;width:.28em;height:.28em;border-top:2px dashed var(--shu);border-right:2px dashed var(--shu)}
+.op-t p{margin:0 0 18px;font:500 13px/1.8 var(--sans);color:#cbbd9f}
+.op-t button{font:700 13px var(--sans);letter-spacing:.1em;color:var(--paper);border:1.5px solid rgba(236,227,207,.8);border-radius:40px;padding:13px 22px}
+.op-t button:hover{background:var(--paper);color:var(--ink)}
+.skip{position:fixed;right:20px;bottom:16px;z-index:45;font:600 11px var(--sans);letter-spacing:.2em;color:#8f826f}
+</style>
+</head>
+<body>
+<svg class="defs" aria-hidden="true"><filter id="catvision" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.367 0.861 -0.228 0 0  0.280 0.673 0.047 0 0  -0.012 0.043 0.969 0 0  0 0 0 1 0"/></filter></svg>
+
+<div id="world"><div class="amb" id="amb"></div><div class="sc" id="sc"></div></div>
+<div class="hud hide" id="hud">
+ <div class="logo">심묘한 산<span>채</span><small>눈 속으로</small></div>
+ <div class="dots" id="dots"></div>
+ <p class="hint" id="hint">스페이스를 누르고 있으면 고양이 눈 · 반짝이는 눈을 누르면 다음 해로</p>
+ <div class="year" id="year"><small id="where"></small><span id="yr"></span></div>
+ <div class="card" id="card"></div>
+ <button class="go" id="go"><i>↓</i><span id="golab">눈 속으로</span></button>
+</div>
+<button class="eyepin off" id="eyepin" aria-label="고양이 눈 속으로"></button>
+
+<section id="op">
+ <div class="flash"></div>
+ <div class="notice" id="notice">
+  <div class="n-top"><h2>尋猫</h2><p>手配 第二六八號<br>京城 印刷所 屆出</p></div>
+  <div class="mug"><img class="h" src="../assets/simmyo/v4/mug_h.jpg" alt="신문에 실린 수배 사진"><img class="eyes" src="../assets/simmyo/v4/mug_c.jpg" alt=""><span class="plate">268</span></div>
+  <p class="n-bot">까만 고양이 한 마리. 인쇄소에서 활자 <b>「ㄱ」</b>을 물고 달아남. 글을 모르니 읽고 돌려줄 리 없음.</p>
+ </div>
+ <div class="op-t"><h1>심묘한 산<span>채</span></h1><p>이 고양이가 본 경성으로 들어가시오.</p><button id="enter">눈 속으로 들어가기 ↓</button></div>
+ <button class="skip" id="skip">건너뛰기 ›</button>
+</section>
+
+<script src="../simmyo-data.js"></script>
+<script>
+(function(){
+var D=document,W=window,$=function(s){return D.querySelector(s)};
+var DATA={};SIMMYO_DATA.P.forEach(function(p){DATA[p.id]=p});
+var V='../assets/simmyo/v4/';
+/* e : 장면 속 심묘 눈 위치 (원본 픽셀) */
+var S=[
+ {id:'tram',yr:1899,w:'종로 · 봄',name:'전차',img:V+'tram.webp',n:[928,1232],e:[412,204]},
+ {id:'stadium',yr:1925,w:'동대문 옆 · 가을',name:'경성운동장',img:V+'stadium.webp',n:[928,1232],e:[377,855]},
+ {id:'dansung',yr:1926,w:'종로 · 저녁',name:'단성사',img:'../assets/simmyo/s/dansung.webp',n:[900,1195],e:[362,848]},
+ {id:'jodk',yr:1927,w:'정동 · 겨울',name:'경성방송국',img:V+'jodk.webp',n:[928,1232],e:[249,980]},
+ {id:'mitsu',yr:1930,w:'진고개 어귀 · 해질녘',name:'미쓰코시 옥상',img:V+'mitsu.webp',n:[928,1232],e:[356,862]},
+ {id:'nakrang',yr:1932,w:'장곡천정 · 오후',name:'낙랑파라',img:V+'nakrang.webp',n:[928,1232],e:[430,897]},
+ {id:'record',yr:1935,w:'종로 · 밤',name:'음반가게',img:V+'record.webp',n:[928,1232],e:[408,643]},
+ {id:'hwasin',yr:1937,w:'종로 네거리 · 겨울',name:'화신백화점',img:V+'hwasin.webp',n:[928,1232],e:[288,1096]}
+];
+S.forEach(function(s){var i=new Image();i.src=s.img});
+var sc=$('#sc'),hud=$('#hud'),amb=$('#amb'),pin=$('#eyepin'),cur=-1,busy=0;
+$('#dots').innerHTML=S.map(function(){return '<b></b>'}).join('');
+
+function layer(s){var l=D.createElement('div');l.className='layer';l.innerHTML='<img src="'+s.img+'" alt="'+((DATA[s.id]||{}).alt||s.name)+'"><img class="cv" src="'+s.img+'" alt="">';return l}
+/* 장면 안 눈의 화면 위치 (object-fit:cover 계산) */
+function eyeAt(s){var r=sc.getBoundingClientRect(),nw=s.n[0],nh=s.n[1],k=Math.max(r.width/nw,r.height/nh),dw=nw*k,dh=nh*k,ox=(r.width-dw)/2,oy=(r.height-dh)/2;
+ return {x:ox+s.e[0]*k,y:oy+s.e[1]*k,sx:r.left+ox+s.e[0]*k,sy:r.top+oy+s.e[1]*k,k:k}}
+function paint(i){var s=S[i],d=DATA[s.id]||{};
+ $('#yr').textContent=s.yr;$('#where').textContent=s.w;
+ $('#card').innerHTML='<p class="w">'+String(i+1).padStart(2,'0')+' / 08</p><h3>'+s.name+'</h3>'+((d.say&&d.say[0])?'<p class="say">'+d.say[0]+'</p>':'')+'<p class="f">'+((d.f&&d.f[0])||'')+'</p>';
+ [].forEach.call($('#dots').children,function(b,k){b.classList.toggle('on',k<=i)});
+ $('#golab').textContent=i<S.length-1?'심묘 눈 속으로 · '+S[i+1].yr:'인쇄소로 (엔딩 준비 중)';
+ amb.style.backgroundImage='url('+s.img+')';var cd=$('#card');cd.classList.remove('mini');clearTimeout(cd._t);if(W.innerWidth<=760)cd._t=setTimeout(function(){cd.classList.add('mini')},4200);
+ placePin();
+}
+function placePin(){if(cur<0)return;var p=eyeAt(S[cur]);pin.style.left=p.sx+'px';pin.style.top=p.sy+'px';pin.classList.toggle('off',busy||cur>=S.length-1)}
+W.addEventListener('resize',placePin);
+
+/* 연도 굴리기 */
+function roll(a,b,ms){var t0=performance.now(),el=$('#yr');(function f(t){var k=Math.min(1,(t-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;el.textContent=Math.round(a+(b-a)*e);if(k<1)requestAnimationFrame(f)})(t0)}
+
+/* ── 눈 속으로 : 지금 장면을 심묘 눈을 중심으로 확대 → 동공에서 다음 장면이 피어남 ── */
+function dive(){if(busy||cur>=S.length-1)return;busy=1;pin.classList.add('off');
+ var a=sc.querySelector('.layer'),s=S[cur],n=S[cur+1],p=eyeAt(s);
+ var b=layer(n);sc.appendChild(b);
+ var rect=sc.getBoundingClientRect(),R=Math.hypot(rect.width,rect.height);
+ a.style.transformOrigin=p.x+'px '+p.y+'px';
+ b.style.clipPath='circle(0px at '+p.x+'px '+p.y+'px)';b.style.transformOrigin=p.x+'px '+p.y+'px';
+ var iris=D.createElement('div');iris.className='iris';iris.style.setProperty('--ex',p.x+'px');iris.style.setProperty('--ey',p.y+'px');a.appendChild(iris);
+ hud.classList.add('hide');
+ var T=1900;
+ a.animate([{transform:'scale(1)',filter:'blur(0)'},{transform:'scale(9)',filter:'blur(0)',offset:.55},{transform:'scale(46)',filter:'blur(6px)'}],{duration:T,easing:'cubic-bezier(.55,0,.85,.35)',fill:'forwards'});
+ iris.animate([{opacity:0},{opacity:0,offset:.35},{opacity:1,offset:.7},{opacity:1}],{duration:T,fill:'forwards'});
+ b.animate([{clipPath:'circle(0px at '+p.x+'px '+p.y+'px)',transform:'scale(.35) rotate(-6deg)'},{clipPath:'circle(0px at '+p.x+'px '+p.y+'px)',transform:'scale(.35) rotate(-6deg)',offset:.5},{clipPath:'circle('+R+'px at '+p.x+'px '+p.y+'px)',transform:'scale(1) rotate(0)'}],{duration:T+500,easing:'cubic-bezier(.3,.1,.2,1)',fill:'forwards'});
+ setTimeout(function(){roll(s.yr,n.yr,1400)},500);
+ if(navigator.vibrate)setTimeout(function(){navigator.vibrate(12)},T*.6);
+ setTimeout(function(){a.remove();b.getAnimations().forEach(function(x){x.commitStyles?x.commitStyles():0;x.cancel()});b.style.clipPath='none';b.style.transform='none';cur++;busy=0;paint(cur);hud.classList.remove('hide')},T+520);
+}
+function back(){if(busy||cur<=0)return;busy=1;var a=sc.querySelector('.layer'),b=layer(S[cur-1]);b.style.opacity=0;sc.appendChild(b);
+ b.animate([{opacity:0,transform:'scale(1.15)'},{opacity:1,transform:'scale(1)'}],{duration:700,easing:'ease-out',fill:'forwards'});
+ setTimeout(function(){a.remove();b.getAnimations().forEach(function(x){x.cancel()});b.style.opacity=1;cur--;busy=0;paint(cur)},720)}
+pin.onclick=dive;$('#card').onclick=function(){this.classList.toggle('mini')};$('#go').onclick=dive;
+/* 휠 · 스와이프 · 키 */
+var wl=0;W.addEventListener('wheel',function(e){if(cur<0)return;var t=Date.now();if(t-wl<1200)return;if(e.deltaY>30){wl=t;dive()}else if(e.deltaY<-30){wl=t;back()}},{passive:true});
+var ty=0;W.addEventListener('touchstart',function(e){ty=e.touches[0].clientY},{passive:true});
+W.addEventListener('touchend',function(e){if(cur<0)return;var dy=e.changedTouches[0].clientY-ty;if(dy<-60)dive();else if(dy>60)back()},{passive:true});
+/* 고양이 눈 : 스페이스 / 길게 누르기 */
+function catOn(){D.body.classList.add('cat')}function catOff(){D.body.classList.remove('cat')}
+D.addEventListener('keydown',function(e){if(cur<0)return;if(e.key===' '){e.preventDefault();catOn()}if(e.key==='ArrowDown'||e.key==='Enter')dive();if(e.key==='ArrowUp')back()});
+D.addEventListener('keyup',function(e){if(e.key===' ')catOff()});
+var lp;sc.addEventListener('pointerdown',function(){lp=setTimeout(catOn,280)});['pointerup','pointercancel','pointerleave'].forEach(function(ev){sc.addEventListener(ev,function(){clearTimeout(lp);catOff()})});
+sc.addEventListener('contextmenu',function(e){e.preventDefault()});
+
+/* ── 오프닝 : 어둠 속 두 눈 → 플래시 → 수배지 → 수배 사진의 눈 속으로 ── */
+var op=$('#op'),T=[];function at(ms,f){T.push(setTimeout(f,ms))}
+at(400,function(){op.classList.add('eye1')});
+at(2700,function(){op.classList.add('shot')});
+at(3900,function(){op.classList.add('ready')});
+function skip(){T.forEach(clearTimeout);op.classList.add('eye1','shot','ready')}
+$('#skip').onclick=skip;
+$('#enter').onclick=function(){
+ var mug=$('.mug').getBoundingClientRect(),ex=mug.left+mug.width*.341,ey=mug.top+mug.height*.55,nt=$('#notice'),nr=nt.getBoundingClientRect();
+ nt.style.transformOrigin=(ex-nr.left)+'px '+(ey-nr.top)+'px';$('.op-t').style.opacity=0;
+ var first=S[0];sc.appendChild(layer(first));cur=0;paint(0);hud.classList.add('hide');
+ var l=sc.querySelector('.layer'),p=eyeAt(first);
+ op.style.background='transparent';
+ nt.animate([{transform:'scale(1)'},{transform:'scale(60)',filter:'blur(4px)'}],{duration:1700,easing:'cubic-bezier(.55,0,.85,.35)',fill:'forwards'});
+ l.style.clipPath='circle(0 at '+ex+'px '+ey+'px)';
+ var sr=sc.getBoundingClientRect(),cx=ex-sr.left,cy=ey-sr.top;
+ l.animate([{clipPath:'circle(0px at '+cx+'px '+cy+'px)',transform:'scale(.4)'},{clipPath:'circle(0px at '+cx+'px '+cy+'px)',transform:'scale(.4)',offset:.45},{clipPath:'circle('+Math.hypot(sr.width,sr.height)+'px at '+cx+'px '+cy+'px)',transform:'scale(1)'}],{duration:2100,easing:'cubic-bezier(.3,.1,.2,1)',fill:'forwards'});
+ l.style.transformOrigin=cx+'px '+cy+'px';
+ setTimeout(function(){op.classList.add('gone')},1300);
+ setTimeout(function(){l.getAnimations().forEach(function(x){x.cancel()});l.style.clipPath='none';hud.classList.remove('hide');placePin();setTimeout(function(){$('#hint').style.opacity=0},5000)},2150);
+};
+})();
+</script>
+</body>
+</html>
