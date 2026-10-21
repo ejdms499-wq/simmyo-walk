@@ -126,7 +126,7 @@
   /* ── ① 표지 ── */
   var fromSeek = /from=seek/.test(location.search), cv = $('#cvImg');
   if (fromSeek) { cv.src = IMG + 'escape' + EXT; cv.alt = '구겨진 신문 광고면을 밟고 빠져나오는 심묘 (재현 그림)'; $('#cvSay').textContent = '「수배지에서 빠져나왓소. …따라오든지 말든지.」'; }
-  else if (NIGHT) { cv.src = IMG + 'cover_night' + EXT; cv.alt = '보름달 아래 기와지붕에 안즌 심묘 (재현 그림)'; $('#cvSay').textContent = '「밤이구려. 밤 경성은 내가 더 잘 아오.」'; }
+  else if (false && NIGHT) { cv.src = IMG + 'cover_night' + EXT; cv.alt = '보름달 아래 기와지붕에 안즌 심묘 (재현 그림)'; $('#cvSay').textContent = '「밤이구려. 밤 경성은 내가 더 잘 아오.」'; }
   if (G.s && nDone(1) > 0) $('#cvGo').textContent = !D2 || nDone(1) < 8 ? '산책 이어 걷기 (' + nDone(1) + '/8)' : '산책 이어 걷기 (둘째 날 ' + nDone(2) + '/8)';
   /* 오프닝 — 수배지가 찢어짐 */
   if (fromSeek && !RM && !location.hash) { var op = $('#open'); op.hidden = false; setTimeout(function () { op.classList.add('tear'); }, 500); setTimeout(function () { op.hidden = true; }, 1700); }
