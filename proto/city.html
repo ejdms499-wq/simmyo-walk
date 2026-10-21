@@ -28,10 +28,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;opa
 .b .lab b{color:var(--amber);font-weight:700;margin-left:7px}
 .b:hover .lab,.b.near .lab{opacity:1;transform:translate(-50%,-112%)}
 .b.deco{cursor:default}
+.b.mark::after{content:attr(data-n);position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);white-space:nowrap;font:700 12px var(--sans);letter-spacing:.08em;color:var(--ink);background:rgba(236,226,201,.92);border:1.3px solid var(--ink);padding:3px 9px;border-radius:20px}
+.b.mark:hover::after,.b.mark.near::after{opacity:0}
+.b.mark.off::after{display:none}
 .b.deco:hover{filter:none}
 .pop{animation:pop .7s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pop{0%{transform:translate(-50%,-100%) scale(.3,0)}60%{transform:translate(-50%,-100%) scale(1.04,1.08)}100%{transform:translate(-50%,-100%) scale(1)}}
-#cat{position:absolute;width:96px;margin:0;pointer-events:none;z-index:99999!important;transform:translate(-50%,-92%)}
+#cat{position:absolute;width:110px;margin:0;pointer-events:none;z-index:99999!important;transform:translate(-50%,-92%)}
 #cat img{width:100%;display:block;filter:drop-shadow(0 6px 3px rgba(0,0,0,.25))}
 #cat i{position:absolute;left:50%;bottom:-6px;width:46px;height:10px;margin-left:-23px;border-radius:50%;background:rgba(40,25,10,.22);filter:blur(2px)}
 #tram{position:absolute;z-index:8000;pointer-events:auto;cursor:pointer}
@@ -145,7 +148,7 @@ function pt(a){return a.map(function(q){var p=iso(q[0],q[1]);return p[0].toFixed
 var svg='<defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><line x1="0" y1="0" x2="0" y2="7" stroke="rgba(90,70,40,.13)" stroke-width="1.2"/></pattern>'+
  '<radialGradient id="hill" cx="50%" cy="60%" r="60%"><stop offset="0" stop-color="#9fae7e"/><stop offset="1" stop-color="#7f9466"/></radialGradient></defs>';
 svg+='<polygon points="'+pt([[-6,-4],[118,-4],[118,96],[-6,96]])+'" fill="#e3d6b3" stroke="rgba(29,24,19,.35)" stroke-width="2"/>';
-svg+='<polygon points="'+pt([[-6,-4],[118,-4],[118,96],[-6,96]])+'" fill="url(#hatch)"/>';
+svg+='<polygon points="'+pt([[-6,-4],[118,-4],[118,96],[-6,96]])+'" fill="url(#hatch)"/>';svg+='<polygon points="'+pt([[30,4],[10,20],[6,46],[16,70],[38,90],[62,92],[90,80],[108,52],[104,24],[80,6],[52,0]])+'" fill="#d8c9a3" opacity=".55"/>';
 /* 산 : 북악(북), 남산(남) — 부드러운 언덕 */
 function hill(x,y,rx,ry,h){var c=iso(x,y);return '<g><ellipse cx="'+c[0]+'" cy="'+c[1]+'" rx="'+rx+'" ry="'+ry+'" fill="url(#hill)" stroke="rgba(29,24,19,.45)" stroke-width="1.5"/><path d="M'+(c[0]-rx*.7)+' '+(c[1]-ry*.1)+' Q'+c[0]+' '+(c[1]-h)+' '+(c[0]+rx*.7)+' '+(c[1]-ry*.1)+'" fill="#8ea173" stroke="rgba(29,24,19,.45)" stroke-width="1.5"/></g>'}
 svg+=hill(30,-2,260,70,170)+hill(62,94,300,80,190)+hill(6,48,150,48,90);
@@ -166,9 +169,35 @@ g.innerHTML=svg;
 
 /* 건물 놓기 */
 function place(o,el){var p=iso(o.x,o.y);el.style.left=p[0]+'px';el.style.top=p[1]+'px';el.style.width=o.w+'px';el.style.transform='translate(-50%,-100%)';el.style.zIndex=Math.round(p[1])}
-HANOK.forEach(function(h){var el=D.createElement('div');el.className='b deco';el.innerHTML='<img src="'+C+'hanok'+h[2]+'.webp" alt="">';place({x:h[0],y:h[1],w:140},el);world.appendChild(el)});
+/* ── 빈 땅 채우기 : 구역마다 그 동네다운 건물로 촘촘하게 ── */
+var seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+var X={h:['x_h000','x_h002','x_h003','hanokA','hanokB'],s:['x_s011','x_s012','x_s013','x_s015','x_s019','x_s020','x_s021','x_s029'],m:['x_m030','x_m031','x_m032','x_m033','x_m034','x_m009','x_m004'],b:['x_b042','x_b044','x_b046'],w:['x_w048','x_w050']};
+var WALL=[[30,4],[10,20],[6,46],[16,70],[38,90],[62,92],[90,80],[108,52],[104,24],[80,6],[52,0],[30,4]];
+function inPoly(x,y,P){var c=false;for(var i=0,j=P.length-1;i<P.length;j=i++){var a=P[i],b=P[j];if(((a[1]>y)!==(b[1]>y))&&(x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]))c=!c}return c}
+function dSeg(x,y,a,b){var dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy)}
+function nearRoad(x,y){var m=1e9;ROADS.forEach(function(r){for(var i=0;i<r.p.length-1;i++){var d=dSeg(x,y,r.p[i],r.p[i+1])-r.w/22;if(d<m)m=d}});return m}
+function nearMark(x,y){var m=1e9;B.forEach(function(o){if(o.deco)return;var d=Math.hypot(o.x-x,o.y-y)-(o.id==='stadium'?11:o.id==='jodk'?6:4.5);if(d<m)m=d});return m}
+function zone(x,y,nr){
+ if(Math.abs(y-30)<7&&nr<3.2)return rnd()<.62?'s':(rnd()<.45?'b':(rnd()<.5?'m':'h'));
+ if(x>36&&x<58&&y>50&&y<80)return rnd()<.3?'m':(rnd()<.6?'s':'h');
+ if(Math.abs(x-45)<6&&y>30&&y<70)return rnd()<.3?'m':(rnd()<.6?'s':'h');
+ if(y<30)return rnd()<.93?'h':'s';
+ return rnd()<.84?'h':'s'}
+var SZ={h:150,s:112,m:138,b:150,w:122},fills=[];
+for(var gy=6;gy<92;gy+=5.2){for(var gx=4;gx<110;gx+=5.6){
+ var x=gx+(rnd()-.5)*2.2+((Math.round(gy/5.2)%2)*2.8),y=gy+(rnd()-.5)*1.6;
+ if(!inPoly(x,y,WALL))continue;var nr=nearRoad(x,y);if(nr<1.6)continue;if(nearMark(x,y)<1.5)continue;
+ if(rnd()<.12)continue;
+ var z=zone(x,y,nr),list=X[z],k=list[Math.floor(rnd()*list.length)];
+ fills.push({x:x,y:y,w:SZ[z]*(.9+rnd()*.2),img:C+k+'.webp',z:z});}}
+fills.forEach(function(f){var el=D.createElement('div');el.className='b deco';el.innerHTML='<img src="'+f.img+'" alt="" loading="lazy">';place(f,el);world.appendChild(el)});
+/* 나무 */
+for(var n=0;n<90;n++){var x=4+rnd()*106,y=4+rnd()*88;if(!inPoly(x,y,WALL)&&rnd()<.6)continue;if(nearRoad(x,y)<1.2||nearMark(x,y)<1)continue;
+ var el=D.createElement('div');el.className='b deco tree';var hh=26+rnd()*22,c=['#4f6b45','#3e5b3c','#6b7f4a','#5b6e3e'][Math.floor(rnd()*4)];
+ el.innerHTML='<svg width="40" height="'+(hh+14)+'" viewBox="0 0 40 '+(hh+14)+'"><rect x="18" y="'+(hh-4)+'" width="4" height="16" fill="#5a4330"/><ellipse cx="20" cy="'+(hh*.55)+'" rx="16" ry="'+(hh*.55)+'" fill="'+c+'" stroke="#1d1813" stroke-width="1.6"/><path d="M10 '+(hh*.5)+' q6 -6 12 -2" stroke="rgba(255,255,255,.25)" stroke-width="2" fill="none"/></svg>';
+ place({x:x,y:y,w:40},el);world.appendChild(el)}
 var EL={};
-B.forEach(function(o){if(o.deco)return;var el=D.createElement('div');el.className='b';el.dataset.id=o.id;el.innerHTML='<img src="'+o.img+'" alt="'+o.name+'"><span class="lab">'+o.name+'<b>'+o.yr+'</b></span>';place(o,el);world.appendChild(el);EL[o.id]=el;
+B.forEach(function(o){if(o.deco)return;o.w=Math.round(o.w*1.22);var el=D.createElement('div');el.className='b mark';el.dataset.id=o.id;el.dataset.n=o.name;el.innerHTML='<img src="'+o.img+'" alt="'+o.name+'"><span class="lab">'+o.name+'<b>'+o.yr+'</b></span>';place(o,el);world.appendChild(el);EL[o.id]=el;
  el.addEventListener('click',function(e){if(moved)return;open(o)})});
 /* 전차 (종로를 오감) */
 var tram=D.createElement('div');tram.id='tram';tram.innerHTML='<svg width="74" height="54" viewBox="0 0 74 54"><g transform="skewY(-26)" ><rect x="6" y="40" width="60" height="22" rx="3" fill="#e9c66a" stroke="#1d1813" stroke-width="2"/><rect x="6" y="52" width="60" height="10" fill="#5f8f8a" stroke="#1d1813" stroke-width="2"/><g fill="#f4ecd6" stroke="#1d1813" stroke-width="1.4"><rect x="11" y="43" width="8" height="7"/><rect x="23" y="43" width="8" height="7"/><rect x="35" y="43" width="8" height="7"/><rect x="47" y="43" width="8" height="7"/></g><path d="M36 40 L44 26" stroke="#1d1813" stroke-width="2"/></g></svg>';world.appendChild(tram);
