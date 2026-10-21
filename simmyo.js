@@ -143,7 +143,7 @@
     DP.forEach(function (p) {
       var b = D.createElement('button'); b.type = 'button'; b.className = 'pin' + (done(p.id) ? ' done' : '') + (d === 2 ? ' d2' : ''); b.style.left = p.x + '%'; b.style.top = p.y + '%';
       b.innerHTML = '<b>' + p.name + '</b>' + (done(p.id) ? STP(p.id) : '<i></i>'); b.setAttribute('aria-label', p.name + ' · ' + p.yr + (done(p.id) ? ' · 도장 찍음' : ''));
-      b.onclick = function () { go('p-' + p.id); }; mpArt.appendChild(b);
+      b.dataset.p = p.id; b.onclick = function () { go('p-' + p.id); }; mpArt.appendChild(b);
     });
     var open = midOpen(d), s = D.createElement('button'); s.type = 'button'; s.className = 'pin star' + (open ? '' : ' lock'); s.style.left = d === 1 ? '84%' : '62%'; s.style.top = d === 1 ? '45%' : '20%';
     s.innerHTML = '<b>' + (d === 1 ? '★ 자정' : '☾ 둘째 날 밤') + '</b><i></i>'; s.setAttribute('aria-label', (d === 1 ? '자정의 숨은 곳' : '둘째 날 밤') + (open ? '' : ' · 잠김')); s.onclick = function () { go(d === 1 ? 'mid' : 'mid2'); }; mpArt.appendChild(s);
@@ -494,3 +494,44 @@
   W.addEventListener('pagehide', function () { leavePlace(); });
   route();
 })(window, document);
+
+/* ════════ 2026-10-21 : 장난감 경성 골목 · 총총 걷는 심묘 ════════ */
+(function () {
+  var D = document, W = window, $ = function (s) { return D.querySelector(s); };
+  var RM = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var C = 'assets/simmyo/city/';
+  var ROW0 = [['hanokA', 150], ['dansung', 200], ['x_s011', 150], ['hwasin', 215], ['hanokB', 140], ['ymca', 190], ['x_s015', 150], ['jodk', 165], ['x_h002', 135], ['nakrang', 165], ['mitsu', 190], ['x_s013', 145], ['stadium', 165], ['x_h003', 140]];
+  var ROW = ROW0; var track = $('#townTrack'); if (!track) return;
+  function fill(el, h) { var html = ROW.map(function (r) { return '<img src="' + C + r[0] + '.webp" alt="" style="--h:' + Math.round(r[1] * (h || 1)) + 'px">'; }).join(''); el.innerHTML = html + html; }
+  fill(track, 1);
+  var x = -260, v = 38, target = 38, last = performance.now();
+  function tick(t) { var dt = Math.min(.05, (t - last) / 1000); last = t; v += (target - v) * Math.min(1, dt * 3); x -= v * dt; var half = track.scrollWidth / 2; if (half > 0 && -x > half) x += half; track.style.transform = 'translateX(' + x + 'px)'; requestAnimationFrame(tick); }
+  if (!RM) requestAnimationFrame(tick);
+  /* 산책 따라가기 → 빨라졌다가 지도로 */
+  var cv = $('#cover');
+  D.addEventListener('click', function (e) {
+    var g = e.target.closest('#cvGo'); if (!g || RM) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    cv.classList.add('fast'); target = 520;
+    setTimeout(function () { cv.classList.remove('fast'); target = 38; location.hash = 'map'; }, 1300);
+  }, true);
+  /* 지도 → 장소 : 그 건물 앞까지 총총 */
+  var TILE = { dansung: 'dansung', record: 'ymca', jodk: 'jodk', mitsu: 'mitsu', nakrang: 'nakrang', hwasin: 'hwasin', stadium: 'stadium' };
+  var TRAM = '<svg viewBox="0 0 160 110"><rect x="10" y="30" width="140" height="62" rx="6" fill="#e9c66a" stroke="#231c16" stroke-width="3"/><rect x="10" y="70" width="140" height="22" fill="#5f9a8f" stroke="#231c16" stroke-width="3"/><g fill="#f6eedb" stroke="#231c16" stroke-width="2.5"><rect x="22" y="40" width="20" height="20"/><rect x="50" y="40" width="20" height="20"/><rect x="78" y="40" width="20" height="20"/><rect x="106" y="40" width="20" height="20"/></g><path d="M80 30 L96 4" stroke="#231c16" stroke-width="3"/><circle cx="36" cy="98" r="9" fill="#231c16"/><circle cx="124" cy="98" r="9" fill="#231c16"/></svg>';
+  var ov = $('#walkov'), busy = 0; if (ov) fill($('#woTrack'), .62);
+  D.addEventListener('click', function (e) {
+    var g = e.target.closest('#map [data-p]'); if (!g || RM || busy || !ov) return;
+    var id = g.dataset.p, name = (window.SIMMYO_DATA.P.filter(function (p) { return p.id === id; })[0] || {}).name || '';
+    e.preventDefault(); e.stopImmediatePropagation(); busy = 1;
+    $('#woDest').innerHTML = TILE[id] ? '<img src="' + C + TILE[id] + '.webp" alt="">' : TRAM;
+    $('#woT').innerHTML = '<small>총총총</small>' + name;
+    var wt = $('#woTrack'), wx = 0, wl = performance.now(), run = 1;
+    (function mv(t) { if (!run) return; var dt = (t - wl) / 1000; wl = t; wx -= 160 * dt; wt.style.transform = 'translateX(' + wx + 'px)'; requestAnimationFrame(mv); })(wl);
+    ov.hidden = false; ov.className = 'walkov'; void ov.offsetWidth; ov.classList.add('on');
+    setTimeout(function () { ov.classList.add('arrive'); }, 120);
+    setTimeout(function () { ov.classList.add('stop'); run = 0; }, 1350);
+    setTimeout(function () { location.hash = 'p-' + id; }, 1550);
+    setTimeout(function () { ov.classList.remove('on'); }, 1700);
+    setTimeout(function () { ov.hidden = true; ov.className = 'walkov'; busy = 0; }, 2050);
+  }, true);
+})();
