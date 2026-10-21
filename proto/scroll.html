@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#efe7d2">
+<title>심묘한 산책 · 두루마리 종로</title>
+<link rel="stylesheet" href="../fonts/fonts-m.css?v=2">
+<style>
+:root{--B:15vh;--ink:#1d1813;--ink2:#6b5d4c;--paper:#efe7d2;--shu:#c4512a;--amber:#e9a93b;--serif:'Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif;--H:64vh}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#efe7d2;color:var(--ink);font-family:var(--serif)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.5;mix-blend-mode:multiply;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .36 0 0 0 0 .22 0 0 0 .17 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+#sc{position:fixed;inset:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:none}
+#sc::-webkit-scrollbar{display:none}
+#roll{position:relative;height:100%;display:flex;align-items:flex-end;padding:0 0 var(--B) 0;width:max-content}
+/* 하루의 하늘 : 두루마리 전체에 아침→밤 */
+#sky{position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,#efe7d2 0%,#f1e5c4 22%,#f2deb0 40%,#ecc99c 58%,#d9a68a 66%,#5d5466 76%,#2b2734 86%,#16141b 100%)}
+/* 길 : 끝없이 이어지는 한 줄 */
+#road{position:absolute;left:0;right:0;z-index:1;bottom:var(--B);height:7vh;transform:translateY(100%);
+ background:repeating-linear-gradient(90deg,rgba(29,24,19,.14) 0 1px,transparent 1px 46px),linear-gradient(#d8c59c,#cdb88a)}
+#road::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--ink)}
+.night #road{filter:brightness(.55)}
+
+.pan{position:relative;z-index:2;height:var(--H);flex:none;margin-left:-6vh}
+.pan:first-child{margin-left:0}
+.pan .art{position:relative;height:100%;aspect-ratio:3/4;-webkit-mask:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+.pan .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none}
+/* 시간 · 장소 이름 : 그림 위 하늘에 */
+.pan .cap{position:absolute;left:10%;bottom:calc(100% + 2.6vh);white-space:nowrap}
+.pan .cap b{display:block;font:900 clamp(26px,3vw,44px)/1 var(--serif);letter-spacing:-.01em;color:var(--c,#1d1813)}
+.pan .cap span{display:block;margin-top:8px;font:600 11px var(--sans);letter-spacing:.26em;color:var(--c2,#6b5d4c)}
+.pan.dark .cap{--c:#efe6d2;--c2:#a99e8c}
+
+/* 사람 · 음식 자리 : 반짝이는 점 */
+.dot{position:absolute;z-index:3;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;display:grid;place-items:center}
+.dot i{width:12px;height:12px;border-radius:50%;background:#fff6dd;box-shadow:0 0 0 3px var(--amber),0 0 18px 6px rgba(233,169,59,.65);animation:pulse 1.8s ease-in-out infinite}
+.dot.food i{box-shadow:0 0 0 3px var(--shu),0 0 18px 6px rgba(196,81,42,.55)}
+@keyframes pulse{50%{transform:scale(1.3)}}
+.dot em{position:absolute;left:50%;bottom:calc(100% + 4px);transform:translate(-50%,4px);white-space:nowrap;font:700 12px var(--sans);font-style:normal;background:var(--ink);color:#f3ead6;padding:6px 10px;border-radius:2px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none}
+.dot:hover em,.dot:focus-visible em{opacity:1;transform:translate(-50%,0)}
+
+/* 길가 음식 간판 (장면 사이) */
+.sign{position:relative;z-index:2;flex:none;height:var(--H);width:clamp(150px,13vw,200px);margin:0 1vw 0 3vw;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer}
+.sign .pole{width:3px;flex:1;background:var(--ink)}
+.sign .board{width:100%;background:#f6eedb;border:2px solid var(--ink);padding:7px 7px 10px;box-shadow:5px 5px 0 rgba(29,24,19,.85);transform-origin:50% -40px;animation:sway 4s ease-in-out infinite;transition:transform .25s}
+.sign:hover .board{transform:rotate(-2deg) translateY(-4px)}
+@keyframes sway{50%{transform:rotate(1.4deg)}}
+.sign .board img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.sign .board b{display:block;margin-top:8px;text-align:center;font:900 19px var(--serif)}
+.sign .board span{display:block;text-align:center;font:600 10.5px var(--sans);letter-spacing:.18em;color:var(--ink2);margin-top:3px}
+.sign .hang{flex:none;height:12%;width:3px;background:var(--ink)}
+
+/* 표지 · 끝 */
+.cover{position:relative;z-index:2;flex:none;height:100vh;width:min(560px,92vw);display:flex;flex-direction:column;justify-content:center;padding:0 0 0 7vw;align-self:stretch}
+.cover h1{margin:0;font:900 clamp(54px,7vw,108px)/.95 var(--serif);letter-spacing:-.03em}
+.cover p{margin:28px 0 0;font:500 15px/1.95 var(--sans);color:var(--ink2);max-width:380px}
+.cover .go{margin-top:34px;font:700 12px var(--sans);letter-spacing:.3em;display:flex;align-items:center;gap:14px}
+.cover .go i{display:block;width:60px;height:1.5px;background:var(--ink);position:relative;animation:go 1.6s ease-in-out infinite}
+.cover .go i::after{content:"";position:absolute;right:-1px;top:-4px;width:8px;height:8px;border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink);transform:rotate(45deg)}
+@keyframes go{50%{transform:translateX(10px)}}
+.endp{position:relative;z-index:2;flex:none;height:100vh;width:min(620px,96vw);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#efe6d2;padding:0 6vw;align-self:stretch}
+.endp img{width:200px;height:200px;border-radius:50%;object-fit:cover;margin-bottom:30px;opacity:.9}
+.endp h2{margin:0;font:900 40px var(--serif)}
+.endp p{margin:16px 0 0;font:500 13.5px/1.9 var(--sans);color:#a59a8a}
+
+/* 고양이 : 화면에 붙어 길 위를 걸음 */
+#cat{position:fixed;z-index:20;left:16vw;bottom:calc(var(--B) - 4.5vh);width:clamp(84px,8vw,120px);pointer-events:none;transform-origin:50% 100%}
+#cat img{display:block;width:100%;filter:drop-shadow(0 6px 4px rgba(0,0,0,.25))}
+#cat.walk img{animation:step .36s ease-in-out infinite}
+@keyframes step{50%{transform:translateY(-6%) rotate(-2deg)}}
+#cat.flip img{transform:scaleX(-1)}
+#cat.flip.walk img{animation:stepf .36s ease-in-out infinite}
+@keyframes stepf{0%,100%{transform:scaleX(-1)}50%{transform:scaleX(-1) translateY(-6%) rotate(2deg)}}
+
+/* 위 · 아래 고정 UI */
+.logo{position:fixed;z-index:30;left:24px;top:20px;font:900 17px var(--serif);color:var(--lc,#1d1813);transition:color .6s}
+.logo small{margin-left:10px;font:600 10px var(--sans);letter-spacing:.24em;opacity:.7}
+/* 길 안내 막대 : 골라서 가기 */
+.guide{position:fixed;z-index:30;left:50%;bottom:16px;transform:translateX(-50%);width:min(880px,calc(100vw - 32px));height:44px;display:flex;align-items:center}
+.guide .line{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--lc,#1d1813);opacity:.45;transition:background .6s}
+.guide .now{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:var(--shu);box-shadow:0 0 0 3px rgba(196,81,42,.2)}
+.guide button{position:absolute;top:50%;transform:translate(-50%,-50%);padding:14px 4px;font:700 11px var(--sans);letter-spacing:.06em;white-space:nowrap;color:var(--lc,#1d1813);opacity:.6;transition:opacity .2s,color .6s}
+.guide button::before{content:"";display:block;width:6px;height:6px;margin:0 auto 6px;border-radius:50%;background:currentColor}
+.guide button:hover,.guide button.on{opacity:1}
+.guide button span{position:absolute;left:50%;top:calc(50% + 10px);transform:translateX(-50%)}
+.guide button::before{position:relative;top:0}
+
+/* 이야기 카드 */
+.card{position:fixed;z-index:60;right:24px;top:50%;width:min(390px,calc(100vw - 32px));max-height:86vh;overflow:auto;transform:translate(120%,-50%);transition:transform .5s cubic-bezier(.3,.8,.2,1);background:#f6efdc;border:1.5px solid var(--ink);box-shadow:10px 10px 0 rgba(29,24,19,.9)}
+.card.on{transform:translate(0,-50%)}
+.card .x{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#f3ead6;font:500 18px/1 var(--sans);z-index:2}
+.card figure{margin:0;aspect-ratio:4/3;overflow:hidden;border-bottom:1.5px solid var(--ink)}
+.card figure img{width:100%;height:100%;object-fit:cover;display:block}
+.card .in{padding:18px 20px 20px}
+.card .k{margin:0 0 6px;font:700 10.5px var(--sans);letter-spacing:.24em;color:var(--shu)}
+.card h3{margin:0 0 14px;font:900 25px/1.25 var(--serif)}
+.card ul{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+.card li{position:relative;padding-left:16px;font:400 14px/1.8 var(--sans);word-break:keep-all}
+.card li::before{content:"";position:absolute;left:0;top:.75em;width:7px;height:1.5px;background:var(--ink)}
+.card .say{margin:16px 0 0;padding-top:14px;border-top:1px dashed rgba(29,24,19,.35);font:600 14.5px/1.75 var(--serif);color:var(--ink2)}
+.card .say::before{content:"심묘 「"}.card .say::after{content:"」"}
+.card .src{margin:14px 0 0;font:500 10.5px/1.6 var(--sans);color:#998b74}
+.card .src a{color:inherit}
+
+@media (max-width:760px){
+ :root{--H:56vh;--B:13vh}
+ .pan{margin-left:-4vh}
+ .cover{width:92vw;padding-left:24px}
+ .cover h1{font-size:58px}
+ .logo{left:16px;top:14px}
+ #cat{left:12vw;width:72px;bottom:calc(var(--B) - 4vh)}
+ .guide{bottom:8px;height:40px}
+ .guide button span{display:none}
+ .guide button{padding:12px 6px}
+ .card{right:0;left:0;top:auto;bottom:0;width:100%;max-height:78vh;transform:translateY(110%);border-width:1.5px 0 0;box-shadow:0 -14px 40px -10px rgba(0,0,0,.45);border-radius:14px 14px 0 0}
+ .card.on{transform:none}
+ .card figure{aspect-ratio:16/9}
+ .sign{width:150px}
+}
+</style>
+</head>
+<body>
+<div id="sc"><div id="roll"><div id="sky"></div><div id="road"></div></div></div>
+<div id="cat"><img src="../assets/simmyo/city/cat_dot.webp" alt="까만 고양이 심묘"></div>
+<div class="logo" id="logo">심묘한 산책<small>두루마리 종로</small></div>
+<nav class="guide" id="guide"><div class="line"></div><span class="now" id="now"></span></nav>
+<aside class="card" id="card" aria-live="polite"></aside>
+
+<script src="../simmyo-data.js"></script>
+<script>
+(function(){
+var D=document,W=window,$=function(s){return D.querySelector(s)};
+var P={};SIMMYO_DATA.P.forEach(function(p){P[p.id]=p});
+var V='../assets/simmyo/v4/',S='../assets/simmyo/s/';
+/* 출처 */
+var SRC={
+ vogue:['보그 코리아 「MODE & MOMENTS – Chapter Five」(2016)','https://www.vogue.co.kr/2016/08/11/79850/'],
+ brunch:['「경성 MZ vs 서울 힙스터」 (『삼천리』 1934.3 · 『동아일보』 1934.4.18 인용)','https://brunch.co.kr/@gugija/38'],
+ seoul:['서울시 「1930년대 경성 모던걸·모던보이」 전시 안내','https://news.seoul.go.kr/culture/?p=514631'],
+ gomu:['한국민족문화대백과사전 「고무신 제조업」','https://encykorea.aks.ac.kr/Article/E0080988'],
+ sul:['경향신문 「괄세 못할 경성 설넝탕」 (『별건곤』 1929.12.1 인용)','https://www.khan.co.kr/article/201103152025285'],
+ naeng:['프레시안 『냉면열전』 서평 (『동아일보』 1926.1.6 인용)','https://www.pressian.com/pages/articles/119633'],
+ hotteok:['메트로신문 호떡 기사 (경성부 재무당국 1924 조사 인용)','https://www.metroseoul.co.kr/article/2015012100110']
+};
+/* 두루마리 : 장면 · 길가 간판 */
+var R=[
+ {t:'cover'},
+ {t:'pan',id:'tram',time:'아침 일곱 시',img:V+'tram.webp',dots:[
+   {x:52,y:80,k:'복식',name:'흰 옷 구경꾼들의 발',title:'아직은 짚신',li:['이 무렵 사람들 발에는 짚신과 나막신이 많았습니다.','1910년대 말부터 일본에서 들어온 고무신이 짚신·나막신을 빠르게 밀어냈습니다.','1920년대에 조선의 고무신 소비량은 35배로 늘었고, 1922년에는 종로에 조선인 고무신 공장(조선고무공업소)이 섰습니다.'],src:'gomu'}]},
+ {t:'sign',food:'hotteok',name:'호떡',sub:'종로 뒷골목',img:S+'sm_hotteok.webp',title:'호떡집 백오십 곳',li:['호떡은 개화기에 건너온 중국인들이 처음 구워 팔았습니다.','1924년 경성부 조사에 따르면 경성에는 설렁탕집이 100여 곳, 호떡집은 150곳쯤 있었습니다.'],say:'뜨거워서 못 먹엇소. 냄새만 먹엇소.',src:'hotteok'},
+ {t:'pan',id:'hwasin',time:'오전 열 시',img:V+'hwasin.webp',dots:[
+   {x:42,y:30,k:'복식',name:'화신의 손님',title:'모던걸이 오는 곳',li:['1925년 무렵부터 경성 거리에 「모던걸 · 모던보이」라 불린 젊은이들이 나타났습니다.','1930년대 화신백화점의 단골이 바로 이들이었습니다. 옥상에는 사진관도 있었습니다.','신여성들은 얼굴을 가리던 쓰개치마 대신 검은 양산을 들고 다녔습니다.'],src:'seoul',src2:'vogue'}]},
+ {t:'pan',id:'jodk',time:'정오',img:V+'jodk.webp',dots:[
+   {x:74,y:42,k:'복식',name:'방송국의 가수',title:'긴 저고리, 통치마',li:['신여성들은 긴 저고리에 통치마를 입거나 아예 양장을 입었습니다.','신식 여학교 학생들 사이에서는 긴 머플러가 유행했습니다.'],src:'vogue'}]},
+ {t:'sign',food:'sul',name:'설렁탕',sub:'배달 왔소',img:S+'sm_sul.webp',title:'담배 한 갑 값, 설렁탕',li:['1920년대 중반 설렁탕 한 그릇은 10~15전, 담배 한 갑(10전)과 비슷했습니다. 고기를 더 얹으면 5전이 더 들었습니다.','나무 걸상에 앉으면 1분도 안 돼 깍두기와 함께 나왔습니다.','모던보이 · 모던걸은 가게에 앉기보다 집으로 배달시켜 먹었습니다. 1929년 글에는 하루 두 끼를 설렁탕으로 시켜 먹는 신혼집 이야기도 나옵니다.'],say:'머리에 쟁반을 이고 뛰는 사람을 따라갓소. 한 방울도 안 흘리더이다.',src:'sul'},
+ {t:'pan',id:'nakrang',time:'오후 두 시',img:V+'nakrang.webp',dots:[
+   {x:78,y:30,k:'복식',name:'안경 쓴 손님',title:'모던보이의 지팡이',li:['신사들은 지팡이를 들고 거리를 산책했습니다.','이서구는 지팡이만 봐도 사람을 안다고 했습니다. 팔에 걸고 다니면 신문기자, 벚나무 지팡이면 사회주의에 관심 있는 청년이라고요.','여름이면 맥고모자(밀짚으로 짠 모자)를 썼습니다.'],src:'vogue'},
+   {x:28,y:76,k:'음식',food:1,name:'커피 한 잔',title:'커피 10전',li:['낙랑파라의 커피와 홍차는 10전, 아이스크림 · 코코아 · 칼피스는 15전쯤이었습니다.','금요일마다 새로 나온 빅타 레코드를 틀었습니다.'],src0:'data'}]},
+ {t:'pan',id:'stadium',time:'오후 네 시',img:V+'stadium.webp',dots:[]},
+ {t:'sign',food:'naeng',name:'냉면',sub:'자전거 배달',img:S+'sm_naeng.webp',title:'자정에도 오는 냉면',li:['1920년대 냉면은 최고의 외식이었고, 자정이 넘어도 배달이 됐습니다.','자전거 배달부는 그릇을 층층이 쌓아 한 손으로 몰았습니다.','1926년 평양에서는 냉면 배달부들이 일급을 60전에서 1원으로 올려 달라며 파업해 이겼습니다.'],say:'바퀴보다 그릇 탑이 더 신기햇소.',src:'naeng'},
+ {t:'pan',id:'mitsu',time:'해질녘',img:V+'mitsu.webp',dots:[
+   {x:68,y:62,k:'복식',name:'단발머리 아가씨들',title:'귀밑까지 자른 단발',li:['무용가 최승희처럼 귀밑까지 자른 단발이 장안의 화제였습니다.','붉은 루주, 물결 모양으로 다듬은 머리(핑거 웨이브), 짧은 치마와 굽 높은 구두가 모던걸의 모습으로 꼽혔습니다(『삼천리』 1934년 3월).'],src:'vogue',src2:'brunch'}]},
+ {t:'sign',food:'soda',name:'소다',sub:'옥상 매점',img:S+'sm_soda.webp',title:'옥상에서 마시는 소다',li:['미쓰코시 옥상에는 정원과 분수, 전망대, 그리고 커피와 소다를 파는 매점이 있었습니다.','이상의 「날개」(1936)에서 주인공이 「날자, 날자」 외친 곳도 이 옥상입니다.'],say:'코가 간지럽소. 다시는 안 마시겟소. 내일 또 마시겟소.',src0:'data'},
+ {t:'pan',id:'dansung',time:'저녁 여덟 시',img:S+'dansung.webp',dark:1,dots:[
+   {x:45,y:22,k:'복식',name:'줄 선 사람들의 겨울옷',title:'여우털 목도리와 오페라 백',li:['여우털 목도리와 작은 오페라 백은 귀부인들이 가장 갖고 싶어 한 물건이었습니다.','금시곗줄, 금테 안경, 케이프 코트는 돈 자랑의 상징이었습니다. 신분이 사라진 자리를 옷이 채운 셈입니다.'],src:'vogue'}]},
+ {t:'pan',id:'record',time:'밤 열 시',img:V+'record.webp',dark:1,dots:[]},
+ {t:'end'}
+];
+var roll=$('#roll'),guide=$('#guide');
+R.forEach(function(r,i){var el;
+ if(r.t==='cover'){el=D.createElement('section');el.className='cover';el.innerHTML='<h1>심묘한<br>산책</h1><p>까만 고양이 한 마리가 아침부터 밤까지 1930년대 종로를 걷습니다. 반짝이는 자리를 누르면 그곳 사람들의 옷과 밥 이야기가 열립니다.</p><div class="go">옆으로 걸어가기<i></i></div>'}
+ else if(r.t==='end'){el=D.createElement('section');el.className='endp';el.innerHTML='<img src="'+S+'face_sleep.webp" alt="잠든 심묘"><h2>자정. 산책 끝.</h2><p>심묘는 어디선가 잠들었소.<br>그림은 재현이고, 장소와 연도와 이야기는 기록을 따랐습니다.</p>'}
+ else if(r.t==='sign'){el=D.createElement('button');el.className='sign';el.setAttribute('aria-label',r.name+' 이야기');el.innerHTML='<span class="pole"></span><span class="board"><img src="'+r.img+'" alt="'+r.name+'" loading="lazy"><b>'+r.name+'</b><span>'+r.sub+'</span></span><span class="hang"></span>';el.onclick=function(){open({k:'음식',title:r.title,li:r.li,say:r.say,img:r.img,src:r.src})}}
+ else{var d=P[r.id]||{};el=D.createElement('section');el.className='pan'+(r.dark?' dark':'');
+  el.innerHTML='<div class="cap"><b>'+r.time+'</b><span>'+d.where+' · '+d.name+' · '+d.yr+'</span></div><div class="art"><img src="'+r.img+'" alt="'+(d.alt||d.name)+'" loading="'+(i<3?'eager':'lazy')+'"></div>';
+  var art=el.querySelector('.art');
+  r.dots.forEach(function(o){var b=D.createElement('button');b.className='dot'+(o.food?' food':'');b.style.left=o.x+'%';b.style.top=o.y+'%';b.innerHTML='<i></i><em>'+o.name+'</em>';b.setAttribute('aria-label',o.name);
+   b.onclick=function(){open({k:o.k,title:o.title,li:o.li,say:d.say&&d.say[1],img:r.img,src:o.src,src2:o.src2,data:o.src0?d.src:''})};art.appendChild(b)});
+ }
+ r.el=el;roll.appendChild(el);
+});
+
+/* ── 이야기 카드 ── */
+var card=$('#card');
+function srcHTML(k){var s=SRC[k];return s?'<a href="'+s[1]+'" target="_blank" rel="noopener">'+s[0]+'</a>':''}
+function open(o){card.innerHTML='<button class="x" aria-label="닫기">×</button><figure><img src="'+o.img+'" alt=""></figure><div class="in"><p class="k">'+o.k+'</p><h3>'+o.title+'</h3><ul>'+o.li.map(function(t){return '<li>'+t+'</li>'}).join('')+'</ul>'+(o.say?'<p class="say">'+o.say+'</p>':'')+'<p class="src">출처 · '+[srcHTML(o.src),srcHTML(o.src2),o.data||(o.src?'':'')].filter(Boolean).join(' · ')+(!o.src&&!o.data?'이 사이트 장소 기록':'')+'</p></div>';
+ card.classList.add('on');card.querySelector('.x').onclick=close}
+function close(){card.classList.remove('on')}
+D.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+
+/* ── 걷기 : 세로 휠도 가로로, 고양이는 걸을 때만 발을 굴림 ── */
+var sc=$('#sc'),cat=$('#cat'),lastX=0,stopT;
+sc.addEventListener('wheel',function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();sc.scrollLeft+=e.deltaY*1.1}},{passive:false});
+var drag=null;sc.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.target.closest('button'))return;drag={x:e.clientX,s:sc.scrollLeft};sc.style.cursor='grabbing'});
+W.addEventListener('pointermove',function(e){if(drag)sc.scrollLeft=drag.s-(e.clientX-drag.x)});
+W.addEventListener('pointerup',function(){drag=null;sc.style.cursor=''});
+D.addEventListener('keydown',function(e){if(e.key==='ArrowRight')sc.scrollBy({left:W.innerWidth*.6,behavior:'smooth'});if(e.key==='ArrowLeft')sc.scrollBy({left:-W.innerWidth*.6,behavior:'smooth'})});
+
+/* ── 길 안내 막대 : 장면 이름을 눌러 바로 가기 ── */
+var pans=R.filter(function(r){return r.t==='pan'});
+pans.forEach(function(r){var b=D.createElement('button');b.innerHTML='<span>'+(P[r.id]||{}).name+'</span>';b.onclick=function(){go(r.el)};guide.appendChild(b);r.g=b});
+function go(el){sc.scrollTo({left:el.offsetLeft-W.innerWidth/2+el.offsetWidth/2,behavior:'smooth'})}
+function layout(){var max=roll.scrollWidth-W.innerWidth;pans.forEach(function(r){var c=r.el.offsetLeft+r.el.offsetWidth/2-W.innerWidth/2;r.g.style.left=(Math.max(0,Math.min(1,c/max))*100)+'%'})}
+
+function frame(){var x=sc.scrollLeft,max=roll.scrollWidth-W.innerWidth,p=max>0?x/max:0,dx=x-lastX;lastX=x;
+ if(Math.abs(dx)>.5){cat.classList.add('walk');cat.classList.toggle('flip',dx<0);clearTimeout(stopT);stopT=setTimeout(function(){cat.classList.remove('walk')},140)}
+ $('#now').style.left=(p*100)+'%';
+ var dark=p>.8;D.body.classList.toggle('night',dark);D.documentElement.style.setProperty('--lc',dark?'#efe6d2':'#1d1813');
+ var mid=x+W.innerWidth/2,best=null,bd=1e9;pans.forEach(function(r){var c=r.el.offsetLeft+r.el.offsetWidth/2,d=Math.abs(c-mid);if(d<bd){bd=d;best=r}});pans.forEach(function(r){r.g.classList.toggle('on',r===best)});
+ requestAnimationFrame(frame)}
+W.addEventListener('load',layout);W.addEventListener('resize',layout);setTimeout(layout,400);
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
