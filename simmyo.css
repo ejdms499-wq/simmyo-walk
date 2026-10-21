@@ -384,3 +384,22 @@ body.dark .hud>*{background:#1f413f;color:#efe2c4;border-color:#efe2c4}
 .ab-notes li:not(.on)>img{width:38px}
 .ab-notes li.on{grid-column:span 2;border-color:var(--coral)}
 @media (max-width:620px){.ab-notes li.on{grid-column:auto}}
+
+/* ── 2026-10-21 다듬기 ── */
+.tb{background:rgba(242,230,203,.92);color:var(--ink);border-bottom:1px solid rgba(35,28,22,.25);backdrop-filter:blur(6px)}
+.tb-t{font-size:18px}
+.tb-r b{color:var(--coral)}
+#fishN,.play,#plPlay,.pl-go{display:none!important}
+.folk{margin:16px 0 4px;padding:14px 14px 6px;border:1.5px solid var(--ink);border-radius:14px;background:#f8efd9}
+.folk-k{margin:0 0 8px;font:700 11.5px var(--sans);letter-spacing:.14em;color:var(--coral)}
+.folk-i{border-top:1px dashed rgba(35,28,22,.35);padding:10px 0}
+.folk-i:first-of-type{border-top:0}
+.folk-i summary{list-style:none;display:flex;align-items:center;gap:10px;cursor:pointer;font:900 16.5px/1.35 var(--serif)}
+.folk-i summary::-webkit-details-marker{display:none}
+.folk-i summary::after{content:"+";margin-left:auto;font:500 20px/1 var(--sans);color:var(--ink2);transition:transform .2s}
+.folk-i[open] summary::after{transform:rotate(45deg)}
+.folk-i summary i{font:700 11px var(--sans);font-style:normal;padding:3px 8px;border-radius:20px;background:var(--ink);color:var(--paper);flex:none}
+.folk-i ul{margin:10px 0 6px;padding:0 0 0 2px;list-style:none;display:grid;gap:7px}
+.folk-i li{position:relative;padding-left:14px;font:400 14px/1.75 var(--sans);word-break:keep-all}
+.folk-i li::before{content:"";position:absolute;left:0;top:.8em;width:6px;height:1.5px;background:var(--ink)}
+.folk-i .src{display:block;font:500 11px/1.55 var(--sans);color:var(--ink2)}

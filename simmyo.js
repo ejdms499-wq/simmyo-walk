@@ -194,6 +194,7 @@
     card.classList.remove('intro'); intro(p);
     $('#plPlayT').textContent = p.game.title; $('#plPlayS').textContent = G.win[p.id] ? '성공 · 멸치 받음' : '성공하면 멸치 한 마리';
     $('#plGo').innerHTML = p.go ? '<a href="' + p.go[0] + '">' + p.go[1] + ' →</a>' : '';
+    var fk = $('#plFolk'); if (p.people && p.people.length) { fk.hidden = false; fk.innerHTML = '<p class="folk-k">그곳 사람들 · 옷과 밥</p>' + p.people.map(function (o) { return '<details class="folk-i"><summary><i>' + o.k + '</i><b>' + o.t + '</b></summary><ul>' + o.li.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul><span class="src">출처 · ' + o.src + '</span></details>'; }).join(''); } else { fk.hidden = true; fk.innerHTML = ''; }
     paintSense();
     sayP(done(p.id) ? (NIGHT ? p.night : '여긴 벌써 다녀갓소. 그래도 또 보시오.') : '사람들 긔록 속 경성은 흑백이오. 심묘 눈을 눌러 보시오.', '');
     var DP = DAYP[p.day], k = DP.indexOf(p), L = DP.length; $('#plPrev').onclick = function () { go('p-' + DP[(k + L - 1) % L].id); }; $('#plNext').onclick = function () { go('p-' + DP[(k + 1) % L].id); };
@@ -411,7 +412,7 @@
       x.fillText(d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + ' · 발바닥 도장 ' + (D2 ? (n + n2) + '/16' : n + '/8') + (G.solved2 ? ' · 내일도 산책하겟소' : G.solved ? ' · 심묘는 오늘도 잇소' : ''), 46, 1052);
       if (D2) { stampsRow(x, im, 46, 1072, 54, 60, 1); stampsRow(x, im, 46, 1132, 54, 60, 2); } else stampsRow(x, im, 46, 1080, 64, 72, 1);
       if (im.logo.width) { var lw = 330, lh = lw * im.logo.height / im.logo.width; x.drawImage(im.logo, 900 - 44 - lw, 1300 - 40 - lh, lw, lh); }
-      x.font = '500 18px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42'; x.fillText('경성야록 스핀오프 · 그림은 재현', 46, 1250);
+      x.font = '500 18px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42'; x.fillText('심묘한 산책 · 그림은 재현', 46, 1250);
       fin(cvs, '오늘의_심묘_엽서.png');
     });
   }
@@ -432,7 +433,7 @@
       x.font = '500 32px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42';
       x.fillText('발바닥 도장 ' + n + (D2 ? '/16' : '/8') + ' · 멸치 ' + G.fish + '마리' + (G.solved2 ? ' · 이틀 문장 완성' : G.solved ? ' · 자정 문장 완성' : ''), 540, ly + 905);
       stampsRow(x, im, 540 - (8 * 116 - 16) / 2, ly + (D2 ? 940 : 950), 100, 116, 1); if (D2) stampsRow(x, im, 540 - (8 * 116 - 16) / 2, ly + 1052, 100, 116, 2);
-      x.textAlign = 'center'; x.font = '500 26px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42'; x.fillText('경성야록 스핀오프 · 그림은 재현 · 심묘는 지어낸 고양이', 540, 1870);
+      x.textAlign = 'center'; x.font = '500 26px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42'; x.fillText('심묘한 산책 · 그림은 재현 · 심묘는 지어낸 고양이', 540, 1870);
       x.textAlign = 'left'; fin(cvs, '심묘한_산책_결과.png');
     });
   }
