@@ -41,7 +41,7 @@ window.SIMMYO_DATA = (function () {
       note: { k: '대조 불가 지문', t: '순사가 지문을 떠 보았지만 발바닥만 찍혔다. 어떤 기록과도 맞지 않았다.' },
       game: { type: 'dial', title: '다이얼 맞추기', how: '다이얼을 돌려 경성방송국 주파수에 맞추시오. 잡음이 사라지면 맞은 것이오.', target: 690, min: 550, max: 1500, win: 'JODK 690킬로 — 소리가 또렷해졋소.', lose: '' },
       go: ['https://ejdms499-wq.github.io/gyeongseong-yarok_v/', '경성야록 본지로'] },
-    { id: 'stadium', hs: { cat:[60,55], eye:[84,40],human:[93,6],ear:[22,34],nose:[50,90] }, name: '경성운동장', where: '동대문 옆', yr: '1925', ch: '오', x: 66, y: 59,
+    { id: 'stadium', hs: { cat:[60,55], eye:[84,40],human:[93,6],ear:[22,34],nose:[50,90] }, name: '경성운동장', where: '동대문 옆', yr: '1925', ch: '오', x: 75, y: 59,
       img: 'stadium', wide: 'stadium_w', alt: '트랙 우를 선수들보다 압서 달리는 심묘', walt: '관중으로 꽉 찬 운동장 스탠드에 안즌 심묘',
       say: ['다들 왜 뛰는지 모르겟소. 나는 그냥 뛰엇소.', '내가 일등이오. 아무도 안 쳐 주더이다.', '함성이 귀를 간질이오.'],
       night: '경기가 끗난 밤 운동장은 내 것이오. 트랙을 혼자 한 바퀴 도오.',
