@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#efe5cc">
+<title>심묘한 산책 · v3 시안</title>
+<link rel="stylesheet" href="../fonts/fonts-m.css?v=2">
+<style>
+:root{--paper:#efe5cc;--paper2:#e6d9b8;--ink:#201a14;--ink2:#6a5c4d;--shu:#c4512a;--amber:#e2a43c;--catblue:#9fb4c9}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font-family:'Noto Serif KR',serif;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.5;mix-blend-mode:multiply;background:
+ radial-gradient(rgba(70,50,20,.10) 1px,transparent 1.4px) 0 0/3px 3px,
+ radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(90,60,20,.16))}
+.sans{font-family:'Noto Sans KR',sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+svg.defs{position:absolute;width:0;height:0}
+.v{position:fixed;inset:0;transition:opacity .9s ease,visibility .9s}
+.v.off{opacity:0;visibility:hidden}
+
+/* ───────── 오프닝 ───────── */
+.op{display:grid;place-items:center}
+.op-in{position:relative;text-align:center;width:min(920px,92vw)}
+.op-k{font:600 12px 'Noto Sans KR',sans-serif;letter-spacing:.5em;color:var(--ink2);margin:0 0 4vh;opacity:0;animation:fade 1s .2s forwards}
+.title{position:relative;display:inline-block;font:900 clamp(56px,11vw,150px)/1 'Noto Serif KR',serif;letter-spacing:-.02em;white-space:nowrap}
+.title .ch{position:relative;display:inline-block}
+.flyg{position:fixed;z-index:30;font:900 60px/1 'Noto Serif KR',serif;color:var(--ink);pointer-events:none}
+.title .slot{position:absolute;left:60%;top:60%;width:.36em;height:.36em;border-right:2px dashed var(--shu);border-top:2px dashed var(--shu);opacity:0;transition:opacity .6s .2s}
+.title.stolen .slot{opacity:.9}
+@keyframes steal{0%{transform:none}30%{transform:translate(-.05em,-.25em) rotate(-12deg)}100%{transform:translate(var(--gx),var(--gy)) rotate(200deg) scale(.6);opacity:0}}
+.cat-run{position:absolute;bottom:-6vh;left:-30%;width:clamp(70px,9vw,120px);opacity:0}
+.cat-run img{width:100%;display:block}
+.cat-run .type{position:absolute;left:62%;top:52%}
+.run .cat-run{animation:dash 1.5s cubic-bezier(.4,0,.3,1) forwards}
+@keyframes dash{0%{left:-20%;opacity:1}45%{left:52%;transform:translateY(-14px)}55%{transform:translateY(0)}100%{left:120%;opacity:1}}
+.type{display:inline-grid;place-items:center;width:30px;height:34px;background:linear-gradient(135deg,#bdb6a4,#8d8676);border:1.5px solid var(--ink);border-radius:2px;font:900 20px/1 'Noto Serif KR',serif;color:#3b352c;transform:rotate(-14deg);box-shadow:2px 2px 0 rgba(0,0,0,.25)}
+.type b{display:block;transform:scaleX(-1)}
+.op-sub{margin:7vh 0 0;font-size:clamp(15px,1.5vw,19px);line-height:1.9;opacity:0;transition:opacity 1s}
+.op-sub b{color:var(--shu)}
+.done .op-sub,.done .op-go,.done .op-note{opacity:1}
+.op-go{margin-top:4vh;opacity:0;transition:opacity 1s .4s;display:inline-flex;align-items:center;gap:14px;font:700 15px 'Noto Sans KR',sans-serif;letter-spacing:.06em;padding:15px 26px 15px 22px;border:1.6px solid var(--ink);border-radius:40px}
+.op-go:hover{background:var(--ink);color:var(--paper)}
+.op-go .paw{width:18px;height:18px;background:url(../assets/simmyo/g/paw.png) center/contain no-repeat}
+.op-note{position:fixed;left:0;right:0;bottom:22px;text-align:center;font:500 11.5px 'Noto Sans KR',sans-serif;color:var(--ink2);opacity:0;transition:opacity 1s .8s}
+.wanted{position:absolute;right:-2vw;top:-14vh;width:118px;padding:8px 8px 10px;background:#f6efdc;border:1px solid rgba(32,26,20,.4);transform:rotate(6deg);box-shadow:0 10px 20px -10px rgba(0,0,0,.35);opacity:0;animation:fade 1s .5s forwards;font:700 10px/1.3 'Noto Sans KR',sans-serif;text-align:center}
+.wanted img{width:100%;display:block;filter:grayscale(1) contrast(1.1);margin-bottom:6px}
+.wanted .tear{position:absolute;inset:0;background:var(--paper);clip-path:polygon(0 0,100% 0,100% 100%,0 100%);opacity:0}
+@keyframes fade{to{opacity:1}}
+
+/* ───────── 장소 (웹) ───────── */
+.pl{display:grid;grid-template-columns:auto minmax(360px,520px);justify-content:center;gap:0 56px;height:100%;padding:0 4vw}
+.stage{position:relative;overflow:hidden;background:#1a1612;cursor:none;height:calc(100vh - 56px);margin-top:28px;aspect-ratio:3/4;box-shadow:0 30px 60px -30px rgba(32,26,20,.6);border:1.5px solid var(--ink)}
+.art{position:absolute;inset:0}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+.art .cat{filter:url(#catvision) saturate(1.15) contrast(1.04) brightness(1.06)}
+.art .far{filter:url(#catvision) blur(6px) brightness(1.04)}
+.lens{position:absolute;inset:0;clip-path:circle(0 at 50% 50%);pointer-events:none}
+.lens .whitepaper{position:absolute;background:#f7f1e2;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.ring{position:absolute;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;pointer-events:none;border:1.5px solid rgba(239,229,204,.9);box-shadow:0 0 0 1px rgba(32,26,20,.25),0 0 50px rgba(159,180,201,.35);opacity:0;transition:opacity .3s}
+.ring::before,.ring::after{content:"";position:absolute;top:50%;width:60px;height:1px;background:rgba(239,229,204,.7)}
+.ring::before{left:-70px;transform:rotate(-6deg)}.ring::after{right:-70px;transform:rotate(6deg)}
+.stage:hover .ring{opacity:1}
+.clip{position:absolute;left:51%;top:1.8%;width:25%;transform:rotate(-2.5deg);box-shadow:0 6px 14px -4px rgba(0,0,0,.55);transition:transform .3s;border:1px solid rgba(0,0,0,.4)}
+.clip img{display:block;width:100%;filter:sepia(.35) contrast(1.05)}
+.clip::after{content:"";position:absolute;left:46%;top:-7px;width:16px;height:16px;border-radius:50%;background:var(--shu);box-shadow:1px 2px 0 rgba(0,0,0,.35)}
+.tag{position:absolute;left:20px;bottom:20px;margin:0;font:700 11.5px 'Noto Sans KR',sans-serif;letter-spacing:.1em;color:#efe5cc;background:rgba(32,26,20,.72);padding:8px 13px;border-radius:30px;backdrop-filter:blur(4px)}
+.tag i{font-style:normal;display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--shu);margin-right:8px}
+.stage.catmode .tag i{background:var(--catblue)}
+.col{position:relative;padding:9vh 0 28px;display:flex;flex-direction:column;overflow:auto}
+.when{font:700 11.5px 'Noto Sans KR',sans-serif;letter-spacing:.2em;color:var(--ink2);margin:0}
+.when b{color:var(--shu)}
+.h{font:900 44px/1.08 'Noto Serif KR',serif;margin:14px 0 6px;letter-spacing:-.02em}
+.head{font:700 22px/1.4 'Noto Serif KR',serif;margin:18px 0 0;padding:14px 0 16px;border-top:1.5px solid var(--ink);border-bottom:1px solid rgba(32,26,20,.3)}
+.head small{display:block;font:600 11px 'Noto Sans KR',sans-serif;letter-spacing:.12em;color:var(--ink2);margin-bottom:6px}
+.miss{position:relative;display:inline-block}
+.miss{padding-left:.5em}.miss .hole{position:absolute;left:0;top:.18em;width:.36em;height:.36em;border:1.5px dashed var(--shu);border-radius:2px}
+.miss.fixed .hole{display:none}.miss.fixed{padding-left:0}
+.fly{position:fixed;z-index:40;pointer-events:none;transition:all .9s cubic-bezier(.3,.7,.2,1)}
+.eyes{display:grid;grid-template-columns:1fr 1fr;margin:22px 0 0;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.eyes button{padding:13px 0;font:700 13.5px 'Noto Sans KR',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .3s,color .3s}
+.eyes button.on{background:var(--ink);color:var(--paper)}
+.eyes .dot{width:10px;height:10px;border-radius:50%;background:var(--shu)}
+.eyes .dot.c{background:var(--catblue)}
+.read{margin-top:22px;min-height:180px}
+.read p{font-size:15px;line-height:1.85;margin:0 0 12px;word-break:keep-all}
+.read .src{font:500 11.5px/1.6 'Noto Sans KR',sans-serif;color:var(--ink2)}
+.say{display:flex;gap:12px;align-items:flex-start}
+.say img{width:48px;flex:none}
+.say p{margin:0;background:#fbf6e9;border:1.4px solid var(--ink);border-radius:16px 16px 16px 4px;padding:12px 15px;font:700 15.5px/1.6 'Noto Serif KR',serif}
+.sense{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sense span{font:600 12px 'Noto Sans KR',sans-serif;padding:7px 11px;border-radius:20px;background:#e3e9ef;color:#2c3a48}
+.foot{margin-top:auto;padding-top:22px;gap:16px;display:flex;justify-content:space-between;align-items:center;font:600 12px 'Noto Sans KR',sans-serif;color:var(--ink2)}
+.pouch{display:flex;gap:5px}
+.pouch span{display:grid;place-items:center;width:24px;height:28px;border:1px dashed var(--ink2);border-radius:2px;font:900 13px 'Noto Serif KR',serif;color:transparent}
+.pouch span.on{border:1.4px solid var(--ink);background:linear-gradient(135deg,#cfc8b6,#a49d8c);color:#3b352c}
+.nav{display:flex;gap:8px}
+.nav button{width:40px;height:40px;border:1.4px solid var(--ink);border-radius:50%;font:700 15px 'Noto Sans KR',sans-serif}
+.hint{position:absolute;left:50%;top:24px;transform:translateX(-50%);font:600 12.5px 'Noto Sans KR',sans-serif;color:#efe5cc;background:rgba(32,26,20,.55);padding:9px 15px;border-radius:30px;backdrop-filter:blur(4px);transition:opacity .6s;white-space:nowrap}
+
+/* ───────── 모바일 ───────── */
+@media (max-width:820px){
+  .pl{display:block}
+  .stage{position:absolute;inset:0;cursor:default}
+  .ring,.lens{display:none}
+  .stage.catmode .art .cat-full{opacity:1}
+  .art .cat-full{opacity:0;transition:opacity .45s}
+  .art .far-full{opacity:0;transition:opacity .45s;-webkit-mask:radial-gradient(ellipse 80% 60% at 50% 55%,transparent 60%,#000 100%);mask:radial-gradient(ellipse 80% 60% at 50% 55%,transparent 60%,#000 100%)}
+  .stage{height:auto;margin:0;aspect-ratio:auto;border:0;box-shadow:none}
+  .stage{bottom:calc(34vh - 24px)}
+  .art img{object-position:50% 100%}
+  .hint{display:none}
+  .foot .nav{display:none}
+  .foot{position:absolute;right:20px;top:24px;padding:0;margin:0}
+  .pouch span{width:16px;height:20px;font-size:10px}
+  .stage.catmode .art .far-full{opacity:1}
+  .stage.catmode .clip{opacity:0}
+  .clip{transition:opacity .4s;width:34%}
+  .tag{left:18px;top:calc(env(safe-area-inset-top) + 18px);bottom:auto}
+  .hint{top:auto;bottom:calc(36vh + 14px);font-size:12px}
+  .col{position:absolute;left:0;right:0;bottom:0;height:34vh;overflow:hidden;border:0;border-top:1.5px solid var(--ink);border-radius:22px 22px 0 0;background:var(--paper);padding:14px 22px calc(env(safe-area-inset-bottom) + 16px);transition:height .45s cubic-bezier(.3,.7,.2,1);box-shadow:0 -14px 30px -18px rgba(0,0,0,.5)}
+  .col.open{height:82vh;overflow:auto}
+  .col::before{content:"";display:block;width:42px;height:4px;border-radius:4px;background:rgba(32,26,20,.3);margin:0 auto 12px}
+  .h{font-size:32px;margin:6px 0 2px}
+  .head{font-size:18px;margin-top:10px;padding:10px 0 12px}
+  .eyes{display:none}
+  .read{min-height:0;margin-top:14px}
+  .press{position:fixed;left:auto;right:18px;bottom:calc(34vh + 54px);transform:none;width:68px;height:68px;border-radius:50%;background:rgba(239,229,204,.92);border:1.5px solid var(--ink);display:grid;place-items:center;box-shadow:0 8px 20px -8px rgba(0,0,0,.6);touch-action:none;user-select:none;-webkit-user-select:none}
+  .press img{width:40px}
+  .press::after{content:"꾹 누르면 고양이 눈";position:absolute;bottom:calc(100% + 8px);right:0;white-space:nowrap;font:700 11px 'Noto Sans KR',sans-serif;color:#efe5cc;background:rgba(32,26,20,.72);padding:5px 10px;border-radius:20px}
+  .stage.catmode~.press,.press.hold{transform:scale(.92);background:var(--catblue)}
+  .wanted{right:2vw;top:-18vh;width:92px}
+  .title{font-size:clamp(46px,15vw,80px)}
+  .op-sub{font-size:15px;margin-top:6vh}
+}
+@media (min-width:821px){.press{display:none}.cat-full,.far-full{display:none}}
+</style>
+</head>
+<body>
+<svg class="defs" aria-hidden="true"><filter id="catvision" color-interpolation-filters="sRGB">
+  <feColorMatrix type="matrix" values="0.367 0.861 -0.228 0 0  0.280 0.673 0.047 0 0  -0.012 0.043 0.969 0 0  0 0 0 1 0"/>
+</filter></svg>
+
+<!-- 오프닝 -->
+<section class="v op" id="op">
+  <div class="op-in">
+    <p class="op-k">一九三〇年代 · 京城 · 수배 제268호</p>
+    <div class="wanted"><img src="../assets/simmyo/g/sk_sit.png" alt="">尋 猫<br><span style="font-weight:500">활자 「ㄱ」 절도</span></div>
+    <h1 class="title" id="title"><span>심묘한 산</span><span class="ch"><span id="chk">책</span><span class="slot"></span></span></h1>
+    <div class="cat-run"><img src="../assets/simmyo/g/sk_wow.png" alt=""><span class="type"><b>ㄱ</b></span></div>
+    <p class="op-sub">인쇄소에서 활자 <b>「ㄱ」</b> 하나가 사라졌다.<br>범인은 글을 모르는 까만 고양이.<br>그 고양이가 지나간 자리마다, 경성의 글자에서 ㄱ이 빠졌다.</p>
+    <button class="op-go" id="go"><span class="paw"></span>따라가든지 말든지</button>
+  </div>
+  <p class="op-note">그림은 재현입니다 · 장소와 연도와 지면은 사실입니다</p>
+</section>
+
+<!-- 장소 -->
+<section class="v pl off" id="pl">
+  <div class="stage" id="stage">
+    <div class="art">
+      <img src="../assets/simmyo/s/dansung.webp" alt="1926년 단성사 앞 「아리랑」 줄과 심묘 (재현 그림)">
+      <img class="cat cat-full" src="../assets/simmyo/s/dansung.webp" alt="">
+      <img class="far far-full" src="../assets/simmyo/s/dansung.webp" alt="">
+      <figure class="clip" id="clip" style="margin:0"><img src="../assets/walk/arc_01b.jpg" alt="『매일신보』 1926년 10월 1일 「신영화 — 아리랑 단성사에 상영」"></figure>
+    </div>
+    <div class="lens" id="lens">
+      <img class="cat" src="../assets/simmyo/s/dansung.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 60%;filter:url(#catvision) saturate(1.15) contrast(1.04) brightness(1.06)">
+      <div class="whitepaper" id="wp"></div>
+    </div>
+    <div class="ring" id="ring"></div>
+    <p class="tag sans" id="tag"><i></i>사람 눈 · 원래의 색</p>
+    <p class="hint" id="hint">마우스가 지나가는 곳은 고양이 눈으로 보입니다</p>
+  </div>
+  <button class="press" id="press" aria-label="누르고 있으면 고양이 눈"><img src="../assets/simmyo/g/ic_eye.png" alt=""></button>
+  <aside class="col" id="col">
+    <p class="when">저녁 · 종로 · <b>1926</b></p>
+    <h2 class="h">단성사</h2>
+    <p class="head"><small>『매일신보』 1926년 10월 1일</small>신영화 「아리랑」 단성사에 <span class="miss" id="miss"><span id="missw">애</span>봉<span class="hole"></span></span></p>
+    <div class="eyes" id="eyes"><button class="on" data-e="h"><span class="dot"></span>사람 눈</button><button data-e="c"><span class="dot c"></span>고양이 눈</button></div>
+    <div class="read" id="read"></div>
+    <div class="foot"><div class="pouch" id="pouch"></div><div class="nav"><button aria-label="전 장소">‹</button><button aria-label="다음 장소">›</button></div></div>
+  </aside>
+</section>
+
+<script>
+(function(){
+var D=document,W=window,$=function(s){return D.querySelector(s)};
+var MOB=W.matchMedia('(max-width:820px)').matches;
+/* 오프닝 */
+var op=$('#op'),title=$('#title');
+function startOpen(){
+  setTimeout(function(){op.classList.add('run')},700);
+  setTimeout(function(){var c=$('#chk'),r=c.getBoundingClientRect(),f=D.createElement('span');f.className='flyg';f.textContent='ㄱ';f.style.fontSize=(r.height*.42)+'px';
+    c.textContent='채';title.classList.add('stolen');f.style.left=(r.left+r.width*.5)+'px';f.style.top=(r.top+r.height*.55)+'px';D.body.appendChild(f);
+    f.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:'translate(-20px,-60px) rotate(-20deg)',opacity:1,offset:.3},{transform:'translate('+(W.innerWidth*.28)+'px,'+(W.innerHeight*.38)+'px) rotate(200deg) scale(.4)',opacity:0}],{duration:900,easing:'cubic-bezier(.5,0,.6,1)',fill:'forwards'});setTimeout(function(){f.remove()},950)},1250);
+  setTimeout(function(){op.classList.add('done')},2300);
+}
+D.fonts&&D.fonts.ready?D.fonts.ready.then(startOpen):startOpen();
+$('#go').onclick=function(){op.classList.add('off');$('#pl').classList.remove('off');enter()};
+
+/* 장소 */
+var stage=$('#stage'),lens=$('#lens'),ring=$('#ring'),tag=$('#tag'),hint=$('#hint'),read=$('#read'),col=$('#col');
+var used={h:0,c:0};
+var TXT={
+ h:'<p>1907년 종로에 문을 연 극장. 1918년부터 영화를 상설로 트는 활동사진관이 되었습니다.</p><p>1926년 10월 1일 나운규의 「아리랑」이 개봉하자, 줄이 종로 YMCA 앞까지 늘어섰다고 합니다. 무성영화라 화면 옆에서 변사가 이야기를 들려주었습니다.</p><p class="src">출처 · 국가기록원 「단성사」 · 『매일신보』 1926년 10월 1일</p>',
+ c:'<div class="say"><img src="../assets/simmyo/g/sk_sit.png" alt=""><p>「다들 무얼 기다리는지 모르겟소. 벽엔 흰 종이만 붙어 잇소.」</p></div><div class="sense"><span>코 · 화덕 호떡 냄새</span><span>귀 · 쉿, 그리고 박수</span><span>눈 · 빨간 코트가 누렇게</span></div><p class="src" style="margin-top:14px">고양이는 빨강을 잘 구별하지 못하고 파랑 · 노랑을 잘 봅니다. 먼 곳은 흐릿합니다.</p>'
+};
+function setEye(e){
+  [].forEach.call(D.querySelectorAll('#eyes button'),function(b){b.classList.toggle('on',b.dataset.e===e)});
+  stage.classList.toggle('catmode',e==='c');
+  tag.innerHTML=e==='c'?'<i></i>고양이 눈 · 빨강이 사라진 경성':'<i></i>사람 눈 · 원래의 색';
+  read.innerHTML=TXT[e];used[e]=1;if(used.h&&used.c)restore();
+}
+function enter(){setEye('h');paintPouch()}
+[].forEach.call(D.querySelectorAll('#eyes button'),function(b){b.onclick=function(){setEye(b.dataset.e)}});
+/* 웹: 마우스 = 고양이 눈 렌즈 */
+var wp=$('#wp'),clip=$('#clip'),R=150,hovered=0;
+stage.addEventListener('mousemove',function(e){
+  if(MOB)return;var r=stage.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+  lens.style.clipPath='circle('+R+'px at '+x+'px '+y+'px)';ring.style.left=x+'px';ring.style.top=y+'px';
+  var c=clip.getBoundingClientRect();wp.style.left=(c.left-r.left)+'px';wp.style.top=(c.top-r.top)+'px';wp.style.width=c.width+'px';wp.style.height=c.height+'px';wp.style.transform='rotate(-2.5deg)';
+  if(!hovered){hovered=1;setTimeout(function(){hint.style.opacity=0},1800)}
+  if(!used.c&&++moves>40){setEye('c')}
+});
+var moves=0;
+stage.addEventListener('mouseleave',function(){lens.style.clipPath='circle(0 at 50% 50%)'});
+/* 모바일: 누르고 있는 동안 고양이 눈 */
+var press=$('#press');
+function down(e){e.preventDefault();stage.classList.add('catmode');press.classList.add('hold');tag.innerHTML='<i></i>고양이 눈 · 빨강이 사라진 경성';if(navigator.vibrate)navigator.vibrate(10)}
+function up(){stage.classList.remove('catmode');press.classList.remove('hold');tag.innerHTML='<i></i>사람 눈 · 원래의 색';if(!used.c){used.c=1;read.innerHTML=TXT.h+TXT.c;if(used.h)restore()}}
+press.addEventListener('pointerdown',down);press.addEventListener('pointerup',up);press.addEventListener('pointerleave',up);press.addEventListener('pointercancel',up);
+if(MOB){hint.textContent='아래 눈을 누르고 있으면 고양이 눈으로 바뀝니다';col.addEventListener('click',function(e){if(e.target.closest('button'))return;col.classList.toggle('open')})}
+/* ㄱ 되돌리기 */
+var restored=0;
+function restore(){
+  if(restored)return;restored=1;var m=$('#miss'),r=m.getBoundingClientRect(),f=D.createElement('span');
+  f.className='fly type';f.innerHTML='<b>ㄱ</b>';f.style.left=(MOB?W.innerWidth/2:W.innerWidth*0.3)+'px';f.style.top=(W.innerHeight*0.7)+'px';D.body.appendChild(f);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.left=(r.left-2)+'px';f.style.top=(r.top-6)+'px';f.style.transform='rotate(0) scale(.7)'})});
+  setTimeout(function(){f.remove();$('#missw').textContent='개';m.classList.add('fixed');m.animate([{color:'#c4512a'},{color:'inherit'}],{duration:1600});paintPouch(1)},950);
+}
+function paintPouch(n){var p=$('#pouch'),h='';for(var i=0;i<8;i++)h+='<span class="'+(i<(n||0)?'on':'')+'">ㄱ</span>';p.innerHTML=h}
+})();
+</script>
+</body>
+</html>
