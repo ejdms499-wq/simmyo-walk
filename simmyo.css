@@ -403,3 +403,115 @@ body.dark .hud>*{background:#1f413f;color:#efe2c4;border-color:#efe2c4}
 .folk-i li{position:relative;padding-left:14px;font:400 14px/1.75 var(--sans);word-break:keep-all}
 .folk-i li::before{content:"";position:absolute;left:0;top:.8em;width:6px;height:1.5px;background:var(--ink)}
 .folk-i .src{display:block;font:500 11px/1.55 var(--sans);color:var(--ink2)}
+
+/* ════════ 2026-10-21 · 웹과 모바일을 따로 ════════ */
+
+/* ── 웹 (900px 이상) : 잡지 펼침면. 그림은 화면 높이 가득, 오른쪽은 조용한 글 칸 ── */
+@media (min-width:900px){
+  body{background-image:none}
+  .v{max-width:none}
+  .tb{position:fixed;left:0;right:0;top:0;height:56px;padding:0 32px;background:transparent;border:0;backdrop-filter:none;pointer-events:none}
+  .tb>*{pointer-events:auto}
+  .tb-t{text-align:left;flex:none;font:900 15px var(--serif);letter-spacing:.06em;color:var(--ink2);margin-left:18px}
+  .tb-b{font:600 12.5px var(--sans);letter-spacing:.14em;color:var(--ink2)}
+  .tb-r{margin-left:auto;font:600 12px var(--sans);letter-spacing:.14em;color:var(--ink2)}
+  /* 장소 */
+  .v-place .pl-wrap{display:grid;grid-template-columns:auto minmax(380px,460px);gap:0 56px;justify-content:center;align-items:start;max-width:none;padding:0 4vw;height:100vh;overflow:hidden}
+  .v-place .pl-stage{position:relative;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:64px 0 24px}
+  .v-place .pl-art{border:0;border-radius:0;box-shadow:0 30px 60px -34px rgba(40,25,10,.55);background:none}
+  .v-place .pl-art .pl-mono{max-height:calc(100vh - 150px);width:auto}
+  .v-place .pl-say{margin:16px 0 0;font-size:15px}
+  .v-place .pl-say span{border:0;background:none;padding:0;border-radius:0;color:var(--ink2);font-style:normal}
+  .v-place .pl-say span::before{display:none}
+  .v-place .pl-say .face{width:44px;height:44px}
+  .v-place .pl-side{height:100vh;overflow-y:auto;scrollbar-width:none;padding:96px 4px 48px}
+  .v-place .pl-side::-webkit-scrollbar{display:none}
+  .v-place .pl-side::before{content:attr(data-k);display:block;font:600 11.5px var(--sans);letter-spacing:.28em;color:var(--coral);margin-bottom:10px}
+  .v-place .pl-side::after{content:"";display:block;height:24px}
+  .v-place .pl-h{margin:0 0 26px;font:900 52px/1.05 var(--serif);letter-spacing:-.02em}
+  .v-place .sense{grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--ink);border-bottom:1px solid rgba(35,28,22,.25);margin:0}
+  .v-place .sense button{min-height:76px;border:0;border-radius:0;background:none;box-shadow:none;font:600 12.5px var(--sans);letter-spacing:.06em;transition:background .2s}
+  .v-place .sense button+button{border-left:1px solid rgba(35,28,22,.15)}
+  .v-place .sense button:hover{background:rgba(217,166,71,.18)}
+  .v-place .sense button.cur{background:var(--ink);color:var(--paper)}
+  .v-place .sense button.cur .ic img{filter:brightness(0) invert(1)}
+  .v-place .sense button.used{background:none}
+  .v-place .sense button.used.cur{background:var(--ink)}
+  .v-place .sense-n{text-align:left;margin:10px 0 0;font-size:12px}
+  .v-place .card{border:0;border-radius:0;background:none;padding:22px 0 0;margin:0;box-shadow:none}
+  .v-place .card p,.v-place .card li{font:400 15px/1.9 var(--sans)}
+  .v-place .card .k{letter-spacing:.2em;color:var(--coral)}
+  .v-place .folk{border:0;border-top:1.5px solid var(--ink);border-radius:0;background:none;padding:18px 0 0;margin:28px 0 0}
+  .v-place .pl-nav{display:flex;gap:0;margin:34px 0 0;border-top:1px solid rgba(35,28,22,.25)}
+  .v-place .pl-nav .btn{flex:1;min-height:56px;border:0;border-radius:0;box-shadow:none;background:none;justify-content:flex-start;font:600 13px var(--sans);letter-spacing:.1em}
+  .v-place .pl-nav .btn+.btn{justify-content:flex-end;border-left:1px solid rgba(35,28,22,.15)}
+  .v-place .pl-nav .btn:hover{background:rgba(217,166,71,.18)}
+  .v-place .tb-t{visibility:hidden}
+  /* 지도 */
+  .v-map .mp-wrap{grid-template-columns:auto minmax(360px,440px);gap:0 56px;justify-content:center;padding:0 4vw;height:100vh;overflow:hidden;max-width:none}
+  .v-map .mp-art{position:relative;top:0;margin-top:64px;border:0;border-radius:0;box-shadow:0 30px 60px -34px rgba(40,25,10,.55)}
+  .v-map .mp-art img{max-height:calc(100vh - 100px)}
+  .v-map .mp-side{height:100vh;overflow-y:auto;scrollbar-width:none;padding:96px 4px 48px}
+  .v-map .mp-side::-webkit-scrollbar{display:none}
+  .v-map .mp-side::before{content:"산책 지도";display:block;margin:0 0 22px;font:900 52px/1 var(--serif);letter-spacing:-.02em}
+  .v-map .say{margin:0 0 22px}
+  .v-map .say span{border:0;background:none;padding:0;color:var(--ink2)}.v-map .say span::before{display:none}
+  .v-map .mp-list{grid-template-columns:1fr;gap:0;border-top:1.5px solid var(--ink);counter-reset:n}
+  .v-map .mp-list li{counter-increment:n}
+  .v-map .mp-list button{border:0;border-bottom:1px solid rgba(35,28,22,.18);border-radius:0;background:none;min-height:58px;padding:10px 4px;font:900 18px var(--serif)}
+  .v-map .mp-list button::before{content:counter(n,decimal-leading-zero);font:600 11px var(--sans);letter-spacing:.14em;color:var(--ink2);width:28px;flex:none}
+  .v-map .mp-list button small{font:600 11px var(--sans);letter-spacing:.1em}
+  .v-map .mp-list button:hover{background:rgba(217,166,71,.18)}
+  .v-map .mp-list .star button{background:var(--night);color:var(--paper);border-radius:0;margin-top:10px}
+  .v-map .book,.v-map .pouch{border-radius:0;margin:24px 0 0}
+  .hud{right:28px;bottom:22px}
+}
+
+/* ── 모바일 (899px 이하) : 앱처럼. 그림은 화면 끝까지, 감각은 아래 탭 막대 ── */
+@media (max-width:899px){
+  body{background-image:none}
+  .v-place .tb,.v-map .tb{position:fixed;left:0;right:0;top:0;z-index:30;background:linear-gradient(rgba(20,14,8,.55),transparent);color:#fbf3e1;border:0;backdrop-filter:none;height:56px}
+  .v-place .tb-t{text-shadow:0 1px 6px rgba(0,0,0,.5)}
+  .v-place .pl-art,.v-map .mp-art{border:0}
+  .v-place .pl-stage{position:relative}
+  .v-place .pl-say{position:absolute;left:0;right:0;bottom:0;margin:0;padding:40px 14px 12px;background:linear-gradient(transparent,rgba(20,14,8,.7));color:#fbf3e1}
+  .v-place .pl-say span{background:none;border:0;padding:0;color:#fbf3e1;font-size:14.5px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+  .v-place .pl-say span::before{display:none}
+  .v-place .pl-say .face{width:42px;height:42px}
+  .v-place .pl-side{padding:0 0 110px}
+  .v-place .pl-h{margin:18px 18px 4px;font:900 32px/1.1 var(--serif)}
+  .v-place .pl-side::before{content:attr(data-k);display:block;margin:18px 18px 0;font:600 11px var(--sans);letter-spacing:.24em;color:var(--coral)}
+  .v-place .pl-h{margin-top:6px}
+  /* 감각 = 아래 고정 탭 막대 */
+  .v-place .sense{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;gap:0;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:rgba(251,243,225,.96);backdrop-filter:blur(10px);border-top:1.5px solid var(--ink);box-shadow:0 -10px 24px -14px rgba(0,0,0,.35)}
+  .v-place .sense button{min-height:60px;border:0;border-radius:12px;box-shadow:none;background:none;font:700 11.5px var(--sans)}
+  .v-place .sense button.cur{background:var(--ink);color:var(--paper)}
+  .v-place .sense button.cur .ic img{filter:brightness(0) invert(1)}
+  .v-place .sense button.used{background:none}.v-place .sense button.used.cur{background:var(--ink)}
+  .v-place .ic{width:28px;height:28px}
+  .v-place .sense-n{margin:4px 18px 0;text-align:left}
+  .v-place .card{margin:16px 18px 0;border-width:1.5px;box-shadow:none}
+  .v-place .folk{margin:16px 18px 0}
+  .v-place .pl-nav{margin:18px 18px 0;gap:8px}
+  .v-place .pl-nav .btn{min-height:46px;font-size:13.5px;box-shadow:none;border-width:1.5px}
+  /* 지도 : 그림 끝까지, 장소는 가로로 넘기는 카드 */
+  .v-map .mp-side{padding-bottom:30px}
+  .v-map .mp-list{display:flex;overflow-x:auto;gap:10px;padding:2px 16px 8px;margin:0 0 4px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .v-map .mp-list::-webkit-scrollbar{display:none}
+  .v-map .mp-list li{flex:none;width:44vw;scroll-snap-align:start}
+  .v-map .mp-list button{min-height:64px;border-width:1.5px}
+  .v-map .mp-list .star{width:60vw}
+  .hud{top:62px;bottom:auto;right:10px}
+  .v-place~.hud,.hud{z-index:35}
+  .ft{padding-bottom:110px}
+}
+
+/* 소개 카드는 제목이 위에 있으니 겹치는 줄 숨김 */
+.v-place .card.intro .k,.v-place .card.intro .in-h{display:none}
+.v-place .card.intro{border-style:solid}
+@media (max-width:899px){
+  .v-place .pl-mode{top:64px}
+  .hud .snd{padding:4px 9px;font-size:11px;opacity:.85}
+  .v-place .card.intro{border:0;background:none;padding:0;margin-top:6px}
+  .v-place .card.intro .in-hint{display:none}
+}

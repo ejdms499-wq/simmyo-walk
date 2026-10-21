@@ -185,7 +185,7 @@
     var from = cp; leavePlace(); cp = p; sayN = 0; enterT = Date.now();
     if (from && from !== p && !$('#place').hidden) trail();
     G.day = p.day; save(); var PH = !!p.ph, LBL = PH ? '옛 사진 · 그림은 그리는 중' : '그림 · 재현', ALT = PH ? ' (옛 사진)' : ' (재현 그림)';
-    $('#plT').textContent = p.name; $('#plY').textContent = (p.day === 2 ? '둘째 날 · ' : '') + p.where + ' · ' + p.yr;
+    $('#plT').textContent = p.name; $('#plH').textContent = p.name; $('#plSide').dataset.k = p.where + ' · ' + p.yr; $('#plY').textContent = (p.day === 2 ? '둘째 날 · ' : '') + p.where + ' · ' + p.yr;
     $('.rt', art).textContent = LBL; $('#plWide .rt').textContent = LBL;
     var src = IMG + p.img + EXT; $('#plImg').src = src; $('#plImg').alt = p.alt + ALT; $('#plCol').src = src;
     $('#plWideImg').src = IMG + p.wide + EXT; $('#plWideImg').alt = p.walt + ALT;
