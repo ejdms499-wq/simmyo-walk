@@ -2,24 +2,24 @@
 <html lang="ko">
 <head>
 <!-- 경성야록 스핀오프 · 심묘한 산책 — 심묘가 보는 경성
-     광고면 수배 고양이 심묘를 따라 1899~1937 경성을 이틀 동안 열여섯 곳 걷는다. 그림은 모두 재현(미드저니 · ChatGPT), 장소 · 연도 · 지면 · 출처는 사실.
+     광고면 수배 고양이 심묘를 따라 1899~1937 경성 여덟 곳을 걷는다. 그림은 모두 재현(미드저니 · ChatGPT), 장소 · 연도 · 지면 · 출처는 사실.
      폰 · 컴퓨터 한 장으로. 진행은 localStorage 'simmyo-v1'. 시연용: ?demo=1 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="only light">
 <meta name="theme-color" content="#2f5d57">
 <title>심묘한 산책 — 심묘가 보는 경성</title>
-<meta name="description" content="경성야록 스핀오프. 글을 모르는 수배 고양이 심묘의 눈높이로 걷는 1899~1937 경성 이틀 산책, 열여섯 곳.">
+<meta name="description" content="경성야록 스핀오프. 글을 모르는 수배 고양이 심묘의 눈높이로 걷는 1899~1937 경성 여덟 곳.">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/simmyo/g/fav-64.png">
 <link rel="apple-touch-icon" href="assets/simmyo/g/fav-180.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="심묘한 산책 — 심묘가 보는 경성">
-<meta property="og:description" content="글을 모르는 수배 고양이 심묘의 눈높이로 걷는 1899~1937 경성 이틀 산책, 열여섯 곳. 경성야록 스핀오프.">
+<meta property="og:description" content="글을 모르는 수배 고양이 심묘의 눈높이로 걷는 1899~1937 경성 여덟 곳. 경성야록 스핀오프.">
 <meta property="og:image" content="https://ejdms499-wq.github.io/simmyo-walk/assets/simmyo/g/og.jpg">
 <meta property="og:url" content="https://ejdms499-wq.github.io/simmyo-walk/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="fonts/fonts-m.css?v=2">
-<link rel="stylesheet" href="simmyo.css?v=5">
+<link rel="stylesheet" href="simmyo.css?v=6">
 </head>
 <body>
 
@@ -39,8 +39,9 @@
     <p class="cv-k">경성야록 스핀오프</p>
     <h1 class="cv-logo"><picture><source media="(min-width:900px)" srcset="assets/simmyo/g/logo_h_bg.webp"><img src="assets/simmyo/g/logo_v_bg.webp" alt="심묘한 산책 — 심묘가 보는 경성"></picture></h1>
     <p class="cv-say" id="cvSay">「따라오든지 말든지. …따라오시오.」</p>
-    <p class="cv-d">광고면 수배지에서 달아난 까만 고양이 <b>심묘</b>. 글을 모르는 이 고양이의 눈높이로 1899년부터 1937년까지의 경성을 이틀 동안, 열여섯 곳 걷습니다. 고양이에게는 벽보도 간판도 다 흰 종이입니다. <b>사람 눈</b>으로 바꿔 보면, 그 자리에 진짜 그 시절 지면이 열립니다.</p>
+    <p class="cv-d">광고면 수배지에서 달아난 까만 고양이 <b>심묘</b>. 글을 모르는 이 고양이의 눈높이로 1899년부터 1937년까지 경성 여덟 곳을 걷습니다. 고양이에게는 벽보도 간판도 다 흰 종이입니다. <b>사람 눈</b>으로 바꿔 보면, 그 자리에 진짜 그 시절 지면이 열립니다.</p>
     <div class="cv-btns"><button class="btn" type="button" data-go="map" id="cvGo">산책 따라가기</button><button class="btn ghost" type="button" data-go="about">심묘는 누구</button></div>
+    <p class="cv-peek"><button type="button" class="lnk" data-go="peek">바쁜 분은 · 결말 먼저 보기 →</button></p>
     <div class="fortune" id="fortune"><p class="fo-k">오늘의 심묘 점괘</p><p class="fo-t" id="foT"></p><p class="fo-p" id="foP"></p></div>
     <p class="cv-n">그림은 모두 재현입니다. 장소 · 연도 · 지면 · 출처는 사실입니다.</p>
     <p class="cv-links"><a href="making.html">만든 이야기</a> · <a href="https://ejdms499-wq.github.io/gyeongseong-yarok_v/">경성야록 본지</a></p>
@@ -59,7 +60,7 @@
       <ol class="mp-list" id="mpList"></ol>
       <div class="book"><p class="pouch-k">도장첩</p><div class="book-row" id="mpBook"></div></div>
       <div class="pouch"><p class="pouch-k">주머니 · 빠진 글자</p><div class="pouch-row" id="mpPouch"></div></div>
-      <p class="mp-n">지도는 그림이라 자리가 대강입니다. 순서 없이 골라 걸으세요. 하루 여덟 곳 도장을 다 모으거나 밤 12시에 오면 ★(첫째 날) · ☾(둘째 날) 자리가 열립니다.</p>
+      <p class="mp-n">지도는 그림이라 자리가 대강입니다. 순서 없이 골라 걸으세요. 여덟 곳 도장을 다 모으거나 밤 12시에 오면 ★ 자리가 열립니다.</p>
       <p class="mp-n"><button type="button" class="lnk" data-go="about">심묘의 수첩 · 모은 쪽지 보기 →</button></p>
     </div>
   </div>
@@ -70,7 +71,7 @@
   <header class="tb"><button type="button" class="tb-b" data-go="map">‹ 지도</button><b class="tb-t" id="plT"></b><span class="tb-r" id="plY"></span></header>
   <div class="pl-wrap">
     <div class="pl-stage">
-      <figure class="pl-art" id="plArt"><img id="plImg" class="pl-mono" alt=""><img id="plCol" class="pl-col" alt="" aria-hidden="true"><span class="rt">그림 · 재현</span><span class="pl-mode" id="plMode">사람들의 기록 속 경성 · 흑백</span><img class="stamp" id="plStamp" alt="" aria-hidden="true"><span class="drop" id="plDrop" aria-hidden="true"></span></figure>
+      <figure class="pl-art" id="plArt"><img id="plImg" class="pl-mono" alt=""><img id="plCol" class="pl-col" alt="" aria-hidden="true"><span class="rt">그림 · 재현</span><span class="pl-mode" id="plMode">사람들의 기록 속 경성 · 흑백</span><img class="stamp" id="plStamp" alt="" aria-hidden="true"><span class="drop" id="plDrop" aria-hidden="true"></span><div class="hs" id="plHs"></div></figure>
       <p class="say pl-say"><i class="face" id="plFace"></i><span id="plSay"></span></p>
     </div>
     <div class="pl-side">
@@ -80,7 +81,7 @@
         <button type="button" data-s="ear"><i class="ic ic-ear"></i><span>귀</span></button>
         <button type="button" data-s="human"><i class="ic ic-human"></i><span>사람 눈</span></button>
       </nav>
-      <p class="sense-n" id="senseN">네 가지를 다 써 보면 발바닥 도장이 찍힙니다.</p>
+      <p class="sense-n" id="senseN">그림 속 반짝이는 자리를 눌러 보세요. 두 가지만 열어도 도장이 찍힙니다.</p>
       <button type="button" class="play" id="plPlay"><span class="play-k">10초 놀이</span><b id="plPlayT"></b><em id="plPlayS"></em></button>
       <div class="card" id="plCard" hidden></div>
       <figure class="pl-wide" id="plWide"><img id="plWideImg" alt="" loading="lazy"><figcaption>한 걸음 물러서 보기 · 누르면 크게</figcaption><span class="rt">그림 · 재현</span></figure>
@@ -98,6 +99,7 @@
     <div class="md-side">
       <div id="mdLock"><img class="md-stp lock" src="assets/simmyo/g/stp_mid.png" alt=""><p class="md-h">문이 아직 닫혀 있습니다.</p><p class="md-p" id="mdLockP">여덟 곳 발바닥 도장을 다 모으거나, 진짜 밤 12시(00:00 ~ 00:59)에 다시 오세요.</p><p class="md-p">지금 모은 도장 <b id="mdN">0</b>/8</p></div>
       <div id="mdOpen" hidden>
+        <p class="md-peek" id="mdPeek" hidden>미리 보기입니다. 직접 걸으면 여덟 곳에서 글자를 하나씩 모아 이 문장을 완성합니다. <button type="button" class="lnk" data-go="map">산책하러 가기 →</button></p>
         <img class="md-stp" src="assets/simmyo/g/stp_mid.png" alt="자정 도장"><p class="say"><i class="face"></i><span id="mdSay">「늦엇구려. 나는 늘 여기 잇섯소.」</span></p>
         <button type="button" class="btn" id="mdBell">괘종 울리기</button>
         <p class="md-p">모은 글자를 순서대로 눌러 칸에 놓으세요. <small>칸 아래 도장이 그 글자를 준 곳입니다.</small></p>
@@ -198,7 +200,7 @@
 <div class="demo" id="demo" hidden><b>시연</b><button type="button" data-d="all">16곳 완료</button><button type="button" data-d="mid">자정으로</button><button type="button" data-d="mid2">둘째 밤</button><button type="button" data-d="reset">처음부터</button></div>
 
 <footer class="ft"><img class="ft-em" src="assets/simmyo/g/emblem.png" alt="" width="56" height="56">경성야록 스핀오프 · 심묘한 산책 · 그림은 재현 · 심묘는 지어낸 고양이 · 장소와 연도와 지면은 사실<br><a href="making.html">만든 이야기</a></footer>
-<script src="simmyo-data.js?v=2"></script>
-<script src="simmyo.js?v=6"></script>
+<script src="simmyo-data.js?v=3"></script>
+<script src="simmyo.js?v=7"></script>
 </body>
 </html>

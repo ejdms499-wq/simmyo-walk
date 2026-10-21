@@ -6,6 +6,8 @@
   'use strict';
   var $ = function (s, r) { return (r || D).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || D).querySelectorAll(s)); };
+  var D2 = /[?&]d2=1/.test(location.search);
+  if (!D2) W.SIMMYO_DATA.P = W.SIMMYO_DATA.P.filter(function (p) { return p.day !== 2; });
   var DATA = W.SIMMYO_DATA, P = DATA.P, ORDER = DATA.ORDER;
   /* 이틀 산책 — 첫째 날(문장 「심묘는 오늘도 잇소」) · 둘째 날(「내일도 산책하겟소」) */
   P.forEach(function (p) { p.day = p.day || 1; });
@@ -16,7 +18,7 @@
   function load() { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(G)); } catch (e) {} }
   var G = load();
-  function fix() { G.s = G.s || {}; G.got = G.got || []; G.got2 = G.got2 || []; G.day = G.day || 1; G.t = G.t || {}; G.win = G.win || {}; G.fish = G.fish || 0; if (G.snd === undefined) G.snd = 1; if (!G.no) G.no = 100 + Math.floor(Math.random() * 900); }
+  function fix() { G.s = G.s || {}; G.got = G.got || []; G.got2 = G.got2 || []; G.day = D2 ? (G.day || 1) : 1; G.t = G.t || {}; G.win = G.win || {}; G.fish = G.fish || 0; if (G.snd === undefined) G.snd = 1; if (!G.no) G.no = 100 + Math.floor(Math.random() * 900); }
   fix(); save();
   var byId = {}; P.forEach(function (p, i) { p.i = i; byId[p.id] = p; });
   var buzz = function (p) { if (navigator.vibrate) try { navigator.vibrate(p); } catch (e) {} };
@@ -27,7 +29,9 @@
 
   /* 진행 */
   function st(id) { return G.s[id] || (G.s[id] = {}); }
-  function done(id) { var s = G.s[id]; return !!(s && s.eye && s.nose && s.ear && s.human); }
+  var SENSES = ['eye', 'nose', 'ear', 'human'];
+  function nUsed(id) { var s = G.s[id] || {}; return SENSES.filter(function (k) { return s[k]; }).length; }
+  function done(id) { return nUsed(id) >= 2; }
   function nDone(d) { return DAYP[d || 1].filter(function (p) { return done(p.id); }).length; }
   function midOpen(d) { return nDone(d) >= 8 || new Date().getHours() === 0; }
   function gotOf(d) { return d === 2 ? G.got2 : G.got; }
@@ -102,6 +106,7 @@
     if (h.indexOf('p-') === 0 && byId[h.slice(2)]) { openPlace(byId[h.slice(2)]); return; }
     if (h === 'map') { paintMap(); show('map'); return; }
     if (h === 'mid') { openMid(1); return; }
+    if (h === 'peek') { openMid(1, true); return; }
     if (h === 'mid2') { openMid(2); return; }
     if (h === 'card') { openCard(); show('card'); return; }
     if (h === 'about') { paintAbout(); show('about'); return; }
@@ -122,7 +127,7 @@
   var fromSeek = /from=seek/.test(location.search), cv = $('#cvImg');
   if (fromSeek) { cv.src = IMG + 'escape' + EXT; cv.alt = '구겨진 신문 광고면을 밟고 빠져나오는 심묘 (재현 그림)'; $('#cvSay').textContent = '「수배지에서 빠져나왓소. …따라오든지 말든지.」'; }
   else if (NIGHT) { cv.src = IMG + 'cover_night' + EXT; cv.alt = '보름달 아래 기와지붕에 안즌 심묘 (재현 그림)'; $('#cvSay').textContent = '「밤이구려. 밤 경성은 내가 더 잘 아오.」'; }
-  if (G.s && nDone(1) > 0) $('#cvGo').textContent = nDone(1) < 8 ? '산책 이어 걷기 (첫째 날 ' + nDone(1) + '/8)' : '산책 이어 걷기 (둘째 날 ' + nDone(2) + '/8)';
+  if (G.s && nDone(1) > 0) $('#cvGo').textContent = !D2 || nDone(1) < 8 ? '산책 이어 걷기 (' + nDone(1) + '/8)' : '산책 이어 걷기 (둘째 날 ' + nDone(2) + '/8)';
   /* 오프닝 — 수배지가 찢어짐 */
   if (fromSeek && !RM && !location.hash) { var op = $('#open'); op.hidden = false; setTimeout(function () { op.classList.add('tear'); }, 500); setTimeout(function () { op.hidden = true; }, 1700); }
   /* 오늘의 점괘 — 날짜로 하나, 장소 하나 */
@@ -186,7 +191,7 @@
     $('#plWideImg').src = IMG + p.wide + EXT; $('#plWideImg').alt = p.walt + ALT;
     setColor(false); $('#plMode').textContent = '사람들의 기록 속 경성 · 흑백';
     $('#plStamp').src = GR + 'stp_' + p.id + '.png'; $('#plStamp').classList.toggle('on', done(p.id));
-    card.hidden = true; card.innerHTML = '';
+    card.classList.remove('intro'); intro(p);
     $('#plPlayT').textContent = p.game.title; $('#plPlayS').textContent = G.win[p.id] ? '성공 · 멸치 받음' : '성공하면 멸치 한 마리';
     $('#plGo').innerHTML = p.go ? '<a href="' + p.go[0] + '">' + p.go[1] + ' →</a>' : '';
     paintSense();
@@ -198,8 +203,19 @@
   function paintSense() {
     var s = st(cp.id);
     $$('#sense button').forEach(function (b) { b.classList.toggle('used', !!s[b.dataset.s]); });
-    var left = ['eye', 'nose', 'ear', 'human'].filter(function (k) { return !s[k]; }).length;
-    $('#senseN').textContent = done(cp.id) ? '발바닥 도장 찍음 · 빠진 글자 「' + cp.ch + '」 ' + (cp.day === 2 ? '둘째 날 ' : '') + '주머니에 있음 · 수첩 쪽지 받음' : left === 4 ? '네 가지를 다 써 보면 발바닥 도장이 찍힙니다.' : '도장까지 ' + left + '가지 남았습니다.';
+    var u = nUsed(cp.id);
+    $('#senseN').textContent = done(cp.id) ? '발바닥 도장 찍음 · 빠진 글자 「' + cp.ch + '」 주머니에 있음' + (u < 4 ? ' · 남은 감각 ' + (4 - u) + '가지도 열어 보세요' : ' · 다 둘러봤습니다') : u === 0 ? '그림 속 반짝이는 자리를 눌러 보세요. 두 가지만 열어도 도장이 찍힙니다.' : '한 가지만 더 열면 도장이 찍힙니다.';
+    paintHs();
+  }
+  var HSL = { eye: '심묘 눈', nose: '킁킁', ear: '귀', human: '사람 눈' };
+  function paintHs() {
+    var h = $('#plHs'), s = st(cp.id); if (!cp.hs) { h.innerHTML = ''; return; }
+    h.innerHTML = SENSES.map(function (k) { var c = cp.hs[k]; return c ? '<button type="button" class="spot' + (s[k] ? ' used' : '') + '" data-s="' + k + '" style="left:' + c[0] + '%;top:' + c[1] + '%" aria-label="' + HSL[k] + '"><img src="' + GR + 'ic_' + k + '.png" alt=""><span>' + HSL[k] + '</span></button>' : ''; }).join('');
+  }
+  $('#plHs').addEventListener('click', function (e) { var b = e.target.closest('.spot'); if (!b) return; e.stopPropagation(); $('#sense button[data-s="' + b.dataset.s + '"]').click(); });
+  function intro(p) {
+    card.innerHTML = '<p class="k">' + p.where + ' · ' + p.yr + '</p><h3 class="in-h">' + p.name + '</h3><p class="in-p">' + p.f[0] + '</p><p class="in-hint">그림 속 반짝이는 자리를 눌러 보세요 — 고양이 눈, 코, 귀, 그리고 사람의 눈.</p>';
+    card.hidden = false; card.classList.add('intro');
   }
   function use(k) {
     var s = st(cp.id), was = done(cp.id); s[k] = 1; save();
@@ -215,9 +231,9 @@
     paintSense();
   }
   $('#sense').addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b || !cp) return; var k = b.dataset.s; ac();
+    var b = e.target.closest('button'); if (!b || !cp) return; var k = b.dataset.s; ac(); card.classList.remove('intro');
     if (k === 'eye') {
-      setColor(true, cp.id === 'mitsu' ? 60 : 50, 70); card.hidden = true;
+      var ec = cp.hs && cp.hs.cat; setColor(true, ec ? ec[0] : 50, ec ? ec[1] : 70); card.hidden = true;
       sayP(NIGHT && st(cp.id).eye ? cp.night : cp.say[sayN++ % 3], cp.id === 'nakrang' ? 'sleep' : '');
     } else if (k === 'nose') {
       var n = cp.nose;
@@ -317,15 +333,18 @@
 
   /* ── ④ 자정 ── */
   var placed = 0, MD = 1;
-  function openMid(d) {
-    MD = d; var open = midOpen(d), now = new Date(), OR = DORD[d];
+  var PEEK = false;
+  function openMid(d, peek) {
+    PEEK = !!peek; MD = d; var open = PEEK || midOpen(d), now = new Date(), OR = DORD[d];
     $('#mdTitle').textContent = d === 1 ? '★ 자정 · 편집국' : '☾ 둘째 날 밤 · 편집국';
     $('#mdClock').textContent = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
     $('#mdLock').hidden = open; $('#mdOpen').hidden = !open; $('#mdN').textContent = nDone(d);
     $('#mdLockP').textContent = (d === 1 ? '첫째 날' : '둘째 날') + ' 여덟 곳 발바닥 도장을 다 모으거나, 진짜 밤 12시(00:00 ~ 00:59)에 다시 오세요.';
     $('#mdImg').src = IMG + (solvedOf(d) ? 'midnight_done' : 'midnight') + EXT;
+    $('#mdPeek').hidden = !PEEK;
     if (open) buildTiles();
     show('mid');
+    if (PEEK) peekRun();
   }
   function buildTiles() {
     var OR = DORD[MD], got = gotOf(MD), DP = DAYP[MD];
@@ -347,8 +366,13 @@
       }
     } else { b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); play('no'); }
   });
+  if (!D2) { $('#mpDays').hidden = true; $('#mpDayNote').hidden = true; $('#mdDay2').hidden = true; }
   $('#mdDay2').onclick = function () { G.day = 2; save(); go('map'); };
   $('#mdBell').onclick = function () { play('clock'); $('#mdSay').textContent = '「…열둘. 이제 글자를 노으시오.」'; };
+  function peekRun() {
+    var OR = DORD[1]; $('#mdTiles').innerHTML = ''; $('#mdSay').textContent = '「늦엇구려. 나는 늘 여기 잇섯소.」';
+    OR.forEach(function (c, i) { setTimeout(function () { if (!PEEK) return; var s = $$('#mdSlots .ch')[i]; if (!s) return; s.textContent = c; s.className = 'ch ok'; play('tick'); if (i === OR.length - 1) { $('#mdImg').src = IMG + 'midnight_done' + EXT; $('#mdSay').textContent = '「심묘는 오늘도 잇소.」'; ending(false); } }, RM ? 0 : 320 + i * 260); });
+  }
   function ending2(again) {
     var c = DATA.course;
     $('#md2NoteK').textContent = '수첩 · ' + DATA.mid2Note.k; $('#md2NoteT').textContent = DATA.mid2Note.t;
@@ -384,8 +408,8 @@
       if (im.post.width) { x.save(); x.translate(760, 150); x.rotate(.08); var pw = 150, ph = pw * im.post.height / im.post.width; x.drawImage(im.post, -pw / 2, -ph / 2, pw, ph); x.restore(); }
       x.fillStyle = '#231c16'; x.font = '900 50px "Noto Serif KR", serif'; x.fillText('오늘의 심묘', 44, 1012);
       x.font = '500 24px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42';
-      x.fillText(d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + ' · 발바닥 도장 ' + (n + n2) + '/16' + (G.solved2 ? ' · 내일도 산책하겟소' : G.solved ? ' · 심묘는 오늘도 잇소' : ''), 46, 1052);
-      stampsRow(x, im, 46, 1072, 54, 60, 1); stampsRow(x, im, 46, 1132, 54, 60, 2);
+      x.fillText(d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + ' · 발바닥 도장 ' + (D2 ? (n + n2) + '/16' : n + '/8') + (G.solved2 ? ' · 내일도 산책하겟소' : G.solved ? ' · 심묘는 오늘도 잇소' : ''), 46, 1052);
+      if (D2) { stampsRow(x, im, 46, 1072, 54, 60, 1); stampsRow(x, im, 46, 1132, 54, 60, 2); } else stampsRow(x, im, 46, 1080, 64, 72, 1);
       if (im.logo.width) { var lw = 330, lh = lw * im.logo.height / im.logo.width; x.drawImage(im.logo, 900 - 44 - lw, 1300 - 40 - lh, lw, lh); }
       x.font = '500 18px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42'; x.fillText('경성야록 스핀오프 · 그림은 재현', 46, 1250);
       fin(cvs, '오늘의_심묘_엽서.png');
@@ -406,8 +430,8 @@
       x.fillStyle = '#231c16'; x.font = '700 40px "Noto Sans KR", sans-serif';
       x.fillText(b ? '가장 오래 머문 곳 · ' + b.name + ' (' + b.yr + ')' : (n ? '이틀째 산책 중이오' : '아직 걷기 전이오'), 540, ly + 850);
       x.font = '500 32px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42';
-      x.fillText('발바닥 도장 ' + n + '/16 · 멸치 ' + G.fish + '마리' + (G.solved2 ? ' · 이틀 문장 완성' : G.solved ? ' · 자정 문장 완성' : ''), 540, ly + 905);
-      stampsRow(x, im, 540 - (8 * 116 - 16) / 2, ly + 940, 100, 116, 1); stampsRow(x, im, 540 - (8 * 116 - 16) / 2, ly + 1052, 100, 116, 2);
+      x.fillText('발바닥 도장 ' + n + (D2 ? '/16' : '/8') + ' · 멸치 ' + G.fish + '마리' + (G.solved2 ? ' · 이틀 문장 완성' : G.solved ? ' · 자정 문장 완성' : ''), 540, ly + 905);
+      stampsRow(x, im, 540 - (8 * 116 - 16) / 2, ly + (D2 ? 940 : 950), 100, 116, 1); if (D2) stampsRow(x, im, 540 - (8 * 116 - 16) / 2, ly + 1052, 100, 116, 2);
       x.textAlign = 'center'; x.font = '500 26px "Noto Sans KR", sans-serif'; x.fillStyle = '#5b4e42'; x.fillText('경성야록 스핀오프 · 그림은 재현 · 심묘는 지어낸 고양이', 540, 1870);
       x.textAlign = 'left'; fin(cvs, '심묘한_산책_결과.png');
     });
@@ -449,10 +473,10 @@
   function paintAbout() {
     $('#abTalk').innerHTML = DATA.talk.map(function (t, i) { return '<div class="tk' + (i % 3 === 1 ? ' r' : '') + '"><b>「' + t[0] + '」</b><span>' + t[1] + '</span></div>'; }).join('');
     var got = 0;
-    $('#abNotes').innerHTML = P.map(function (p) { var on = done(p.id); if (on) got++; return '<li class="' + (on ? 'on' : '') + '">' + STP(p.id) + '<div>' + (on ? '<b>' + p.note.k + '</b><p>' + p.note.t + '</p>' : '<b>?</b><p>' + p.name + '에 도장을 찍으면 열립니다.</p>') + '</div></li>'; }).join('') +
+    $('#abNotes').innerHTML = P.map(function (p) { var on = done(p.id); if (on) got++; return '<li class="' + (on ? 'on' : '') + '">' + STP(p.id) + '<div>' + (on ? '<b>' + p.note.k + '</b><p>' + p.note.t + '</p>' : '<b>' + p.name + '</b><p>도장을 찍으면 열립니다.</p>') + '</div></li>'; }).join('') +
       '<li class="' + (G.solved ? 'on' : '') + '">' + STP('mid') + '<div>' + (G.solved ? '<b>' + DATA.midNote.k + '</b><p>' + DATA.midNote.t + '</p>' : '<b>?</b><p>자정의 문장을 완성하면 열립니다.</p>') + '</div></li>' +
-      '<li class="' + (G.solved2 ? 'on' : '') + '">' + STP('mid') + '<div>' + (G.solved2 ? '<b>' + DATA.mid2Note.k + '</b><p>' + DATA.mid2Note.t + '</p>' : '<b>?</b><p>둘째 날 밤 문장을 완성하면 열립니다.</p>') + '</div></li>';
-    $('#abNoteN').textContent = (got + (G.solved ? 1 : 0) + (G.solved2 ? 1 : 0)) + ' / ' + (P.length + 2);
+      (!D2 ? '' : '<li class="' + (G.solved2 ? 'on' : '') + '">' + STP('mid') + '<div>' + (G.solved2 ? '<b>' + DATA.mid2Note.k + '</b><p>' + DATA.mid2Note.t + '</p>' : '<b>?</b><p>둘째 날 밤 문장을 완성하면 열립니다.</p>') + '</div></li>');
+    $('#abNoteN').textContent = (got + (G.solved ? 1 : 0) + (G.solved2 ? 1 : 0)) + ' / ' + (P.length + (D2 ? 2 : 1));
   }
 
   /* ── 시연용 ?demo=1 ── */
