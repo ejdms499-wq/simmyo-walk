@@ -501,16 +501,16 @@
   var RM = W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var C = 'assets/simmyo/city/';
   var ROW0 = [['hanokA', 150], ['dansung', 200], ['x_s011', 150], ['hwasin', 215], ['hanokB', 140], ['ymca', 190], ['x_s015', 150], ['jodk', 165], ['x_h002', 135], ['nakrang', 165], ['mitsu', 190], ['x_s013', 145], ['stadium', 165], ['x_h003', 140]];
-  var ROW = ROW0; var track = $('#townTrack'); if (!track) return;
+  var ROW = ROW0; var track = $('#townTrack');
   function fill(el, h) { var html = ROW.map(function (r) { return '<img src="' + C + r[0] + '.webp" alt="" style="--h:' + Math.round(r[1] * (h || 1)) + 'px">'; }).join(''); el.innerHTML = html + html; }
-  fill(track, 1);
+  if (track) fill(track, 1);
   var x = -260, v = 38, target = 38, last = performance.now();
   function tick(t) { var dt = Math.min(.05, (t - last) / 1000); last = t; v += (target - v) * Math.min(1, dt * 3); x -= v * dt; var half = track.scrollWidth / 2; if (half > 0 && -x > half) x += half; track.style.transform = 'translateX(' + x + 'px)'; requestAnimationFrame(tick); }
-  if (!RM) requestAnimationFrame(tick);
+  if (!RM && track) requestAnimationFrame(tick);
   /* 산책 따라가기 → 빨라졌다가 지도로 */
   var cv = $('#cover');
   D.addEventListener('click', function (e) {
-    var g = e.target.closest('#cvGo'); if (!g || RM) return;
+    var g = e.target.closest('#cvGo'); if (!g || RM || !track) return;
     e.preventDefault(); e.stopImmediatePropagation();
     cv.classList.add('fast'); target = 520;
     setTimeout(function () { cv.classList.remove('fast'); target = 38; location.hash = 'map'; }, 1300);

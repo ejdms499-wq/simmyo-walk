@@ -19,7 +19,7 @@
 <meta property="og:url" content="https://ejdms499-wq.github.io/simmyo-walk/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="fonts/fonts-m.css?v=2">
-<link rel="stylesheet" href="simmyo.css?v=10">
+<link rel="stylesheet" href="simmyo.css?v=12">
 </head>
 <body>
 
@@ -32,26 +32,35 @@
 <!-- 소리 · 멸치 (모든 화면 오른쪽 위) -->
 <div class="hud"><span class="fish" id="fishN" title="멸치">멸치 <b>0</b></span><button type="button" class="snd" id="snd" aria-pressed="true">소리 켬</button></div>
 
-<!-- ① 표지 — 장난감 경성 골목을 심묘가 총총 걷는다 -->
-<section class="v v-cover cv2" id="cover" data-v="cover">
-  <img id="cvImg" src="assets/simmyo/s/cover_day.webp" alt="" hidden>
-  <header class="cv2-top">
-    <p class="cv-k">1899 — 1937 · 경성 여덟 곳</p>
-    <h1 class="cv2-t" aria-label="심묘한 산책"><span>심</span><span>묘</span><span>한</span><i></i><span>산</span><span>책</span></h1>
-    <p class="cv-say" id="cvSay">「따라오든지 말든지. …따라오시오.」</p>
-  </header>
-  <div class="town" id="town" aria-hidden="true">
-    <div class="town-sky"></div>
-    <div class="town-track" id="townTrack"></div>
-    <div class="town-road"></div>
-    <div class="town-cat" id="townCat"><img src="assets/simmyo/g/walk_cat.webp" alt=""><i class="dust"></i><i class="dust d2"></i><b class="tok">총</b><b class="tok t2">총</b><b class="tok t3">총</b></div>
+<!-- ⓪ 오프닝 — 실제 수배 사진이 망점으로 흩어지며 지금의 심묘로 -->
+<div class="opn" id="intro" hidden>
+  <div class="in-flash"></div>
+  <div class="in-notice">
+    <div class="in-top"><b>尋猫</b><span>手配 第二六八號<br>京城 印刷所 屆出</span></div>
+    <div class="in-ph">
+      <img class="in-now" src="assets/simmyo/g/walk_cat.webp" alt="지금의 심묘">
+      <img class="in-photo" src="assets/simmyo/ref/wanted268.jpg" alt="수배 사진 · 268번 까만 고양이">
+      <img class="in-dots" src="assets/simmyo/ref/wanted268_h.jpg" alt="">
+    </div>
+    <p class="in-bot">까만 고양이 한 마리. 보신 분은 알려 주시오.</p>
   </div>
-  <div class="cv2-btm">
-    <p class="cv-d">수배지에서 달아난 까만 고양이 <b>심묘</b>를 따라, 1899년부터 1937년까지 경성 여덟 곳을 걷습니다. 그곳 사람들의 옷과 밥, 소리와 냄새를 만납니다.</p>
+  <p class="in-title">그 고양이가, 오늘 경성을 걷소.</p>
+  <button type="button" class="in-skip" id="inSkip">건너뛰기 ›</button>
+</div>
+
+<!-- ① 표지 -->
+<section class="v v-cover" id="cover" data-v="cover">
+  <figure class="cv-art"><img id="cvImg" src="assets/simmyo/s/cover_day.webp" alt="빈 종로 거리 한가운데 안즌 검은 고양이 심묘 (재현 그림)"><span class="rt">그림 · 재현</span></figure>
+  <div class="cv-txt">
+    <p class="cv-k">1899 — 1937 · 경성 여덟 곳</p>
+    <h1 class="cv-logo"><picture><source media="(min-width:900px)" srcset="assets/simmyo/g/logo_h_bg.webp"><img src="assets/simmyo/g/logo_v_bg.webp" alt="심묘한 산책 — 심묘가 보는 경성"></picture></h1>
+    <p class="cv-say" id="cvSay">「따라오든지 말든지. …따라오시오.」</p>
+    <p class="cv-d">광고면 수배지에서 달아난 까만 고양이 <b>심묘</b>. 글을 모르는 이 고양이의 눈높이로 1899년부터 1937년까지 경성 여덟 곳을 걷습니다. 고양이에게는 벽보도 간판도 다 흰 종이입니다. <b>사람 눈</b>으로 바꿔 보면, 그 자리에 진짜 그 시절 지면이 열립니다.</p>
     <div class="cv-btns"><button class="btn" type="button" data-go="map" id="cvGo">산책 따라가기</button><button class="btn ghost" type="button" data-go="about">심묘는 누구</button></div>
     <p class="cv-peek"><button type="button" class="lnk" data-go="peek">바쁜 분은 · 결말 먼저 보기 →</button></p>
     <div class="fortune" id="fortune"><p class="fo-k">오늘의 심묘 점괘</p><p class="fo-t" id="foT"></p><p class="fo-p" id="foP"></p></div>
-    <p class="cv-n">그림은 모두 재현입니다. 장소 · 연도 · 출처는 기록을 따랐습니다. · <a href="making.html">만든 이야기</a></p>
+    <p class="cv-n">그림은 모두 재현입니다. 장소 · 연도 · 지면 · 출처는 사실입니다.</p>
+    <p class="cv-links"><a href="making.html">만든 이야기</a></p>
   </div>
 </section>
 
@@ -212,6 +221,7 @@
 
 <footer class="ft"><img class="ft-em" src="assets/simmyo/g/emblem.png" alt="" width="56" height="56">심묘한 산책 · 그림은 재현 · 심묘는 지어낸 고양이 · 장소와 연도와 지면은 사실<br><a href="making.html">만든 이야기</a></footer>
 <script src="simmyo-data.js?v=3"></script>
-<script src="simmyo.js?v=10"></script>
+<script src="simmyo.js?v=11"></script>
+<script src="simmyo-city.js?v=2"></script>
 </body>
 </html>
