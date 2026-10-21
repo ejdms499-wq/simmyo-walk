@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e9dfc7">
+<title>심묘시티 · 京城</title>
+<link rel="stylesheet" href="../fonts/fonts-m.css?v=2">
+<style>
+:root{--paper:#ece2c9;--ground:#e4d8b8;--road:#d6c49c;--ink:#1d1813;--ink2:#6b5d4c;--shu:#c4512a;--teal:#2f5d57;--amber:#e3a33b;--serif:'Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#d9cba8;color:var(--ink);font-family:var(--serif);overscroll-behavior:none;touch-action:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;opacity:.5;mix-blend-mode:multiply;background:
+ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .36 0 0 0 0 .22 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),
+ radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(80,55,20,.28))}
+
+#vp{position:fixed;inset:0;cursor:grab}
+#vp.drag{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#ground{position:absolute;left:0;top:0;overflow:visible}
+.b{position:absolute;transform-origin:50% 100%;cursor:pointer;transition:transform .6s cubic-bezier(.3,1.5,.5,1),opacity .4s,filter .3s}
+.b::before{content:"";position:absolute;left:8%;right:8%;bottom:-4%;height:22%;border-radius:50%;background:radial-gradient(closest-side,rgba(70,50,20,.32),transparent);z-index:-1}
+.b img{display:block;width:100%;height:auto;filter:drop-shadow(0 4px 2px rgba(60,40,15,.25));-webkit-user-drag:none;user-select:none;pointer-events:none}
+.b.off{transform:translate(-50%,-100%) scale(.2,0)!important;opacity:0;pointer-events:none}
+.b:hover{filter:brightness(1.05) saturate(1.1)}
+.b .lab{position:absolute;left:50%;top:-6px;transform:translate(-50%,-100%);white-space:nowrap;font:700 13px var(--sans);letter-spacing:.06em;color:var(--paper);background:var(--ink);padding:6px 11px 6px 10px;border-radius:2px;box-shadow:3px 3px 0 var(--shu);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
+.b .lab b{color:var(--amber);font-weight:700;margin-left:7px}
+.b:hover .lab,.b.near .lab{opacity:1;transform:translate(-50%,-112%)}
+.b.deco{cursor:default}
+.b.deco:hover{filter:none}
+.pop{animation:pop .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:translate(-50%,-100%) scale(.3,0)}60%{transform:translate(-50%,-100%) scale(1.04,1.08)}100%{transform:translate(-50%,-100%) scale(1)}}
+#cat{position:absolute;width:96px;margin:0;pointer-events:none;z-index:99999!important;transform:translate(-50%,-92%)}
+#cat img{width:100%;display:block;filter:drop-shadow(0 6px 3px rgba(0,0,0,.25))}
+#cat i{position:absolute;left:50%;bottom:-6px;width:46px;height:10px;margin-left:-23px;border-radius:50%;background:rgba(40,25,10,.22);filter:blur(2px)}
+#tram{position:absolute;z-index:8000;pointer-events:auto;cursor:pointer}
+
+/* 바깥 UI */
+.top{position:fixed;left:24px;top:20px;z-index:50;pointer-events:none}
+.top h1{margin:0;font:900 22px/1 var(--serif);letter-spacing:-.01em}
+.top h1 span{position:relative}
+.top h1 span::after{content:"";position:absolute;right:-.15em;top:.05em;width:.28em;height:.28em;border-top:1.8px dashed var(--shu);border-right:1.8px dashed var(--shu)}
+.top p{margin:8px 0 0;font:600 11px var(--sans);letter-spacing:.22em;color:var(--ink2)}
+.tools{position:fixed;right:20px;top:18px;z-index:50;display:flex;gap:8px}
+.tools button{font:700 12px var(--sans);letter-spacing:.06em;padding:10px 14px;border:1.4px solid var(--ink);border-radius:30px;background:rgba(236,226,201,.85);backdrop-filter:blur(6px)}
+.tools button.on{background:var(--ink);color:var(--paper)}
+.timebar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;width:min(640px,calc(100vw - 32px));display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:rgba(236,226,201,.9);backdrop-filter:blur(8px);border:1.4px solid var(--ink);border-radius:3px;padding:12px 18px 12px 14px;box-shadow:0 18px 30px -18px rgba(40,25,10,.5)}
+.yr{font:900 40px/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums;min-width:96px;display:flex;align-items:center;gap:10px}
+.yr button{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:13px;flex:none}
+.rng{position:relative}
+.rng input{width:100%;-webkit-appearance:none;appearance:none;background:none;height:28px;margin:0}
+.rng input::-webkit-slider-runnable-track{height:2px;background:var(--ink)}
+.rng input::-moz-range-track{height:2px;background:var(--ink)}
+.rng input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--shu);border:2px solid var(--paper);box-shadow:0 0 0 1.4px var(--ink);margin-top:-8px}
+.rng input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--shu);border:2px solid var(--paper)}
+.ticks{position:relative;height:16px;font:600 9.5px var(--sans);color:var(--ink2);letter-spacing:.04em}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.ticks i{position:absolute;top:-12px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ink)}
+.ticks span::before{content:"";position:absolute;left:50%;top:-9px;width:1px;height:6px;background:var(--ink2)}
+.news{position:fixed;left:50%;bottom:118px;transform:translate(-50%,10px);z-index:50;font:700 13px var(--sans);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:30px;opacity:0;transition:opacity .4s,transform .4s;pointer-events:none;white-space:nowrap}
+.news.on{opacity:1;transform:translate(-50%,0)}
+.news b{color:var(--amber)}
+
+/* 장면 열기 */
+.sheet{position:fixed;z-index:60;right:0;top:0;bottom:0;width:min(460px,100vw);background:var(--paper);border-left:1.5px solid var(--ink);transform:translateX(105%);transition:transform .55s cubic-bezier(.3,.8,.2,1);overflow:auto;box-shadow:-30px 0 60px -30px rgba(40,25,10,.6)}
+.sheet.on{transform:none}
+.sheet .x{position:absolute;right:14px;top:14px;z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(29,24,19,.75);color:var(--paper);font:500 20px/1 var(--sans)}
+.sheet figure{margin:0;position:relative;aspect-ratio:3/4;background:#cbbd9a;overflow:hidden}
+.sheet figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sheet figure .cv{filter:url(#catvision) saturate(1.1) brightness(1.05);opacity:0;transition:opacity .35s}
+.sheet.cat figure .cv{opacity:1}
+.sheet .eye{position:absolute;right:14px;bottom:14px;z-index:2;font:700 12px var(--sans);color:var(--paper);background:rgba(29,24,19,.78);padding:9px 13px;border-radius:30px;user-select:none;-webkit-user-select:none;touch-action:none}
+.sheet .tx{padding:22px 26px 40px}
+.sheet .k{font:700 11px var(--sans);letter-spacing:.2em;color:var(--ink2);margin:0 0 8px}
+.sheet h2{margin:0 0 14px;font:900 34px/1.1 var(--serif)}
+.sheet .say{font:600 16px/1.75 var(--serif);margin:0 0 14px;padding:12px 14px;background:rgba(255,250,238,.6);border-left:3px solid var(--ink)}
+.sheet .say::before{content:"「"}.sheet .say::after{content:"」"}
+.sheet .f{font:400 14px/1.85 var(--sans);color:#2f271f;margin:0 0 10px;word-break:keep-all}
+.sheet .src{font:500 10.5px/1.6 var(--sans);color:#9a8b74;margin-top:14px}
+svg.defs{position:absolute;width:0;height:0}
+@media (max-width:760px){
+ .top{left:16px;top:14px}.top h1{font-size:19px}
+ .tools{right:12px;top:12px}.tools button{padding:8px 11px;font-size:11px}
+ .timebar{bottom:12px;padding:10px 14px 8px 10px;gap:12px}
+ .yr{font-size:30px;min-width:76px}
+ .ticks{font-size:8.5px}
+ .sheet{top:auto;height:86vh;width:100vw;border-left:0;border-top:1.5px solid var(--ink);border-radius:16px 16px 0 0;transform:translateY(105%)}
+ .sheet figure{aspect-ratio:4/4}
+ .news{bottom:100px}
+}
+</style>
+</head>
+<body>
+<svg class="defs" aria-hidden="true"><filter id="catvision" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.367 0.861 -0.228 0 0  0.280 0.673 0.047 0 0  -0.012 0.043 0.969 0 0  0 0 0 1 0"/></filter></svg>
+<div id="vp"><div id="world"><svg id="ground"></svg></div></div>
+
+<div class="top"><h1>심묘시티 · 산<span>채</span></h1><p>京城 一八九九 — 一九三七</p></div>
+<div class="tools"><button id="follow" class="on">심묘 따라가기</button></div>
+<div class="news" id="news"></div>
+<div class="timebar">
+ <div class="yr"><button id="play" aria-label="재생">▶</button><span id="yr">1937</span></div>
+ <div class="rng"><input type="range" id="slider" min="1899" max="1937" value="1937" step="1"><div class="ticks" id="ticks"></div></div>
+</div>
+<aside class="sheet" id="sheet"></aside>
+
+<script src="../simmyo-data.js"></script>
+<script>
+(function(){
+var D=document,W=window,$=function(s){return D.querySelector(s)};
+var DATA={};SIMMYO_DATA.P.forEach(function(p){DATA[p.id]=p});
+var C='../assets/simmyo/city/',V='../assets/simmyo/v4/';
+/* ── 지도 좌표 : x 동쪽, y 남쪽 (실제 1930년대 경성 배치를 단순화) ── */
+var S=17,OX=1700,OY=260;
+function iso(x,y){return [OX+(x-y)*S*1.732/2*1.15,OY+(x+y)*S*.5*1.15]}
+/* 길 */
+var ROADS=[
+ {n:'종로',p:[[2,30],[110,30]],w:46,tram:1},
+ {n:'남대문로',p:[[45,30],[45,58],[43,70],[40,86]],w:36},
+ {n:'태평로',p:[[34,12],[36,58],[40,86]],w:34},
+ {n:'정동길',p:[[36,52],[22,52]],w:20},
+ {n:'본정',p:[[44,71],[66,73]],w:20},
+ {n:'을지로',p:[[36,47],[100,47]],w:26},
+ {n:'',p:[[68,30],[68,12]],w:18},{n:'',p:[[56,30],[56,14]],w:16},{n:'',p:[[86,30],[86,47]],w:16}
+];
+/* 건물 (yr: 지도에 솟는 해) */
+var B=[
+ {id:'tram_stop',deco:1},
+ {id:'dansung',name:'단성사',yr:1907,x:68,y:26,w:180,img:C+'dansung.webp',scene:'../assets/simmyo/s/dansung.webp'},
+ {id:'record',name:'종로 음반가게',yr:1908,x:57,y:26.5,w:190,img:C+'ymca.webp',scene:V+'record.webp',sub:'종로 2가'},
+ {id:'stadium',name:'경성운동장',yr:1925,x:100,y:44,w:330,img:C+'stadium.webp',scene:V+'stadium.webp'},
+ {id:'jodk',name:'경성방송국',yr:1927,x:25,y:55,w:150,img:C+'jodk.webp',scene:V+'jodk.webp',towers:1},
+ {id:'mitsu',name:'미쓰코시 옥상',yr:1930,x:47,y:72,w:200,img:C+'mitsu.webp',scene:V+'mitsu.webp'},
+ {id:'nakrang',name:'낙랑파라',yr:1932,x:39.5,y:61,w:130,img:C+'nakrang.webp',scene:V+'nakrang.webp'},
+ {id:'hwasin',name:'화신백화점',yr:1937,x:46.5,y:26.5,w:190,img:C+'hwasin.webp',scene:V+'hwasin.webp'}
+];
+var HANOK=[[16,22,'A'],[28,20,'B'],[62,18,'B'],[78,20,'A'],[94,24,'B'],[56,40,'A'],[74,40,'B'],[26,40,'A'],[60,60,'B'],[28,68,'A'],[54,84,'B'],[96,62,'A']];
+/* 심묘 산책길 (길 위 지점) */
+var PATH=[[24,52],[36,52],[36,58],[42,61],[43,70],[45,58],[45,30],[57,30],[68,30],[86,30],[86,47],[100,47],[86,47],[86,30],[68,30],[57,30],[45,30],[45,47],[36,47],[36,52]];
+
+var world=$('#world'),g=$('#ground'),vp=$('#vp');
+var WW=3600,WH=1900;world.style.width=WW+'px';world.style.height=WH+'px';g.setAttribute('width',WW);g.setAttribute('height',WH);
+/* 땅, 성곽, 산 */
+function pt(a){return a.map(function(q){var p=iso(q[0],q[1]);return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')}
+var svg='<defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><line x1="0" y1="0" x2="0" y2="7" stroke="rgba(90,70,40,.13)" stroke-width="1.2"/></pattern>'+
+ '<radialGradient id="hill" cx="50%" cy="60%" r="60%"><stop offset="0" stop-color="#9fae7e"/><stop offset="1" stop-color="#7f9466"/></radialGradient></defs>';
+svg+='<polygon points="'+pt([[-6,-4],[118,-4],[118,96],[-6,96]])+'" fill="#e3d6b3" stroke="rgba(29,24,19,.35)" stroke-width="2"/>';
+svg+='<polygon points="'+pt([[-6,-4],[118,-4],[118,96],[-6,96]])+'" fill="url(#hatch)"/>';
+/* 산 : 북악(북), 남산(남) — 부드러운 언덕 */
+function hill(x,y,rx,ry,h){var c=iso(x,y);return '<g><ellipse cx="'+c[0]+'" cy="'+c[1]+'" rx="'+rx+'" ry="'+ry+'" fill="url(#hill)" stroke="rgba(29,24,19,.45)" stroke-width="1.5"/><path d="M'+(c[0]-rx*.7)+' '+(c[1]-ry*.1)+' Q'+c[0]+' '+(c[1]-h)+' '+(c[0]+rx*.7)+' '+(c[1]-ry*.1)+'" fill="#8ea173" stroke="rgba(29,24,19,.45)" stroke-width="1.5"/></g>'}
+svg+=hill(30,-2,260,70,170)+hill(62,94,300,80,190)+hill(6,48,150,48,90);
+/* 한양도성 (점선 성벽) */
+svg+='<polyline points="'+pt([[30,4],[10,20],[6,46],[16,70],[38,90],[62,92],[90,80],[108,52],[104,24],[80,6],[52,0],[30,4]])+'" fill="none" stroke="#8a7a5c" stroke-width="5" stroke-dasharray="2 7" stroke-linecap="round"/>';
+/* 길 */
+ROADS.forEach(function(r){svg+='<polyline points="'+pt(r.p)+'" fill="none" stroke="#7d6c4c" stroke-width="'+(r.w*.7+4)+'" stroke-linejoin="round" stroke-linecap="round" opacity=".35"/>';
+ svg+='<polyline points="'+pt(r.p)+'" fill="none" stroke="#d4c299" stroke-width="'+(r.w*.7)+'" stroke-linejoin="round" stroke-linecap="round"/>';
+ if(r.tram){svg+='<polyline points="'+pt(r.p)+'" fill="none" stroke="#5a4a35" stroke-width="1.5" stroke-dasharray="1 0" transform="translate(0,-4)"/><polyline points="'+pt(r.p)+'" fill="none" stroke="#5a4a35" stroke-width="1.5" transform="translate(0,4)"/>'}
+ if(r.n){var a=iso(r.p[0][0],r.p[0][1]),b=iso(r.p[1][0],r.p[1][1]),ang=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI,m=iso((r.p[0][0]*.75+r.p[1][0]*.25),(r.p[0][1]*.75+r.p[1][1]*.25));
+  svg+='<text x="'+m[0]+'" y="'+m[1]+'" transform="rotate('+ang+' '+m[0]+' '+m[1]+')" text-anchor="middle" dy="4" font-family="Noto Sans KR" font-weight="700" font-size="13" letter-spacing="6" fill="#6b5a3e">'+r.n+'</text>'}
+});
+/* 경성방송국 철탑 두 개 (사진 비례대로 건물보다 훨씬 높게) */
+var jt=iso(25,55);
+function tower(x,y,h){return '<g stroke="#7a3d26" stroke-width="2" fill="none"><path d="M'+(x-16)+' '+y+' L'+x+' '+(y-h)+' L'+(x+16)+' '+y+'"/>'+Array.from({length:10},function(_,i){var t=i/10,yy=y-h*t,w=16*(1-t);return '<path d="M'+(x-w)+' '+yy+' L'+(x+w*.86)+' '+(yy-h/10)+' M'+(x+w)+' '+yy+' L'+(x-w*.86)+' '+(yy-h/10)+'"/>'}).join('')+'</g>'}
+svg+='<g id="towers">'+tower(jt[0]-95,jt[1]-20,300)+tower(jt[0]+90,jt[1]+30,300)+'<path d="M'+(jt[0]-95)+' '+(jt[1]-320)+' Q'+(jt[0])+' '+(jt[1]-260)+' '+(jt[0]+90)+' '+(jt[1]-270)+'" stroke="#3a2e22" stroke-width="1.4" fill="none"/></g>';
+g.innerHTML=svg;
+
+/* 건물 놓기 */
+function place(o,el){var p=iso(o.x,o.y);el.style.left=p[0]+'px';el.style.top=p[1]+'px';el.style.width=o.w+'px';el.style.transform='translate(-50%,-100%)';el.style.zIndex=Math.round(p[1])}
+HANOK.forEach(function(h){var el=D.createElement('div');el.className='b deco';el.innerHTML='<img src="'+C+'hanok'+h[2]+'.webp" alt="">';place({x:h[0],y:h[1],w:140},el);world.appendChild(el)});
+var EL={};
+B.forEach(function(o){if(o.deco)return;var el=D.createElement('div');el.className='b';el.dataset.id=o.id;el.innerHTML='<img src="'+o.img+'" alt="'+o.name+'"><span class="lab">'+o.name+'<b>'+o.yr+'</b></span>';place(o,el);world.appendChild(el);EL[o.id]=el;
+ el.addEventListener('click',function(e){if(moved)return;open(o)})});
+/* 전차 (종로를 오감) */
+var tram=D.createElement('div');tram.id='tram';tram.innerHTML='<svg width="74" height="54" viewBox="0 0 74 54"><g transform="skewY(-26)" ><rect x="6" y="40" width="60" height="22" rx="3" fill="#e9c66a" stroke="#1d1813" stroke-width="2"/><rect x="6" y="52" width="60" height="10" fill="#5f8f8a" stroke="#1d1813" stroke-width="2"/><g fill="#f4ecd6" stroke="#1d1813" stroke-width="1.4"><rect x="11" y="43" width="8" height="7"/><rect x="23" y="43" width="8" height="7"/><rect x="35" y="43" width="8" height="7"/><rect x="47" y="43" width="8" height="7"/></g><path d="M36 40 L44 26" stroke="#1d1813" stroke-width="2"/></g></svg>';world.appendChild(tram);
+tram.onclick=function(){if(!moved)open({id:'tram',name:'전차',yr:1899,scene:V+'tram.webp'})};
+/* 심묘 */
+var cat=D.createElement('div');cat.id='cat';cat.innerHTML='<i></i><img id="catimg" src="'+C+'cat_dot.webp" alt="망점 심묘">';world.appendChild(cat);
+
+/* ── 카메라 : 끌어서 이동, 휠 확대 ── */
+var cam={x:0,y:0,z:1},follow=true,moved=false;
+function fit(){cam.z=W.innerWidth<760?.62:Math.max(.32,Math.min(.85,W.innerWidth/2300,W.innerHeight/1250));}
+fit();
+function apply(){world.style.transform='translate('+cam.x+'px,'+cam.y+'px) scale('+cam.z+')'}
+function centerOn(px,py,k){var tx=W.innerWidth/2-px*cam.z,ty=W.innerHeight*.48-py*cam.z;cam.x+=(tx-cam.x)*(k||1);cam.y+=(ty-cam.y)*(k||1);apply()}
+var pc=iso(50,40);centerOn(pc[0],pc[1]);
+var drag=null;
+vp.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,cx:cam.x,cy:cam.y};moved=false;vp.classList.add('drag')});
+W.addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>6){moved=true;if(follow)setFollow(false)}cam.x=drag.cx+dx;cam.y=drag.cy+dy;apply()});
+W.addEventListener('pointerup',function(){drag=null;vp.classList.remove('drag');setTimeout(function(){moved=false},30)});
+vp.addEventListener('wheel',function(e){e.preventDefault();var z0=cam.z,z=Math.max(.35,Math.min(1.6,z0*(e.deltaY<0?1.1:.9)));var mx=e.clientX,my=e.clientY;cam.x=mx-(mx-cam.x)*z/z0;cam.y=my-(my-cam.y)*z/z0;cam.z=z;apply()},{passive:false});
+function setFollow(v){follow=v;$('#follow').classList.toggle('on',v)}
+$('#follow').onclick=function(){setFollow(!follow)};
+
+/* ── 걷기 ── */
+var seg=0,t=0,speed=46,last=performance.now(),pause=0,face=1,tramT=0;
+function lerp(a,b,k){return a+(b-a)*k}
+function loop(now){var dt=Math.min(.05,(now-last)/1000);last=now;
+ if(pause>0)pause-=dt;else{
+  var a=PATH[seg],b=PATH[(seg+1)%PATH.length],pa=iso(a[0],a[1]),pb=iso(b[0],b[1]),len=Math.hypot(pb[0]-pa[0],pb[1]-pa[1]);
+  t+=speed*dt/len;if(t>=1){t=0;seg=(seg+1)%PATH.length;checkNear()}
+  var x=lerp(pa[0],pb[0],t),y=lerp(pa[1],pb[1],t),bob=Math.abs(Math.sin(now/120))*4;
+  var f=pb[0]>=pa[0]?1:-1;if(f!==face){face=f;$('#catimg').src=C+(f>0?'cat_dot_r.webp':'cat_dot.webp')}
+  cat.style.left=x+'px';cat.style.top=(y-bob)+'px';
+  if(follow&&!drag)centerOn(x,y,.06);
+ }
+ /* 전차 */
+ if(curYr>=1899){tramT=(tramT+dt*.025)%2;var k=tramT<1?tramT:2-tramT,tp=iso(lerp(4,108,k),30);tram.style.left=(tp[0]-37)+'px';tram.style.top=(tp[1]-48)+'px';tram.style.zIndex=Math.round(tp[1])+5;tram.style.display=''}else tram.style.display='none';
+ requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+function checkNear(){var p=PATH[seg],best=null,bd=1e9;B.forEach(function(o){if(o.deco||!EL[o.id]||o.yr>curYr)return;var d=Math.hypot(o.x-p[0],o.y-p[1]);if(d<bd){bd=d;best=o}});
+ [].forEach.call(D.querySelectorAll('.b.near'),function(e){e.classList.remove('near')});
+ if(best&&bd<9){EL[best.id].classList.add('near');pause=1.6;var d=DATA[best.id];if(d&&d.say)news('<b>심묘</b> · '+d.say[Math.floor(Math.random()*d.say.length)])}}
+
+/* ── 연도 : 도시가 자람 ── */
+var curYr=1937,sl=$('#slider');
+$('#ticks').innerHTML='<span style="left:0">1899</span><span style="left:100%">1937</span>'+B.filter(function(o){return !o.deco}).map(function(o){return '<i style="left:'+((o.yr-1899)/(38)*100)+'%"></i>'}).join('');
+function setYr(y,anim){var prev=curYr;curYr=y;$('#yr').textContent=y;sl.value=y;
+ B.forEach(function(o){if(o.deco)return;var el=EL[o.id],on=o.yr<=y;if(on&&el.classList.contains('off')){el.classList.remove('off');if(anim){el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');news('<b>'+o.yr+'</b> · '+o.name+' 들어섬')}}else if(!on)el.classList.add('off')});
+ $('#towers').style.opacity=y>=1927?1:0;$('#towers').style.transition='opacity .6s'}
+sl.oninput=function(){stop();setYr(+sl.value,1)};
+var playT=null;function stop(){clearInterval(playT);playT=null;$('#play').textContent='▶'}
+function play(){if(playT){stop();return}if(curYr>=1937)setYr(1899);$('#play').textContent='❚❚';playT=setInterval(function(){if(curYr>=1937){stop();return}setYr(curYr+1,1)},420)}
+$('#play').onclick=play;
+var nt;function news(h){var n=$('#news');n.innerHTML=h;n.classList.add('on');clearTimeout(nt);nt=setTimeout(function(){n.classList.remove('on')},2400)}
+
+/* ── 장면 열기 ── */
+var sheet=$('#sheet');
+function open(o){var d=DATA[o.id]||{};
+ sheet.innerHTML='<button class="x" aria-label="닫기">×</button><figure><img src="'+o.scene+'" alt="'+(d.alt||o.name)+'"><img class="cv" src="'+o.scene+'" alt=""><span class="eye" id="eye">꾹 누르면 고양이 눈</span></figure><div class="tx"><p class="k">'+(d.where||o.sub||'')+' · '+o.yr+'</p><h2>'+o.name+'</h2>'+((d.say&&d.say[0])?'<p class="say">'+d.say[0]+'</p>':'')+(d.f||[]).slice(0,3).map(function(t){return '<p class="f">'+t+'</p>'}).join('')+(d.src?'<p class="src">출처 · '+d.src+'</p>':'')+'</div>';
+ sheet.classList.add('on');sheet.scrollTop=0;
+ sheet.querySelector('.x').onclick=close;
+ var eye=$('#eye');['pointerdown'].forEach(function(ev){eye.addEventListener(ev,function(e){e.preventDefault();sheet.classList.add('cat')})});['pointerup','pointerleave','pointercancel'].forEach(function(ev){eye.addEventListener(ev,function(){sheet.classList.remove('cat')})});
+}
+function close(){sheet.classList.remove('on')}
+D.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+sheet.addEventListener('pointerdown',function(e){e.stopPropagation()});
+
+/* 첫 화면 : 1899년부터 도시가 자라는 걸 한 번 보여줌 */
+setYr(1899);setTimeout(play,900);
+W.addEventListener('resize',function(){fit();apply()});
+})();
+</script>
+</body>
+</html>
