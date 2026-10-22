@@ -658,3 +658,16 @@ body.opn-on{overflow:hidden}
 .sc-cat b::before{content:"";position:absolute;left:-8px;top:50%;margin-top:-5px;border:5px solid transparent;border-right:7px solid var(--ink);border-left:0}
 .sc-src{margin:8px 0 0;font:400 11.5px/1.6 var(--sans);color:var(--ink2)}
 @media (min-width:700px){.scraps{grid-template-columns:1fr 1fr}}
+
+/* 1022 새 표지 — 그림 안에 로고 · 모바일 세로판 / 컴퓨터 가로판 */
+.cv-logo.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0}
+.cv-art{max-height:none}
+.cv-art img{max-height:none;object-fit:contain;display:block}
+@media (min-width:900px){
+  .v-cover{grid-template-columns:1fr;gap:22px;padding:28px 32px}
+  .cv-art{width:fit-content;max-width:100%;margin:0 auto}
+  .cv-art img{max-height:72vh;width:auto;max-width:100%}
+  .cv-txt{text-align:center;max-width:720px;margin:0 auto}
+  .cv-d{margin:0 auto 18px}
+  .cv-btns{justify-content:center}
+}
