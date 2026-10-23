@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>심묘한 산책 | 볕이 좋은 자리</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eadfca;color:#364a44;font-family:Georgia,'Batang',serif}
+main{max-width:1200px;margin:auto;background:#f6ead5;min-height:100vh;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #bfad93;padding:5px 0 17px}
+header a{font-size:21px;color:#364a44;text-decoration:none;font-weight:bold}
+header span,.eyebrow{font-size:11px;letter-spacing:2px;color:#aa6550}
+h1{font-size:clamp(32px,5vw,59px);letter-spacing:-2px;margin:11px 0 18px;font-weight:normal}
+.scene{height:clamp(400px,60vw,680px);background:#cec4aa url('../assets/simmyo/city/hanokA.webp') center/cover;position:relative;overflow:hidden;border:1px solid #bbaa8d}
+.scene:after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,#f5dd9d22,transparent 70%);pointer-events:none}
+.sun{position:absolute;left:35%;bottom:0;width:55%;height:37%;background:#f3d48055;clip-path:polygon(20% 0,65% 0,100% 100%,0 100%);pointer-events:none}
+.cat{position:absolute;width:clamp(100px,15vw,190px);height:clamp(100px,15vw,190px);object-fit:contain;left:10%;bottom:7%;transition:left 1.8s ease,bottom 1.8s ease,transform .5s;filter:drop-shadow(3px 5px 3px #33271a55);cursor:pointer;z-index:2}
+.cat.near{left:54%;bottom:12%}
+.cat.sleep{transform:scale(.93) translateY(7px)}
+.dialog{position:absolute;top:19px;left:20px;background:#f7e9d6dc;padding:10px 13px;font-size:12px}
+.note{margin:16px 0;font-size:19px}
+.controls{display:flex;gap:9px;flex-wrap:wrap}
+button{font:inherit;padding:11px 17px;min-height:44px;background:#f6ead5;border:1px solid #bca48a;color:#364a44;cursor:pointer}
+button:first-child{background:#a9604e;color:white;border-color:#a9604e}
+footer{font-size:12px;color:#8a7866;line-height:1.8;margin-top:22px}
+@media(max-width:650px){main{padding:12px}header{padding:10px 0}h1{font-size:37px}.scene{height:65vh;min-height:420px;background-image:url('../assets/simmyo/city/hanokB.webp')}.cat{width:145px;height:145px;left:6%}.cat.near{left:45%}.controls{display:grid;grid-template-columns:1fr 1fr}.controls button:first-child{grid-column:span 2}}
+@media(prefers-reduced-motion:reduce){.cat{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header><a href="../index.html">尋猫 · 심묘한 산책</a><span>1930s GYEONGSEONG</span></header>
+<p class="eyebrow">03 · 오후의 산책</p>
+<h1>볕이 좋은 자리</h1>
+<div class="scene" id="scene">
+ <div class="sun"></div>
+ <div class="dialog" id="dialog">심묘는 볕이 드는 자리를 발견했다.</div>
+ <img class="cat" id="cat" src="../assets/simmyo/ref/simmyo_final.png" alt="원본 심묘">
+</div>
+<p class="note" id="note" aria-live="polite">심묘는 오늘도 골목을 천천히 걷는다.</p>
+<div class="controls">
+ <button id="walk">볕 있는 자리로 가기</button>
+ <button id="rest">낮잠 자기</button>
+ <button id="reset">다시 시작</button>
+</div>
+<footer>기존 심묘 PNG만 사용한 독립 테스트 화면 · 실제 다프레임 모션 및 최종 장소 고증 전 단계<br>기존 홈페이지는 변경하지 않았습니다.</footer>
+</main>
+<script>
+const cat=document.getElementById('cat');
+const note=document.getElementById('note');
+const dialog=document.getElementById('dialog');
+document.getElementById('walk').onclick=()=>{
+ cat.classList.remove('sleep');
+ cat.classList.add('near');
+ note.textContent='작은 발걸음으로 햇볕을 향해 간다.';
+ dialog.textContent='여기가 좋겠소.';
+};
+document.getElementById('rest').onclick=()=>{
+ cat.classList.add('sleep');
+ note.textContent='심묘는 따뜻한 곳에서 잠시 쉰다.';
+ dialog.textContent='…';
+};
+document.getElementById('reset').onclick=()=>{
+ cat.className='cat';
+ note.textContent='심묘는 오늘도 골목을 천천히 걷는다.';
+ dialog.textContent='심묘는 볕이 드는 자리를 발견했다.';
+};
+</script>
+</body>
+</html>
