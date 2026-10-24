@@ -19,6 +19,14 @@ a.back{font:13px/1 var(--ui);color:var(--ink2)}
 .fig{position:relative;background:#d9cfb4;border:1px solid var(--ink);box-shadow:0 18px 30px -22px rgba(40,25,10,.55)}
 .fig img{display:block;width:100%;height:auto;max-height:78vh;object-fit:contain;background:#2a241e}
 .fig .say{position:absolute;left:4%;bottom:5%;max-width:70%;font:clamp(18px,2.2vw,25px)/1.25 var(--hand);background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:9px 14px 7px}
+.fig.live #img,.fig.live .say{display:none}
+#scn{position:relative;width:100%;overflow:hidden;margin:0 auto}
+.stg{position:absolute;left:0;top:0;transform-origin:0 0}
+.stg .bgi{position:absolute;inset:0;width:100%;height:100%;display:block;max-height:none;object-fit:fill}
+.stg .cat{position:absolute;cursor:pointer;width:auto;height:auto;max-height:none;background:none;object-fit:fill}
+.stg .csh{position:absolute;height:16px;border-radius:50%;background:radial-gradient(closest-side,rgba(30,18,8,.6),rgba(30,18,8,0))}
+.stg .csay{position:absolute;transform:translate(-50%,-100%) scale(.6);opacity:0;transition:opacity .3s,transform .35s cubic-bezier(.2,1.4,.4,1);background:#f6efde;border:3px solid #211c17;border-radius:24px;padding:8px 18px 6px;font-family:var(--hand);line-height:1.1;white-space:nowrap;z-index:3;pointer-events:none}
+.stg .csay.on{opacity:1;transform:translate(-50%,-100%) scale(1)}
 .fig .tag{position:absolute;right:10px;top:10px;font:12px/1 var(--ui);background:rgba(243,236,219,.92);border:1px solid var(--ink);padding:6px 8px}
 .cap{font:12px/1.5 var(--ui);color:var(--ink2);margin-top:6px}
 .k2{font:700 12px/1 var(--ui);letter-spacing:.12em;color:var(--seal);margin-bottom:8px}
@@ -49,7 +57,7 @@ section{margin-bottom:18px}
   <a class="back" id="backl" href="../road/index.html">← 산책길로</a>
   <div class="grid">
     <main>
-      <div class="fig"><img id="img" alt=""><span class="tag" id="tag"></span><div class="say" id="say"></div></div>
+      <div class="fig"><div id="scn"></div><img id="img" alt=""><span class="tag" id="tag"></span><div class="say" id="say"></div></div>
       <div class="cap" id="cap"></div>
       <section style="margin-top:18px"><div class="k2">심묘의 귀와 코</div><div class="sense" id="sense"></div></section>
       <section><div class="k2">당시 지면 · 실제 자료</div><div class="arc" id="arc"></div></section>
@@ -68,6 +76,7 @@ section{margin-bottom:18px}
 <script src="../../simmyo-data-fix.js"></script>
 <script src="../side-art.js"></script>
 <script src="../sfx.js"></script>
+<script src="scene.js"></script>
 <script>
 (function(){
 var R='../../',IMG=R+'assets/simmyo/s/';
@@ -83,6 +92,7 @@ $('nm').textContent=P.name;$('sub').textContent=P.where+' · '+P.yr;
 var NEW=window.SIDE_ART&&SIDE_ART[id];var useArc=!P.ph&&!NEW&&P.arc&&P.arc.length;var real=!!P.ph||useArc;
 $('img').src=NEW?R+NEW.src.replace('../../',''):(useArc?R+P.arc[0].img:IMG+P.img+'.webp');$('img').alt=(NEW?NEW.alt:(useArc?P.arc[0].cap:(P.alt||P.name)))+(real?' (옛 자료)':' (재현 그림)');
 $('tag').textContent=real?'사람들의 눈 · 실제 자료':'심묘가 본 곳 · 재현 그림';
+var host=$('scn');if(window.startScene&&startScene(id,host)){document.querySelector('.fig').classList.add('live');$('tag').textContent='심묘가 노는 곳 · 재현 그림 · 심묘를 눌러 보시오';if(host.querySelector('.stg').offsetHeight>host.querySelector('.stg').offsetWidth){host.style.maxWidth='560px'}window.dispatchEvent(new Event('resize'))}
 var says=[].concat(P.say||[]),si=0;$('say').textContent=says[0]||'';
 if(says.length>1)setInterval(function(){si=(si+1)%says.length;$('say').textContent=says[si]},4200);
 $('cap').textContent=NEW?'그림: '+NEW.alt+' — 재현 그림, 심묘는 지어낸 고양이':useArc?'「'+P.arc[0].cap+'」 · '+P.arc[0].src+' — 실제 자료':(P.alt||'')+' — 실제 자료';
