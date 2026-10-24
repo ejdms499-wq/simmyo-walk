@@ -124,7 +124,8 @@ var SEQ={
 };
 var SZ=null,cv,cat,sh,say,stage,cfg,raf=0,cur={x:0,y:0,f:1,k:'sitg_01',lift:0},busy=false,timer=0,si=0,react=false,REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function src(k){return '../road/m2/'+k+'.webp'}
-function pose(k,x,y,f,lift){var z=SZ[k];if(!z)return;var s=cfg.sc*.56*(k.indexOf('g_')===0?.86:1),w=z[0]*s,h=z[1]*s,ax=(f>0?z[2]:z[0]-z[2])*s;
+var YOFF={"wk_01": 3.1, "wk_02": 2.3, "wk_03": 2.4, "wk_04": -0.3, "wk_05": 3.3, "wk_06": 2.7, "wk_07": 2.8, "wk_08": -1.1, "tr_01": -0.9, "tr_02": -0.2, "tr_03": -6.6, "tr_04": 1.3, "tr_05": -1.1, "tr_06": -7.7, "fw_01": 2.2, "fw_02": 2.8, "fw_03": -1.7, "fw_04": 1.9, "fw_05": 1.7, "fw_06": 1.5, "fw_07": 1.3, "fw_08": -3.5, "fw_09": -3.6, "fw_10": -2.2, "fw_11": -0.0, "fw_12": -0.2};
+function pose(k,x,y,f,lift){var z=SZ[k];if(!z)return;lift=(lift||0)-(YOFF[k]||0)*cfg.sc*.56;var s=cfg.sc*.56*(k.indexOf('g_')===0?.86:1),w=z[0]*s,h=z[1]*s,ax=(f>0?z[2]:z[0]-z[2])*s;
   if(cat.getAttribute('src')!==src(k))cat.src=src(k);cat.style.width=w+'px';cat.style.left=(x-ax)+'px';cat.style.top=(y-h-(lift||0))+'px';
   cat.style.transformOrigin=ax+'px 100%';cat.style.transform='scaleX('+f+')';
   var sw=Math.min(w*.75,170*cfg.sc)*(1-Math.min(.5,(lift||0)/300));sh.style.width=sw+'px';sh.style.left=(x-sw/2)+'px';sh.style.top=(y-8*cfg.sc)+'px';sh.style.opacity=Math.max(.2,.45-(lift||0)/400);
@@ -135,7 +136,7 @@ function talk(t,ms){if(!t)return;say.textContent=t;pose(cur.k,cur.x,cur.y,cur.f,
 function snd(n){if(n&&window.snd)window.snd(n)}
 async function move(to,by,f){var a={x:cur.x,y:cur.y},b={x:to[0],y:to[1]},d=Math.hypot(b.x-a.x,b.y-a.y);var face=f||(b.x>=a.x?1:-1);
   if(by==='hop'){snd('hop');var h=60+Math.abs(b.y-a.y)*.5;await tw(Math.max(450,d*1.1),function(u){var e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;var k=u<.12?'jump_01':u<.3?'jump_03':u<.55?'jump_04':u<.75?'jump_06':u<.92?'jump_07':'jump_08';pose(k,a.x+(b.x-a.x)*e,a.y+(b.y-a.y)*e,face,h*4*u*(1-u))});snd('land');return}
-  var run=by==='run',sp=run?.55:.2,n=run?6:8,per=run?55:95;await tw(d/sp,function(u){var t=u*d/sp;var k=run?'tr_0'+(1+Math.floor(t/per)%n):'wk_0'+(1+Math.floor(t/per)%n);pose(k,a.x+(b.x-a.x)*u,a.y+(b.y-a.y)*u,face,0)})}
+  var run=by==='run',sp=run?.5:.2,n=run?6:8,per=run?75:110;await tw(d/sp,function(u){var t=u*d/sp;var k=run?'tr_0'+(1+Math.floor(t/per)%n):'wk_0'+(1+Math.floor(t/per)%n);pose(k,a.x+(b.x-a.x)*u,a.y+(b.y-a.y)*u,face,0)})}
 async function play(name,f){var q=SEQ[name]||[['sitg_01',800]];for(var i=0;i<q.length;i++){if(react)return;pose(q[i][0],cur.x,cur.y,f||cur.f,0);await wait(q[i][1])}}
 async function loop(){var st=cfg.steps;while(true){var s=st[si%st.length];si++;
   if(s.to)await move(s.to,s.by||'walk',s.f);
