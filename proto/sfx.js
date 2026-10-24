@@ -87,3 +87,5 @@ function playSong(url,maxSec,offset){return new Promise(function(res){try{if(mut
 window.playSong=playSong;window.stopSong=stopSong;
 window.snd=snd;window.sndWire=wire;
 })();
+/* 나팔 노래: 저작권이 끝난 옛 노래 mp3를 저장소 audio 폴더에 horn.mp3로 넣고 아래를 '../../audio/horn.mp3' 로 바꾸면 나옴 */
+window.HORN='';

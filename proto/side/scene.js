@@ -122,10 +122,11 @@ var SEQ={
  swat:[['g_s3',1500]],petal:[['g_f9',2200]],roll:[['lie_02',500],['lie_04',1400],['lie_02',500]],gazeup:[['g_s7',1900]],
  dash:[['g_s5',900]],lookback:[['sitg_11',1600]],crouch:[['g_s8',2000]],lickpaw:[['s6_04',1400]]
 };
-var SZ=null,cv,cat,sh,say,stage,cfg,raf=0,cur={x:0,y:0,f:1,k:'sitg_01',lift:0},busy=false,timer=0,si=0,react=false,REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var typ=null,SZ=null,cv,cat,sh,say,stage,cfg,raf=0,cur={x:0,y:0,f:1,k:'sitg_01',lift:0},busy=false,timer=0,si=0,react=false,REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function src(k){return '../road/m2/'+k+'.webp'}
 var YOFF={"wk_01": 3.1, "wk_02": 2.3, "wk_03": 2.4, "wk_04": -0.3, "wk_05": 3.3, "wk_06": 2.7, "wk_07": 2.8, "wk_08": -1.1, "tr_01": -0.9, "tr_02": -0.2, "tr_03": -6.6, "tr_04": 1.3, "tr_05": -1.1, "tr_06": -7.7, "fw_01": 2.2, "fw_02": 2.8, "fw_03": -1.7, "fw_04": 1.9, "fw_05": 1.7, "fw_06": 1.5, "fw_07": 1.3, "fw_08": -3.5, "fw_09": -3.6, "fw_10": -2.2, "fw_11": -0.0, "fw_12": -0.2};
-function pose(k,x,y,f,lift){var z=SZ[k];if(!z)return;lift=(lift||0)-(YOFF[k]||0)*cfg.sc*.56;var s=cfg.sc*.56*(k.indexOf('g_')===0?.86:1),w=z[0]*s,h=z[1]*s,ax=(f>0?z[2]:z[0]-z[2])*s;
+var MOUTH=/^(wk_|tr_|jump_|trot_|fw_|walkg_|react_0[345])/,dropX=null,dropY=null;
+function pose(k,x,y,f,lift){var z=SZ[k];if(!z)return;var mo=MOUTH.test(k);if(typ){if(mo){typ.style.opacity=0;dropX=null}else{if(dropX===null){dropX=x+f*52*cfg.sc;dropY=y}typ.style.left=(dropX-13*cfg.sc)+'px';typ.style.top=(dropY-26*cfg.sc)+'px';typ.style.width=(26*cfg.sc)+'px';typ.style.opacity=1}}lift=(lift||0)-(YOFF[k]||0)*cfg.sc*.56;var s=cfg.sc*.56*(k.indexOf('g_')===0?.86:1),w=z[0]*s,h=z[1]*s,ax=(f>0?z[2]:z[0]-z[2])*s;
   if(cat.getAttribute('src')!==src(k))cat.src=src(k);cat.style.width=w+'px';cat.style.left=(x-ax)+'px';cat.style.top=(y-h-(lift||0))+'px';
   cat.style.transformOrigin=ax+'px 100%';cat.style.transform='scaleX('+f+')';
   var sw=Math.min(w*.75,170*cfg.sc)*(1-Math.min(.5,(lift||0)/300));sh.style.width=sw+'px';sh.style.left=(x-sw/2)+'px';sh.style.top=(y-8*cfg.sc)+'px';sh.style.opacity=Math.max(.2,.45-(lift||0)/400);
@@ -146,9 +147,10 @@ async function poke(){if(react)return;react=true;var lines=['…','냐.','무슨
   var r=[['react_01',600],['react_02',900]];if(Math.random()<.5)r=[['react_07',1300]];if(Math.random()<.3)r=[['react_06',500],['sitg_01',350],['react_06',500]];
   for(var i=0;i<r.length;i++){pose(r[i][0],cur.x,cur.y,cur.f,0);await new Promise(function(q){setTimeout(q,r[i][1])})}react=false}
 function fit(){var w=stage.parentNode.clientWidth;var s=w/cfg.W;stage.style.transform='scale('+s+')';stage.parentNode.style.height=(cfg.H*s)+'px';var bs=Math.max(1,1/s);say.style.fontSize=(24/s*0.9)+'px'}
+window.SCENE_IDS=Object.keys(SCENES);
 window.startScene=function(id,host){cfg=SCENES[id];if(!cfg)return false;
-  host.innerHTML='<div class="stg"><img class="bgi" alt=""><div class="csh"></div><img class="cat" alt="심묘 — 누르면 반응함"><div class="csay"></div></div>';
-  stage=host.querySelector('.stg');cat=host.querySelector('.cat');sh=host.querySelector('.csh');say=host.querySelector('.csay');
+  host.innerHTML='<div class="stg"><img class="bgi" alt=""><img class="typ" src="../road/m2/type.webp" alt="" style="position:absolute;opacity:0;transition:opacity .2s"><div class="csh"></div><img class="cat" alt="심묘 — 누르면 반응함"><div class="csay"></div></div>';
+  stage=host.querySelector('.stg');typ=host.querySelector('.typ');cat=host.querySelector('.cat');sh=host.querySelector('.csh');say=host.querySelector('.csay');
   stage.style.width=cfg.W+'px';stage.style.height=cfg.H+'px';host.querySelector('.bgi').src=cfg.bg;
   fit();addEventListener('resize',fit);cat.addEventListener('click',function(e){e.stopPropagation();poke()});
   fetch('../road/m2/sizes.json').then(function(r){return r.json()}).then(function(j){SZ=j;

@@ -5,3 +5,9 @@
 var D=window.SIMMYO_DATA;if(!D||!D.P)return;
 D.P.forEach(function(p){var f=F[p.id];if(f)Object.keys(f).forEach(function(k){p[k]=f[k]});var n=F['nose_'+p.id];if(n&&n.nose)p.nose=n.nose});
 })();
+/* 지금 줄거리(ㄱ 활자)에 맞지 않는 옛 수첩 글 바꿈 · 목숨 설정 맞춤 (2026-10-24) */
+(function(){var D=window.SIMMYO_DATA;if(!D||!D.P)return;var N={
+ jodk:{k:'첫 시험 방송',t:'시험 방송 녹음 끝자락에 「야옹」 한 마디가 섞여 있었다고 한다. 기술자는 잡음이라고 적었다.'},
+ hwasin:{k:'승강기 손님',t:'승강기 안내원이 「몇 층 가십니까」 묻기도 전에, 까만 고양이가 먼저 내렸다고 한다. 어느 층이었는지는 아무도 모른다.'},
+ stadium:{k:'다섯째 목숨',t:'목숨 아홉 개 가운데 지금이 다섯째라 한다. 앞의 넷은 빗자루, 개, 전차, 냉면 배달 자전거 때문이라는데 — 소문마다 연도가 수십 년씩 다르다.'}};
+D.P.forEach(function(p){if(N[p.id])p.note=N[p.id]})})();
