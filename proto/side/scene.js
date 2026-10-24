@@ -84,13 +84,13 @@ var SCENES={
   {to:[420,885],by:'hop',f:-1,k:'sniff',snd:'sniff',say:'머릿기름 냄새요.'},
   {k:'sneeze',snd:'sneeze'},
   {to:[980,885],by:'walk',k:'blink'}]},
- books:{bg:'bg/s13.webp',W:1232,H:928,sc:1.55,start:[720,890,1],steps:[
-  {k:'lookup',say:'책이 하늘까지 쌓였소.'},
-  {k:'newsp',say:'팔리지 않는 책 위가 내 자리요.',snd:'paper'},
+ books:{bg:'bg/s13.webp',W:1232,H:928,sc:1.55,start:[560,880,1],steps:[
+  {k:'lookup',say:'책이 천장까지 쌓였소.'},
+  {to:[745,600],by:'hop',k:'newsp',say:'팔리지 않는 책 위가 내 자리요.',snd:'paper'},
   {k:'paper',snd:'paper'},
-  {to:[520,880],by:'walk',f:-1,k:'chase'},
+  {to:[330,870],by:'hop',f:-1,k:'chase'},
   {k:'dozey'},
-  {to:[720,890],by:'walk',k:'loaf'}]},
+  {to:[560,880],by:'walk',k:'loaf'}]},
  market:{bg:'bg/s14.webp',W:1232,H:928,sc:1.55,start:[860,895,-1],steps:[
   {k:'sniff',f:-1,say:'마른 생선 냄새요.',snd:'sniff'},
   {k:'hunt'},
@@ -98,14 +98,13 @@ var SCENES={
   {to:[1060,870],by:'walk',k:'tailwrap'},
   {k:'ignore',say:'…아직 문 안 열었소.'},
   {to:[860,895],by:'walk',f:-1,k:'blink'}]},
- mitsu:{bg:'bg/s08.webp',W:1232,H:928,sc:1.45,start:[330,648,-1],steps:[
-  {k:'stare',f:-1,say:'경성이 다 보이오.'},
-  {to:[200,885],by:'hop',k:'sitlook'},
-  {to:[610,795],by:'hop',k:'crouch',say:'물고기는 없소.',snd:'drip'},
-  {k:'fountain',snd:'drip',say:'물맛은 괜찮소.'},{k:'lickpaw',snd:'lick'},
-  {to:[1080,885],by:'hop',k:'loaf'},
-  {to:[330,648],by:'hop',f:-1,k:'blink'}]}
-};
+ mitsu:{bg:'bg/s08.webp',W:1232,H:928,sc:1.45,start:[560,840,-1],steps:[
+  {k:'stare',say:'경성이 다 보이오.'},
+  {to:[200,885],by:'hop',f:-1,k:'sitlook'},
+  {to:[395,775],by:'hop',k:'hunt',say:'물고기는 없소.',snd:'drip'},
+  {k:'sniff',snd:'drip',say:'물 냄새는 괜찮소.'},{k:'lickpaw',snd:'lick'},
+  {to:[640,875],by:'hop',k:'loaf'},
+  {to:[560,840],by:'walk',f:-1,k:'blink'}]}};
 /* 몸짓: [컷, 시간ms] */
 var SEQ={
  chairspin:[['g2_D9',1300],['g2_C4',1400]],tailwrap:[['g2_A8',2000]],paper:[['g2_D4',1500]],stamp:[['g2_E5',1700]],basket:[['g2_D7',2400]],ignore:[['g2_C6',2000]],
