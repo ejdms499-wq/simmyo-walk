@@ -39,11 +39,14 @@
 .face .nt{margin:0;font:15px/1.75 var(--display);color:var(--ink)}
 .face .fic{font:11.5px/1.4 var(--ui);color:var(--seal);margin-top:10px}
 .turn{font:12px/1 var(--ui);color:var(--ink3);margin-top:10px;text-align:right}
+.post{position:relative;transform:rotate(1.2deg);transition:transform .3s}.post:hover{transform:rotate(0)}
+.post::before{content:'';position:absolute;left:50%;top:-10px;width:80px;height:22px;margin-left:-40px;background:rgba(217,190,130,.66);transform:rotate(-2deg);z-index:3;pointer-events:none}
+.face{border-radius:3px}
 @media (max-width:600px){.say{display:none}.cat{min-width:60px;min-height:60px;transform:translate(-8px,-8px)}.page>.note{margin:12px 18px 0}.hint{font-size:16px;padding:5px 8px 4px}.say{font-size:16px;max-width:64%;padding:6px 9px 5px}.say::before{display:none}.note{font-size:12.5px;max-width:84%;padding:9px 10px}.spot{width:34px;height:34px;margin:-17px 0 0 -17px;line-height:30px;font-size:13px}.scene .cface{width:66%}}
 </style>
-</head><body>
+</head><body><script src="../hop.js"></script>
 <header class="bar">
-  <a class="bk" id="backl" href="../road/index.html">← 산책길</a>
+  <a class="bk" data-hop id="backl" href="../road/index.html">← 산책길</a>
   <div class="ttl"><span class="kick" id="pnum"></span><h1 id="pname"></h1></div>
   <div class="meta"><span class="ys" id="pyr"></span><button class="sndbtn" aria-pressed="true">소리</button></div>
 </header>
@@ -66,7 +69,7 @@
   <p class="cap"><span id="capb"></span><span>심묘의 눈: 바닥 높이, 파랑·노랑 위주로 보는 고양이 색을 흉내 낸 재현 그림</span></p>
   <div class="sheet">
     <article class="read">
-      <p class="catsay" id="csay"></p>
+      <div class="cs"><p class="catsay" id="csay"></p></div>
       <h2 class="h">이곳의 사실<span class="badge b-real">실제 자료</span></h2>
       <ol class="facts" id="facts"></ol>
       <p class="src" id="src"></p>
@@ -211,7 +214,7 @@ var EARS={1:'bell',2:'crackle',3:'bell',4:'crackle',5:'splash',6:'steam',7:'drip
 [].forEach.call(document.querySelectorAll('.sense button'),function(b){b.addEventListener('click',function(){var k=b.dataset.k;if(k==='ear'&&n===2&&window.playSong){(window.HORN?playSong(window.HORN,16):Promise.resolve(false)).then(function(ok){if(!ok)snd('crackle')})}else window.snd&&snd(k==='ear'?EARS[n]:'sniff')})});
 var post=$('post');function flip(){post.classList.toggle('flip');window.snd&&snd('paper')}
 post.addEventListener('click',flip);post.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});
-$('go').addEventListener('click',function(){location.href='../road/index.html?from='+n});
+$('go').addEventListener('click',function(){var r=this.getBoundingClientRect();hopTo('../road/index.html?from='+n,r.left+r.width/2,r.top+r.height/2)});
 $('backl').href='../road/index.html?from='+n;
 })();
 </script>

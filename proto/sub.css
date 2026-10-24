@@ -44,11 +44,9 @@ button{font:inherit;color:inherit}
 /* 아래 지면 */
 .sheet{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:44px;margin:38px 0 0;align-items:start}
 .read{max-width:640px}
-.h{display:flex;align-items:center;gap:10px;margin:34px 0 12px;font:12px/1 var(--ui);letter-spacing:.2em;color:var(--seal)}
+.h{display:flex;align-items:center;gap:10px;margin:40px 0 16px;font:12px/1 var(--ui);letter-spacing:.2em;color:var(--seal)}
 .h::after{content:'';flex:1;height:1px;background:var(--rule)}
 .h:first-child{margin-top:0}
-.catsay{margin:0;font:clamp(26px,3.1vw,34px)/1.22 var(--hand);color:#2a2a46}
-.catsay::before{content:'심묘 왈';display:block;font:11.5px/1 var(--ui);letter-spacing:.2em;color:var(--ink3);margin-bottom:10px}
 ol.facts{list-style:none;margin:0;padding:0;counter-reset:f}
 ol.facts li{counter-increment:f;position:relative;padding:0 0 0 34px;margin:0 0 14px;font:16.5px/1.85 var(--display)}
 ol.facts li::before{content:counter(f);position:absolute;left:0;top:.3em;width:22px;height:22px;border-radius:50%;border:1px solid var(--seal);color:var(--seal);font:700 11.5px/20px var(--ui);text-align:center}
@@ -99,5 +97,82 @@ ol.facts li::before{content:counter(f);position:absolute;left:0;top:.3em;width:2
   ol.facts li{font-size:16px}
   .leave button{width:100%}
 }
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-#arcw .h{margin-top:34px}
+
+/* ───────── 귀여움 한 겹 ───────── */
+:root{--paw:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a8402c'%3E%3Cellipse cx='12' cy='16.2' rx='5.6' ry='4.6'/%3E%3Cellipse cx='4.9' cy='10' rx='2.2' ry='2.9' transform='rotate(-18 4.9 10)'/%3E%3Cellipse cx='9.4' cy='5.6' rx='2.2' ry='3'/%3E%3Cellipse cx='14.6' cy='5.6' rx='2.2' ry='3'/%3E%3Cellipse cx='19.1' cy='10' rx='2.2' ry='2.9' transform='rotate(18 19.1 10)'/%3E%3C/svg%3E")}
+/* 머리띠 아래 발자국 줄 */
+.bar::after{content:'';position:absolute;left:0;right:0;bottom:-9px;height:8px;background:var(--paw) 0 0/10px 8px repeat-x;opacity:.16;pointer-events:none;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);mask:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+.bar .bk{display:inline-flex;align-items:center;gap:6px}
+.bar .bk::before{content:'';width:14px;height:14px;background:var(--paw) center/contain no-repeat;opacity:.55;transform:rotate(-90deg)}
+.bar .bk{font-size:0}.bar .bk::after{content:'산책길';font:14px/1 var(--ui)}
+/* 장면 틀: 모서리 살짝 둥글게, 아래에 작은 꼬리표 */
+.stage{border-radius:6px;overflow:hidden}
+.fig.live{overflow:visible}
+.fig.live #scn{border-radius:6px}
+/* 소제목: 발자국 하나 */
+.h::before{content:'';flex:none;width:15px;height:15px;background:var(--paw) center/contain no-repeat;transform:rotate(-12deg);margin-right:-2px}
+.h:nth-of-type(2n)::before{transform:rotate(14deg)}
+/* 심묘 왈: 얼굴 + 말풍선 */
+.cs{display:grid;grid-template-columns:76px minmax(0,1fr);gap:16px;align-items:start;margin:0}
+.cs::before{content:'';width:76px;height:54px;margin-top:6px;background:url(road/m2/eyeA_02.webp) center/contain no-repeat;filter:drop-shadow(0 3px 2px rgba(30,18,8,.25));animation:blink 5.2s infinite steps(1)}
+@keyframes blink{0%,94%{background-image:url(road/m2/eyeA_02.webp)}95%,98%{background-image:url(road/m2/eyeA_01.webp)}}
+.catsay{position:relative;margin:0;background:#f8f2e3;border:2px solid var(--ink);border-radius:22px 22px 22px 6px;padding:14px 22px 13px;font:clamp(25px,2.8vw,32px)/1.25 var(--hand);color:#2a2a46;box-shadow:4px 5px 0 rgba(33,28,23,.12)}
+.catsay::before{content:'심묘 왈';display:block;font:11px/1 var(--ui);letter-spacing:.24em;color:var(--seal);margin-bottom:8px}
+.catsay::after{content:'';position:absolute;left:-12px;top:26px;width:14px;height:14px;background:#f8f2e3;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
+/* 사실 번호: 꿀빛 도장 */
+ol.facts li::before{background:var(--card);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px rgba(168,64,44,.25)}
+ol.facts li:nth-child(2n)::before{transform:rotate(-8deg)}
+ol.facts li:nth-child(2n+1)::before{transform:rotate(6deg)}
+/* 귀·코: 고양이 머리 모양 단추 */
+.sense i{position:relative;border-radius:46% 46% 50% 50%;background:var(--ink);color:var(--card);border:0;font-size:14px;margin-top:8px;transition:transform .25s}
+.sense i::before,.sense i::after{content:'';position:absolute;top:-7px;width:0;height:0;border:7px solid transparent;border-bottom:10px solid var(--ink);border-top:0}
+.sense i::before{left:3px;transform:rotate(-14deg)}.sense i::after{right:3px;transform:rotate(14deg)}
+.sense button:hover i,.sense button:focus-visible i{transform:translateY(-3px) rotate(-4deg)}
+.sense button:active i{transform:scale(.92)}
+.sense button{border-radius:8px;transition:background .2s}
+.sense button:hover{background:rgba(217,154,43,.08)}
+/* 옛 지면: 테이프로 붙인 사진 */
+.arc{gap:22px 18px;padding-top:6px}
+.arc figure{position:relative;background:#fbf7ec;padding:9px 9px 10px;box-shadow:0 5px 12px -4px rgba(40,25,10,.35);transform:rotate(-1.6deg);transition:transform .3s}
+.arc figure:nth-child(2n){transform:rotate(1.4deg)}
+.arc figure:nth-child(3n){transform:rotate(-.6deg)}
+.arc figure:hover{transform:rotate(0) translateY(-3px)}
+.arc figure::before{content:'';position:absolute;left:50%;top:-9px;width:62px;height:20px;margin-left:-31px;background:rgba(217,190,130,.62);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.arc img{border:0;aspect-ratio:4/3;object-fit:cover;object-position:top}
+.arc figcaption{margin-top:8px}
+#arcw .h{margin-top:40px}
+/* 수첩 쪽지: 줄 공책 + 테이프 + 발도장 */
+.side .note{position:relative;background:#f8f2e3 linear-gradient(transparent 29px,rgba(91,79,66,.14) 30px) 0 14px/100% 30px;line-height:30px;padding:18px 20px 16px 26px;border:0;border-left:3px double rgba(168,64,44,.35);box-shadow:0 8px 18px -6px rgba(40,20,5,.3)}
+.side .note::before{content:'';position:absolute;left:50%;top:-10px;width:78px;height:22px;margin-left:-39px;background:rgba(217,190,130,.62);transform:rotate(2deg)}
+.side .note::after{content:'';position:absolute;right:12px;bottom:10px;width:34px;height:34px;background:var(--paw) center/contain no-repeat;opacity:.5;transform:rotate(-20deg)}
+.side .note small{line-height:1.4}
+/* 떠나기: 발자국이 걸어 나감 */
+.leave{position:relative;border-top:0;padding-top:34px}
+.leave::before{content:'';position:absolute;left:0;right:0;top:0;height:16px;background:var(--paw) 0 0/32px 16px repeat-x;opacity:.22;
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 30%);mask:linear-gradient(90deg,transparent 0,#000 30%)}
+.leave button{border-radius:999px;padding:15px 26px;box-shadow:0 5px 0 #000;transition:transform .15s,box-shadow .15s}
+.leave button:hover{transform:translateY(-2px);box-shadow:0 7px 0 #000}
+.leave button:active{transform:translateY(3px);box-shadow:0 2px 0 #000}
+.modes button:first-child{border-radius:999px 0 0 999px}.modes button:last-child{border-radius:0 999px 999px 0}
+.modes button{transition:background .2s,color .2s}
+/* 스크롤하면 한 칸씩 살며시 */
+.rvon .rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.rvon .rv.in{opacity:1;transform:none}
+.rvon .arc figure.rv.in{transform:rotate(-1.6deg)}
+.rvon .arc figure.rv.in:nth-child(2n){transform:rotate(1.4deg)}
+@media (max-width:600px){
+  .bar::after{display:none}
+  .bar .bk::after{font-size:13px}.bar .bk{padding:10px 2px}
+  .stage,.fig.live #scn{border-radius:0}
+  .cs{grid-template-columns:54px minmax(0,1fr);gap:12px}
+  .cs::before{width:54px;height:40px;margin-top:4px}
+  .catsay{padding:12px 16px 11px;font-size:24px}
+  .catsay::after{top:20px}
+  .arc{grid-template-columns:1fr 1fr;gap:18px 12px}
+  .leave{flex-direction:column;align-items:stretch;text-align:center}
+  .modes{padding-left:18px;padding-right:18px}
+  .modes button:first-child{border-radius:14px 0 0 14px}.modes button:last-child{border-radius:0 14px 14px 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rvon .rv{opacity:1;transform:none}}
+.cs:has(.catsay:empty){display:none}

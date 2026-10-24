@@ -187,7 +187,7 @@ h1 .sl{border-width:3px}
 .fsleep img{width:150px;height:auto}
 @media (max-width:640px){#fin h2{font-size:24px}.fhoe h1{font-size:29px}.fbig{font-size:84px}.fpc{display:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body>
+</style></head><body><script src="../hop.js"></script>
 <div id="view"><div id="far"></div><div id="world"></div><div id="fgl"></div></div>
 <div id="vig"></div><div id="grain"></div>
 
@@ -342,7 +342,7 @@ SIDES.forEach(function(sd){var p=SD[sd[0]];if(!p)return;var b=document.createEle
   b.addEventListener('click',function(e){e.stopPropagation();openSide(sd[0])})});
 function openSide(id){var p=SD[id];snd('paper');sc2.querySelector('img').src=sideImg(p);sc2.querySelector('img').alt=p.name;
   sc2.querySelector('.t').innerHTML='<b>'+p.name+'</b>'+p.where+' · '+p.yr;sc2.querySelector('q').textContent='「'+[].concat(p.say||[''])[0]+'」';
-  sc2.querySelector('.go').onclick=function(){location.href='../side/index.html?s='+id+'&at='+Math.round(D)};sc2.querySelector('.x').onclick=function(){sc2.classList.remove('on')};sc2.classList.add('on')}
+  sc2.querySelector('.go').onclick=function(){var c=(function(){var r=document.getElementById('cat').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height*.45]})();hopTo('../side/index.html?s='+id+'&at='+Math.round(D),c[0],c[1])};sc2.querySelector('.x').onclick=function(){sc2.classList.remove('on')};sc2.classList.add('on')}
 /* 연재만화 */
 ['c1.jpg','c2.jpg','c3.jpg','c4.jpg','c5.jpg','c6.jpg','c7.jpg','c8.jpg'].forEach(function(c,i){var d=document.createElement('div');d.className='cell';d.id='cell'+(i+1);d.innerHTML='<span>'+(i+1)+'</span><img src="'+c+'" alt="">';$('strip').appendChild(d)});
 var visited=[];try{visited=JSON.parse(localStorage.getItem('simmyo_road')||'[]')}catch(e){}
@@ -405,13 +405,16 @@ async function playGag(g){if(gagBusy||!script||script.p.n!==g.n)return;gagBusy=t
   await wait(800);gagBusy=false}
 
 /* ── 카메라 ── */
-var S=1,VW=0;
-function resize(){S=innerHeight/900;VW=innerWidth/S;if(VW<360){S=innerWidth/360;VW=360}}
+var S=1,VW=0,VH=900;
+function resize(){S=innerHeight/900;VW=innerWidth/S;if(VW<360){S=innerWidth/360;VW=360}
+  /* 세로 화면(폰): 하늘만 넓게 보이지 않게 더 가까이 */
+  if(innerHeight>innerWidth*1.15){S=Math.min(innerHeight/640,innerWidth/300);VW=innerWidth/S}
+  VH=innerHeight/S}
 addEventListener('resize',resize);resize();
 function cam(d,p){var t=Math.max(0,Math.min(1,(d-DC)/380));t=t*t*(3-2*t);
   var cxH=Math.max(0,Math.min(Math.min(p.x,6923)-VW*0.4,WW-VW));
   var cxV=Math.max(COLX,Math.min(p.x-VW*0.5,COLX+COLW-VW));
-  var ay=GY-(GY-430)*t;var y=Math.max(0,Math.min(p.y-ay,WH-900));
+  var yh=VH<900?Math.max(0,p.y-GY+920-VH):p.y-GY,yv=VH<900?p.y-VH*0.5:p.y-430;var y=Math.max(0,Math.min(yh+(yv-yh)*t,WH-VH));
   return{x:cxH+(cxV-cxH)*t,y:y,t:t}}
 /* ── 상태 ── */
 var D=0,T=0,last=0,moving=-1e9,face=1,acc=0,spd=0,gait=0;
@@ -454,13 +457,13 @@ function frame(now){
   if(p.seg.t==='jump'&&p.u>.02&&p.u<.98){if(!inJump){inJump=1;snd('hop')}}else if(inJump){inJump=0;snd('land')}
   var vy=Math.abs(c.y-lastCam.y);lastCam=c;var tb=Math.min(5,Math.max(0,(vy-6)*0.18));blur+=(tb-blur)*0.25;
   world.style.transform='translate('+(-c.x*S)+'px,'+(-c.y*S)+'px) scale('+S+')';
-  var vx0=c.x-300,vx1=c.x+VW+300,vy0=c.y-300,vy1=c.y+900/1+300;
+  var vx0=c.x-300,vx1=c.x+VW+300,vy0=c.y-300,vy1=c.y+VH+300;
   for(var ti=0;ti<TILES.length;ti++){var t=TILES[ti],on=t[0]<vx1&&t[0]+t[2]>vx0&&t[1]<vy1&&t[1]+t[3]>vy0;var e=tileEls[ti];if(e._on!==on){e._on=on;e.style.display=on?'block':'none'}}
   dim.style.opacity=Math.min(.55,blur/7).toFixed(2);
   if(started&&!script&&!anim&&now-lastIn>220&&now-lastIn<1200){PL.forEach(function(q){var dd=q.d-T;if(Math.abs(dd)<240&&Math.abs(dd)>2&&q.d<=TOT&&Math.sign(dd)===lastDir)T+=dd*0.25})}
   var still=now-moving>260;
   var near=null;PL.forEach(function(s){if(Math.abs(D-s.d)<(s.corner?40:130))near=s});
-  var fgl=$('fgl');fgl.style.transform='translate('+(-c.x*1.32*S)+'px,0px) scale('+S+')';var fgT=(near||still)?0:1;fgA+=(fgT-fgA)*0.08;fgl.style.opacity=(Math.max(0,1-c.t*2.5)*fgA*.6).toFixed(3);
+  var fgl=$('fgl');fgl.style.transform='translate('+(-c.x*1.32*S)+'px,'+((VH-900)*S)+'px) scale('+S+')';var fgT=(near||still)?0:1;fgA+=(fgT-fgA)*0.08;fgl.style.opacity=(Math.max(0,1-c.t*2.5)*fgA*.6).toFixed(3);
   PL.forEach(function(s){if(s.n&&D>s.d+260&&!passed[s.n]){passed[s.n]=1;stamp(s.n)}});
   if(!script&&!anim&&still&&near&&now-moving>420)startScript(near,now);
   var k,pos,f=face,rot=0,lift=0,jit=0;
@@ -509,7 +512,7 @@ function showStop(p){var st=$('stop');clearTimeout(st._m);st.classList.remove('m
   $('sname').innerHTML='<b>'+p.n+' · '+p.name+'</b>목격 엽서';
   $('sq').innerHTML='「'+p.q+'」<small> — '+p.from+'</small>';
   var b=$('sgo');var endNow=p.n===8&&visited.indexOf(8)>=0;b.className='';b.textContent=endNow?'자정 · 편집국으로 돌아가기 →':'이 골목 들어가기 · 심묘의 눈 →';
-  b.onclick=function(){if(endNow){runEnding()}else{stamp(p.n,true);speak('가보겠소.',900);setTimeout(function(){location.href=p.url},600)}};
+  b.onclick=function(){if(endNow){runEnding()}else{stamp(p.n,true);speak('가보겠소.',900);setTimeout(function(){var c=(function(){var r=document.getElementById('cat').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height*.45]})();hopTo(p.url,c[0],c[1])},450)}};
   st.classList.add('on')}
 /* 입력 */
 var started=false;
@@ -585,7 +588,7 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;
    '<section><div class="k">경성 사람들이 보낸 목격 엽서</div><h2>사람들이 본 심묘</h2><div class="fposts">'+posts+'</div>'+
    '<div class="fsleep" style="margin-top:18px"><img src="w/press.webp" alt="신문사 지하 윤전실, 신문지 더미 옆에서 자는 심묘" style="width:min(420px,70%);border:1px solid #8d7d63"><span>심묘는 지금 자는 중이오.<br><small style="font:13px/1.4 var(--ui)">숨은 심묘 '+gagFound.length+'/8 찾음</small></span></div></section>'+
    (GAGS.some(function(g){return g.ph})?'':'<!--')+'<section><div class="k">숨은 심묘를 찾으면 한 장씩 · 제보로 그린 그림</div><h2>목격 그림</h2>'+(function(){var got=GAGS.filter(function(g){return g.ph&&gagFound.indexOf(g.n)>=0});var left=GAGS.filter(function(g){return g.ph}).length-got.length;return (got.length?'<div class="fgal">'+got.map(function(g){return g.ph.map(function(q){return '<figure><img src="'+q[0]+'" alt="'+q[1]+'" loading="lazy"><figcaption>'+q[1]+'</figcaption></figure>'}).join('')}).join('')+'</div>':'')+'<p class="k" style="margin-top:10px">'+(left?'아직 못 찾은 숨은 심묘가 '+left+'곳 남았소. 골목마다 반짝이는 데를 눌러 보시오.':'목격 그림을 다 모았소.')+'</p>'})()+'</section>'+(GAGS.some(function(g){return g.ph})?'':'-->')+
-   '<section><div class="k">산책길 옆으로 샌 골목</div><h2>곁골목</h2>'+(function(){var all=SIDES.filter(function(sd){return SD[sd[0]]}),got=all.filter(function(sd){return sideV.indexOf(sd[0])>=0}),no=all.filter(function(sd){return sideV.indexOf(sd[0])<0});return (got.length?'<div class="fgal">'+got.map(function(sd){var q=SD[sd[0]];return '<figure data-s="'+sd[0]+'"><img src="'+sideImg(q)+'" alt="'+q.name+'" loading="lazy"><figcaption>'+q.name+' · '+q.yr+'</figcaption></figure>'}).join('')+'</div>':'')+(no.length?'<p class="k" style="margin-top:10px">아직 안 가 본 곁골목: '+no.map(function(sd){return '<a href="../side/index.html?s='+sd[0]+'&at='+Math.round(TOT)+'">'+SD[sd[0]].name+'</a>'}).join(' · ')+'</p>':'')})()+'</section>'+
+   '<section><div class="k">산책길 옆으로 샌 골목</div><h2>곁골목</h2>'+(function(){var all=SIDES.filter(function(sd){return SD[sd[0]]}),got=all.filter(function(sd){return sideV.indexOf(sd[0])>=0}),no=all.filter(function(sd){return sideV.indexOf(sd[0])<0});return (got.length?'<div class="fgal">'+got.map(function(sd){var q=SD[sd[0]];return '<figure data-s="'+sd[0]+'"><img src="'+sideImg(q)+'" alt="'+q.name+'" loading="lazy"><figcaption>'+q.name+' · '+q.yr+'</figcaption></figure>'}).join('')+'</div>':'')+(no.length?'<p class="k" style="margin-top:10px">아직 안 가 본 곁골목: '+no.map(function(sd){return '<a data-hop href="../side/index.html?s='+sd[0]+'&at='+Math.round(TOT)+'">'+SD[sd[0]].name+'</a>'}).join(' · ')+'</p>':'')})()+'</section>'+
    '<section><div class="k">이 산책을 만든 것들</div><h2>무엇이 진짜이고, 무엇이 지어낸 것인가</h2><div class="fcred">'+
    '<div><h3>실제 자료</h3><ul><li>1927년 「경성부관내도」</li><li>종로를 달리는 전차, 당시 사진엽서</li><li>오케 레코드 「목포의 눈물」(1935) 음반 · 국민일보(2018. 5. 23) 수록</li><li>종로 야시 · 『동아일보』 1935</li><li>단성사(1937) · 『대경성도시대관』 / 「아리랑」 광고 · 『매일신보』 1926. 10. 1</li><li>「장교정 설넝탕」 · 『동아일보』 1924. 7. 13</li><li>다방 낙랑파라 실내(1934) · 『하라 이순석 작품집』 / 이상의 다방 삽화 · 『조선중앙일보』 1934. 8. 14</li><li>한강 얼음낚시·채빙 사진엽서 · 서울역사박물관</li><li>동아일보 브나로드 운동의 한글 교재 「한글공부」 · 국가기록원</li></ul><small>장소마다 「심묘의 눈」 쪽에 출처를 자세히 적어 두었소.</small></div>'+
    '<div><h3>재현 그림</h3><ul><li>골목 배경 · 미드저니로 그린 뒤 이어 붙임</li><li>심묘의 몸짓 컷 · 챗GPT로 그린 뒤 오려 냄</li><li>「심묘의 눈」 색 · 고양이가 보는 색을 흉내 낸 것</li><li>옛 사진 속 심묘 · 실제 자료 위에 합성</li><li>소리 · 브라우저에서 직접 만든 효과음</li></ul></div>'+
@@ -598,7 +601,7 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;
   var filled=false;function fillHoe(){if(filled)return;filled=true;var sl=[].slice.call(fh.querySelectorAll('.sl.e'));sl.forEach(function(e,i){setTimeout(function(){e.classList.remove('e');e.classList.add('f');if(i%3===0)snd('tink')},250+i*130)})}
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){fillHoe();io.disconnect()}})},{root:f,threshold:.2});io.observe(fh)}else fillHoe();f.addEventListener('scroll',function(){if(f.scrollTop>innerHeight*.35)fillHoe()},{passive:true});
   f.querySelector('#fagain').onclick=function(){try{localStorage.removeItem('simmyo_road');sessionStorage.removeItem('simmyo_pro')}catch(e){}location.href='index.html'};
-  [].forEach.call(f.querySelectorAll('.fgal figure[data-s]'),function(el){el.onclick=function(){location.href='../side/index.html?s='+el.dataset.s+'&at='+Math.round(TOT)}});
+  [].forEach.call(f.querySelectorAll('.fgal figure[data-s]'),function(el){el.onclick=function(){hopTo('../side/index.html?s='+el.dataset.s+'&at='+Math.round(TOT))}});
   f.querySelector('#fback').onclick=function(){location.href='index.html?from=8'};
   requestAnimationFrame(function(){f.classList.add('on')});
   /* 핀과 실 */

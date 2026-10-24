@@ -17,9 +17,9 @@
 .stage.tall{max-width:620px;margin-left:auto;margin-right:auto}
 .fig.live{background:transparent;box-shadow:none;outline:0}
 .fig.live #scn{box-shadow:0 22px 40px -28px rgba(40,25,10,.7);outline:1px solid rgba(33,28,23,.55)}
-</style></head><body>
+</style></head><body><script src="../hop.js"></script>
 <header class="bar">
-  <a class="bk" id="backl" href="../road/index.html">← 산책길</a>
+  <a class="bk" data-hop id="backl" href="../road/index.html">← 산책길</a>
   <div class="ttl"><span class="kick">京城野錄 · 곁골목</span><h1 id="nm"></h1></div>
   <div class="meta"><span class="ys" id="ys"></span><button class="sndbtn" aria-pressed="true">소리</button></div>
 </header>
@@ -28,7 +28,7 @@
   <p class="cap"><span id="cap"></span><span id="tag"></span></p>
   <div class="sheet">
     <article class="read">
-      <p class="catsay" id="say"></p>
+      <div class="cs"><p class="catsay" id="say"></p></div>
       <h2 class="h">이곳의 사실<span class="badge b-real">실제 자료</span></h2>
       <ol class="facts" id="facts"></ol>
       <p class="src" id="src"></p>
@@ -56,7 +56,7 @@ var qs=new URLSearchParams(location.search),id=qs.get('s'),at=+qs.get('at')||0;
 var P=(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).filter(function(p){return p.id===id})[0];
 function $(i){return document.getElementById(i)}
 function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-var back='../road/index.html'+(at?'?at='+Math.round(at):'');$('backl').href=back;$('go').onclick=function(){location.href=back};
+var back='../road/index.html'+(at?'?at='+Math.round(at):'');$('backl').href=back;$('go').onclick=function(){var r=this.getBoundingClientRect();hopTo(back,r.left+r.width/2,r.top+r.height/2)};
 if(!P){$('nm').textContent='이 곁골목은 아직 없소';return}
 document.title='심묘한 산책 · 곁골목 · '+P.name;
 $('nm').textContent=P.name;$('ys').innerHTML=String(P.yr).replace(/\s*~\s*/,'~<br>').replace(/^(\d{4})$/,'$1<br>년');
@@ -64,7 +64,7 @@ $('nm').textContent=P.name;$('ys').innerHTML=String(P.yr).replace(/\s*~\s*/,'~<b
 var NEW=window.SIDE_ART&&SIDE_ART[id];var useArc=!P.ph&&!NEW&&P.arc&&P.arc.length;var real=!!P.ph||useArc;
 var LIVE=!!(window.startScene&&window.SCENE_IDS&&SCENE_IDS.indexOf(id)>=0);if(!LIVE)$('img').src=NEW?R+NEW.src.replace('../../',''):(useArc?R+P.arc[0].img:IMG+P.img+'.webp');$('img').alt=(NEW?NEW.alt:(useArc?P.arc[0].cap:(P.alt||P.name)))+(real?' (옛 자료)':' (재현 그림)');
 $('tag').textContent=P.where;
-var host=$('scn'),live=window.startScene&&startScene(id,host);if(live){var mh=innerHeight-(innerWidth<600?140:150),stg=host.querySelector('.stg'),ar=stg.offsetWidth/Math.max(1,stg.offsetHeight);if(innerWidth>=600)host.style.maxWidth=Math.max(320,mh*ar)+'px';$('fig').classList.add('live');if(host.querySelector('.stg').offsetHeight>host.querySelector('.stg').offsetWidth)$('fig').classList.add('tall');window.dispatchEvent(new Event('resize'))}
+var host=$('scn'),live=window.startScene&&startScene(id,host);if(live){var mh=innerHeight-(innerWidth<600?140:150),stg=host.querySelector('.stg'),ar=stg.offsetWidth/Math.max(1,stg.offsetHeight);if(innerWidth>=600){var sw=Math.max(320,mh*ar);host.style.maxWidth=sw+'px';if(stg.offsetHeight<=stg.offsetWidth)document.querySelector('.page').style.maxWidth=Math.min(1180,Math.max(960,sw+40))+'px'}$('fig').classList.add('live');if(host.querySelector('.stg').offsetHeight>host.querySelector('.stg').offsetWidth)$('fig').classList.add('tall');window.dispatchEvent(new Event('resize'))}
 function modern(t){[['끈소','끊소'],['만소','많소'],['겟소','겠소'],['잇소','있소'],['잇고','있고'],['갓소','같소'],['엇소','었소'],['앗소','았소'],['업소','없소'],['업더','없더'],['아즉','아직'],['우에','위에'],['압','앞'],['안즌','앉은'],['몰랏','몰랐'],['엿소','였소']].forEach(function(r){t=t.split(r[0]).join(r[1])});return t}
 var says=[].concat(P.say||[]);var line=P.night||says[1]||says[0]||'';$('say').textContent=line?'「'+modern(line)+'」':'';
 $('cap').innerHTML=live?'<b>재현 그림</b> · 심묘를 누르면 대꾸하오':NEW?'<b>재현 그림</b> · '+esc(NEW.alt):useArc?'<b>실제 자료</b> · 「'+esc(P.arc[0].cap)+'」 '+esc(P.arc[0].src):'<b>실제 자료</b> · '+esc(P.alt||'');
