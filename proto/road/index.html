@@ -215,6 +215,7 @@ h1 .sl{border-width:3px}
 
 <script src="../../simmyo-data.js"></script>
 <script src="../../simmyo-data-fix.js"></script>
+<script src="../side-art.js"></script>
 <script src="../sfx.js"></script>
 <script>
 (function(){
@@ -322,7 +323,7 @@ PL.forEach(function(p){if(!p.pc)return;var c=el('div','pc');c.style.left=p.pc[0]
 
 /* ── 곁골목: 산책길 옆으로 새는 골목(예전 「심묘가 보는 경성」 장소들) ── */
 var SIDES=[['expo',640,600,-4],['hwasin',1420,610,3],['jodk',2960,640,-3],['bingsu',3860,560,2],['sakura',5190,600,-3],['stadium',6560,600,3],['bonjeong',7270,2440,-2],['mitsu',7560,3436,-2]];
-function sideImg(p){var N=window.SIDE_ART&&SIDE_ART[p.id];if(N)return N.src;return p.ph||!(p.arc&&p.arc.length)?'../../assets/simmyo/s/'+p.img+'.webp':'../../'+p.arc[0].img}
+function sideImg(p){var N=window.SIDE_ART&&SIDE_ART[p.id];if(N)return '../../'+N.src;return p.ph||!(p.arc&&p.arc.length)?'../../assets/simmyo/s/'+p.img+'.webp':'../../'+p.arc[0].img}
 var SD={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){SD[p.id]=p});
 var sideV=[];try{sideV=JSON.parse(localStorage.getItem('simmyo_side')||'[]')}catch(e){}
 var sc2=document.createElement('div');sc2.id='sidecard';sc2.innerHTML='<img alt=""><div><div class="t"></div><q></q><button class="go">곁골목 들어가기 →</button><button class="x">닫기</button></div>';document.body.appendChild(sc2);
@@ -341,13 +342,13 @@ visited.forEach(function(n){stamp(n,false)});
 var gc=document.createElement('span');gc.id='gagc';$('strip').appendChild(gc);
 /* ── 숨은 심묘: 장소마다 반짝이는 곳을 누르면 ── */
 var GAGS=[
- {n:1,hx:2206,hy:598,type:'peek',clip:[2168,552,77,93],cx:2206,show:52,say:'차표 검사요.',snd:'mrrp',after:'proud'},
- {n:2,hx:3213,hy:600,type:'peek',clip:[3168,562,92,80],round:1,cx:3214,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1},
- {n:3,hx:4752,hy:610,type:'peek',clip:[4690,520,124,122],cx:4752,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll'},
- {n:4,hx:5870,hy:462,type:'peek',clip:[5790,380,160,96],cx:5870,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4'},
+ {n:1,hx:2206,hy:598,type:'peek',clip:[2168,552,77,93],cx:2206,show:52,say:'차표 검사요.',snd:'mrrp',after:'proud',ph:[['w/w07.webp','전차 지붕 위, 바람 맞으며'],['w/w01.webp','냉면 배달 자전거 옆에서']]},
+ {n:2,hx:3213,hy:600,type:'peek',clip:[3168,562,92,80],round:1,cx:3214,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1,ph:[['w/w05.webp','유성기 나팔 속에서 빼꼼']]},
+ {n:3,hx:4752,hy:610,type:'peek',clip:[4690,520,124,122],cx:4752,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll',ph:[['w/w10.webp','군밤 한 톨 머리에 얹고']]},
+ {n:4,hx:5870,hy:462,type:'peek',clip:[5790,380,160,96],cx:5870,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4',ph:[['w/w09.webp','「아리랑」 줄 맨 앞 자리'],['w/w02.webp','극장 옆 호떡집, 한 장 물고']]},
  {n:5,hx:7016,hy:2128,type:'peek',clip:[6950,2040,140,98],cx:7020,show:52,say:'빨래는 따뜻하오.',snd:'mrrp',after:'lick'},
- {n:6,hx:7123,hy:2648,type:'peek',clip:[7080,2560,90,96],cx:7123,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm'},
- {n:7,hx:7352,hy:3376,type:'paw',clip:[7290,3300,200,97],px:7372,item:{src:'m2/kastera.webp',x:7350,y:3393,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum'},
+ {n:6,hx:7123,hy:2648,type:'peek',clip:[7080,2560,90,96],cx:7123,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm',ph:[['w/w06.webp','배달 자전거 옆 놋그릇 속']]},
+ {n:7,hx:7352,hy:3376,type:'paw',clip:[7290,3300,200,97],px:7372,item:{src:'m2/kastera.webp',x:7350,y:3393,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum',ph:[['w/w03.webp','탁자 밑에서 발만 쏙'],['w/w04.webp','소다수 앞, 아무 일도 없었다는 얼굴'],['w/w08.webp','등나무 의자 위 낮잠']]},
  {n:8,hx:6800,hy:4060,type:'perch',to:{x:6800,y:4074},say:'낚시꾼 자리요.',snd:'mrrp',after:'perch8'}
 ];
 var gagFound=[];try{gagFound=JSON.parse(localStorage.getItem('simmyo_gag')||'[]')}catch(e){}
@@ -379,7 +380,7 @@ async function playGag(g){if(gagBusy||!script||script.p.n!==g.n)return;gagBusy=t
     if(g.song){snd('crackle');var ok=window.playSong?await playSong('../audio/horn.mp3',16):false;if(!ok)snd('horn');await wait(ok?3600:400)}else snd(g.snd);
     await wait(700);im.src=IMG.s2_03.src;await wait(650);im.src=IMG.s2_01.src;await wait(600);im.src=IMG.s2_02.src;await wait(500);
     await tween(260,function(u){at2(g.show*(1-u*u)-6*u)});}
-  else if(g.type==='paw'){var pw=document.createElement('img');pw.src='m2/paw.webp';var pwW=55*K*1.5,pwH=96*K*1.5;pw.style.width=pwW+'px';z.appendChild(pw);
+  else if(g.type==='paw'){var pw=document.createElement('img');pw.src='m2/paw2.webp';var pwW=48,pwH=48*316/226;pw.style.width=pwW+'px';z.appendChild(pw);
     var it=g.itemEl,iw=g.item.w,ih=it.offsetHeight||26;var ic=document.createElement('img');ic.src=g.item.src;ic.style.width=iw+'px';z.appendChild(ic);it.style.opacity=0;
     function put(o,dx,io){pw.style.left=(g.px-pwW/2-c[0]+dx)+'px';pw.style.top=(c[3]-o)+'px';ic.style.left=(g.item.x-iw/2-c[0]+(io?dx*.8:0))+'px';ic.style.top=(g.item.y-ih-c[1]+(io?Math.max(0,-(o-pwH*.62)):0))+'px'}
     put(0,0,0);await wait(200);
