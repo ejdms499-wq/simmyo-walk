@@ -135,11 +135,11 @@ var world=$('world');
 world.innerHTML=TILES.map(function(t,i){return '<img class="bgt" src="t'+i+'.jpg" alt="" style="position:absolute;left:'+t[0]+'px;top:'+t[1]+'px;width:'+t[2]+'px;height:'+t[3]+'px">'}).join('');
 /* ── 길(ㄱ): 종로를 따라 동쪽 → 모퉁이 축대에 뛰어올라 → 아래 계단으로 뛰어내려 → 청계천 ── */
 var GY=858;
-var V=[ {x:200,y:GY,s:1},{x:6923,y:GY,s:1,t:'walk'},{x:7290,y:664,s:.86,t:'jump',h:110},{x:7033,y:1180,s:.82,t:'jump',h:70,cine:1},
-        {x:7023,y:1300,s:.92,t:'walk'},{x:7073,y:1450,s:1.06,t:'walk'},{x:7173,y:2000,s:1.15,t:'jump',h:80,cine:1},{x:7183,y:2192,s:1.18,t:'walk'},
-        {x:7533,y:2862,s:.95,t:'jump',h:50,cine:1},{x:7093,y:2862,s:.95,t:'walk'},
-        {x:7133,y:3528,s:.9,t:'jump',h:50,cine:1},{x:7513,y:3528,s:.9,t:'walk'},
-        {x:7233,y:4240,s:.8,t:'jump',h:50,cine:1},{x:6973,y:4300,s:.82,t:'walk'} ];
+var V=[ {x:200,y:GY,s:1},{x:6923,y:GY,s:1,t:'walk'},{x:7290,y:664,s:1,t:'jump',h:110},{x:7033,y:1180,s:1,t:'jump',h:70,cine:1},
+        {x:7023,y:1300,s:1,t:'walk'},{x:7073,y:1450,s:1,t:'walk'},{x:7173,y:2000,s:1,t:'jump',h:80,cine:1},{x:7183,y:2192,s:1,t:'walk'},
+        {x:7533,y:2862,s:1,t:'jump',h:50,cine:1},{x:7093,y:2862,s:1,t:'walk'},
+        {x:7133,y:3528,s:1,t:'jump',h:50,cine:1},{x:7513,y:3528,s:1,t:'walk'},
+        {x:7233,y:4240,s:1,t:'jump',h:50,cine:1},{x:6973,y:4300,s:1,t:'walk'} ];
 var SEG=[],TOT=0;for(var i=1;i<V.length;i++){var a=V[i-1],b=V[i],l=Math.hypot(b.x-a.x,b.y-a.y);SEG.push({a:a,b:b,l:l,s:TOT,t:b.t,h:b.h||0,cine:b.cine});TOT+=l}
 function vd(k){var d=0;for(var i=0;i<k;i++)d+=SEG[i].l;return d}
 var DC=vd(1);
@@ -151,30 +151,28 @@ var PL=[
  {n:1,name:'종로 전차',x:2120,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',url:'../lens/index.html',pc:[2480,470,-4],
   steps:[{s:'tram'},{s:'roll'},{s:'tram',say:'차표는 없소.'},{s:'lookback',x:2150,y:508}],x0:2120,y0:508},
  {n:2,name:'종로 음반가게',x:3330,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
-  steps:[{s:'horn',x:3222,y:700},{s:'tilt',x:3330,y:692,say:'이 소리, 마음에 드오.'},{s:'blink',x:3330,y:692},{s:'horn',x:3222,y:700,say:'…안이 더 잘 들리오.'}]},
+  steps:[{s:'tilt',x:3230,y:692,f:-1,say:'이 소리, 마음에 드오.'},{s:'blink',x:3230,y:692,f:-1},{s:'groom',x:3230,y:692,f:-1},{s:'lookback',x:3230,y:692,f:-1,say:'…또 돌아가오.'}]},
  {n:3,name:'종로 야시',x:4450,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',pc:[4880,470,-3],
   steps:[{s:'persim',x:4440,y:GY,say:'둥근 건 다 내 것이오.'},{s:'chestnut',x:4500,y:GY},{s:'yawn',x:4500,y:GY},{s:'persim',x:4440,y:GY}]},
  {n:4,name:'단성사 앞',x:5923,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',pc:[5153,520,2],
   steps:[{s:'queue',x:5900,y:GY,say:'줄은 사람이 서는 것이오.'},{s:'doze',x:5900,y:GY},{s:'bored',x:5900,y:GY,say:'…아직이오?'},{s:'nap',x:5900,y:GY}]},
  {n:0,name:'모퉁이',d:vd(2),corner:1,
-  steps:[{s:'gaze',x:7290,y:664,sc:.86},{s:'lookback',x:7290,y:664,sc:.86,say:'저 아래도 경성이오.'},{s:'gaze',x:7290,y:664,sc:.86}]},
+  steps:[{s:'gaze',x:7290,y:664},{s:'lookback',x:7290,y:664,say:'저 아래도 경성이오.'},{s:'gaze',x:7290,y:664}]},
  {n:5,name:'청계천 빨래터',d:vd(7),q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
-  steps:[{s:'shake',x:7183,y:2192,sc:1.1,say:'물은 차오.'},{s:'drip',x:7183,y:2192,sc:1.1},{s:'wash',x:7183,y:2192,sc:1.1}]},
+  steps:[{s:'shake',x:7183,y:2192,say:'물은 차오.'},{s:'drip',x:7183,y:2192},{s:'wash',x:7183,y:2192}]},
  {n:6,name:'설렁탕집',d:vd(9),q:'배달통 위에서 내려오질 않소.',from:'설렁탕집 배달꾼',ph:null,pc:[6453,2560,-2],
-  steps:[{s:'bowls',x:7430,y:2808,sc:.9,say:'그릇 위가 제일 따뜻하오.'},{s:'loafs',x:7030,y:2862,sc:.9},{s:'nap',x:7030,y:2862,sc:.9,say:'국물 냄새가 나오.'}]},
+  steps:[{s:'bowls',x:7430,y:2808,say:'그릇 위가 제일 따뜻하오.'},{s:'loafs',x:7030,y:2862},{s:'nap',x:7030,y:2862,say:'국물 냄새가 나오.'}]},
  {n:7,name:'다방 창가',d:vd(11),q:'시인보다 오래 창밖을 보더라.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
-  steps:[{s:'glass',x:7420,y:3528,sc:.85,say:'안이 더 재미있소.'},{s:'rain',x:7470,y:3528,sc:.85,say:'비가 오오.'},{s:'tilt',x:7470,y:3528,sc:.85},{s:'glass',x:7420,y:3528,sc:.85}]},
+  steps:[{s:'glass',x:7420,y:3528,say:'안이 더 재미있소.'},{s:'rain',x:7470,y:3528,say:'비가 오오.'},{s:'tilt',x:7470,y:3528},{s:'glass',x:7420,y:3528}]},
  {n:8,name:'한강',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더라.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
-  steps:[{s:'slide',x:7020,y:4300,sc:.8},{s:'hole',x:6990,y:4304,sc:.8,say:'기다리는 중이오.'},{s:'fish',x:6990,y:4304,sc:.8,say:'올라왔소. 멸치는 아니오.'},{s:'fishloaf',x:6990,y:4304,sc:.8}]}
+  steps:[{s:'slide',x:7020,y:4300},{s:'hole',x:6990,y:4304,say:'기다리는 중이오.'},{s:'fish',x:6990,y:4304,say:'올라왔소. 멸치는 아니오.'},{s:'fishloaf',x:6990,y:4304}]}
 ];
 PL.forEach(function(p){if(p.d==null)p.d=p.x-200});
 /* ── 심묘 몸짓 (챗GPT 시트 76컷) ── */
-var AR={"react_01":1.15,"react_02":1.57,"react_03":1.56,"react_04":1.04,"react_05":2.1,"react_06":1.52,"react_07":1.01,"react_08":0.82,"end_01":1.33,"end_02":1.18,"end_03":1.15,"end_04":1.06,"end_05":1.09,"end_06":1.6,"end_07":1.66,"end_08":1.67,"fb_01":0.72,"fb_02":0.76,"fb_03":0.76,"fb_04":0.76,"fb_05":0.71,"fb_06":0.71,"fb_07":0.74,"fb_08":0.73,"gaga_01":1.64,"gaga_02":0.98,"gaga_03":1.47,"gaga_04":1.08,"gaga_05":1.11,"gaga_06":0.91,"gaga_07":0.89,"gaga_08":1.46,"gagb_01":1.07,"gagb_02":0.94,"gagb_03":0.92,"gagb_04":0.95,"gagb_05":1.3,"gagb_06":0.97,"gagb_07":0.97,"gagb_08":1.55,"jump_01":2.56,"jump_02":1.86,"jump_03":1.35,"jump_04":2.03,"jump_05":1.86,"jump_06":1.15,"jump_07":1.24,"jump_08":1.48,"lie_01":1.66,"lie_02":2.61,"lie_03":1.6,"lie_04":1.73,"lie_05":1.4,"lie_06":1.39,"lie_07":1.36,"lie_08":1.36,"sitg_01":1.1,"sitg_02":1.11,"sitg_03":1.08,"sitg_04":1.11,"sitg_05":1.16,"sitg_06":1.15,"sitg_07":1.11,"sitg_08":1.06,"sitg_09":1.09,"sitg_10":0.89,"sitg_11":0.96,"sitg_12":1.08,"trot_01":1.69,"trot_02":1.67,"trot_03":1.67,"trot_04":1.67,"trot_05":1.71,"trot_06":1.96,"trot_07":1.6,"trot_08":0.87,"walkg_01":1.03,"walkg_02":1.09,"walkg_03":1.12,"walkg_04":1.06,"walkg_05":1.0,"walkg_06":1.08,"walkg_07":1.12,"walkg_08":1.06};
-// 화면 높이(세계 좌표): 같은 몸통 크기가 되도록 맞춤
-var HT={react_01:120,react_02:100,react_03:100,react_04:110,react_05:74,react_06:104,react_07:128,react_08:134,walkg:112,trot:84,jump_01:56,jump_02:70,jump_03:96,jump_04:70,jump_05:76,jump_06:104,jump_07:92,jump_08:96,sitg:124,sitg_10:132,sitg_11:128,lie_01:88,lie_02:62,lie_03:72,lie_04:78,lie_05:92,lie_06:92,lie_07:92,lie_08:92,fb:126,end_01:104,end_02:104,end_03:104,end_04:124,end_05:120,end_06:88,end_07:86,end_08:86,
-  gaga_01:80,gaga_02:150,gaga_03:120,gaga_04:116,gaga_05:112,gaga_06:132,gaga_07:132,gaga_08:76,gagb_01:124,gagb_02:150,gagb_03:140,gagb_04:140,gagb_05:84,gagb_06:126,gagb_07:130,gagb_08:84,trot_08:132,trot_07:86,trot_05:84,trot_06:76};
-var IMG={};Object.keys(AR).forEach(function(k){var i=new Image();i.src='m/'+k+'.webp';IMG[k]=i});
-function hOf(k){return HT[k]||HT[k.split('_')[0]]||110}
+var SZ={"jump_01":[292,114,154.8],"jump_02":[280,151,137.6],"jump_03":[244,181,114.5],"jump_04":[296,147,160.9],"jump_05":[269,145,137.1],"jump_06":[270,238,138.5],"jump_07":[248,200,109.5],"jump_08":[254,173,139.2],"fb_01":[174,241,81.3],"fb_02":[178,236,80.3],"fb_03":[179,237,82.1],"fb_04":[178,236,82.5],"fb_05":[158,221,80.6],"fb_06":[159,225,81.6],"fb_07":[161,219,81.9],"fb_08":[162,222,83.2],"end_01":[247,187,112.9],"end_02":[222,189,105.0],"end_03":[224,198,95.3],"end_04":[191,180,92.7],"end_05":[256,237,115.5],"end_06":[251,157,133.9],"end_07":[245,148,122.6],"end_08":[247,148,127.6],"gagb_01":[217,203,107.4],"gagb_02":[192,204,98.9],"gagb_03":[198,216,102.9],"gagb_04":[175,198,80.4],"gagb_05":[259,196,124.5],"gagb_06":[189,196,97.3],"gagb_07":[193,198,101.0],"gagb_08":[221,143,114.1],"sitg_01":[184,165,94.0],"sitg_02":[183,164,94.2],"sitg_03":[179,164,91.0],"sitg_04":[183,164,93.4],"sitg_05":[194,165,97.1],"sitg_06":[189,162,97.2],"sitg_07":[188,167,98.0],"sitg_08":[186,174,98.0],"sitg_09":[199,179,107.7],"sitg_10":[168,191,90.1],"sitg_11":[169,181,94.3],"sitg_12":[199,181,98.6],"trot_01":[264,158,139.4],"trot_02":[258,155,134.1],"trot_03":[259,156,136.1],"trot_04":[264,158,141.8],"trot_05":[258,152,135.9],"trot_06":[281,144,150.4],"trot_07":[277,175,142.2],"trot_08":[154,178,75.9],"gaga_01":[231,141,118.2],"gaga_02":[217,222,104.3],"gaga_03":[250,175,119.1],"gaga_04":[214,198,95.9],"gaga_05":[231,208,104.1],"gaga_06":[176,198,80.2],"gaga_07":[164,192,76.1],"gaga_08":[226,164,128.3],"walkg_01":[206,201,88.1],"walkg_02":[217,200,94.3],"walkg_03":[219,197,94.6],"walkg_04":[213,202,93.2],"walkg_05":[206,208,85.8],"walkg_06":[216,202,94.5],"walkg_07":[220,197,95.5],"walkg_08":[210,200,90.1],"lie_01":[210,123,107.9],"lie_02":[269,104,139.0],"lie_03":[265,167,117.6],"lie_04":[242,137,120.8],"lie_05":[208,149,97.9],"lie_06":[210,151,99.1],"lie_07":[195,147,91.9],"lie_08":[203,149,95.2],"react_01":[271,238,122.4],"react_02":[239,153,131.6],"react_03":[276,177,128.8],"react_04":[219,210,93.2],"react_05":[317,152,158.2],"react_06":[225,149,117.5],"react_07":[219,219,97.5],"react_08":[166,202,81.0]};
+var K=0.56; /* 모든 컷을 같은 배율로: 심묘 크기 일정 */
+var AR={};Object.keys(SZ).forEach(function(k){AR[k]=SZ[k][0]/SZ[k][1]});
+var IMG={};Object.keys(SZ).forEach(function(k){var i=new Image();i.src='m2/'+k+'.webp';IMG[k]=i});
 // 짧은 몸짓 묶음: [그림, 시간ms, 흔들림]
 var SEQ={
  blink:[['sitg_01',700],['sitg_02',110],['sitg_03',140],['sitg_02',110],['sitg_01',900]],
@@ -204,7 +202,7 @@ var IDLE=['blink','yawn','groom','scratch','tilt','lookback','sneeze','roll','bl
 var IDLESAY={tilt:'?',lookback:'…',scratch:'흠.',sneeze:'에취.',yawn:'으음.',roll:'',hunt:'…!',proud:'흠.'};
 /* ── 장면 요소 ── */
 function el(tag,cls,parent){var e=document.createElement(tag);if(cls)e.className=cls;(parent||world).appendChild(e);return e}
-var shadow=el('div','shadow');var typ=el('img','sp');typ.src='m/type.webp';typ.alt='';typ.style.width='22px';typ.style.opacity=0;typ.style.transition='opacity .2s';
+var shadow=el('div','shadow');var typ=el('img','sp');typ.src='m2/type.webp';typ.alt='';typ.style.width='22px';typ.style.opacity=0;typ.style.transition='opacity .2s';
 var cat=el('img','sp');cat.id='cat';cat.alt='심묘';
 var say=el('div','say');
 PL.forEach(function(p){if(!p.pc)return;var c=el('div','pc');c.style.left=p.pc[0]+'px';c.style.top=p.pc[1]+'px';c.style.transform='rotate('+p.pc[2]+'deg)';
@@ -225,16 +223,16 @@ function cam(d,p){var t=Math.max(0,Math.min(1,(d-DC)/380));t=t*t*(3-2*t);
   var ay=GY-(GY-430)*t;var y=Math.max(0,Math.min(p.y-ay,WH-900));
   return{x:cxH+(cxV-cxH)*t,y:y,t:t}}
 /* ── 상태 ── */
-var D=0,T=0,last=0,moving=-1e9,face=1,acc=0,spd=0;
+var D=0,T=0,last=0,moving=-1e9,face=1,acc=0,spd=0,gait=0;
 var qs=new URLSearchParams(location.search),from=+qs.get('from')||0;
 if(from){var fp=PL.filter(function(p){return p.n===from})[0];if(fp){D=T=fp.d-70}history.replaceState(null,'',location.pathname)}
 var anim=null,script=null,seq=null,lastCam={x:0,y:0},blur=0,passed={},carry=true,putT=0,idleSince=0,napped=false,curPos={x:0,y:0,s:1};
-function setPose(k,x,y,s,f,rot,lift,jit){var img=IMG[k];var h=hOf(k)*s,w=h*AR[k];
+function setPose(k,x,y,s,f,rot,lift,jit){var img=IMG[k],z=SZ[k],sc=K*s;var w=z[0]*sc,h=z[1]*sc,ax=(f>0?z[2]:z[0]-z[2])*sc;
   if(cat.getAttribute('src')!==img.src)cat.src=img.src;
   var jx=jit?(Math.random()-.5)*jit*2:0;
-  cat.style.width=w+'px';cat.style.left=(x-w/2+jx)+'px';cat.style.top=(y-h-(lift||0))+'px';
-  cat.style.transform='scaleX('+f+') rotate('+(rot||0)+'deg)';
-  var sw=Math.max(40,w*0.75)*(1-Math.min(.5,(lift||0)/260));shadow.style.width=sw+'px';shadow.style.left=(x-sw/2)+'px';shadow.style.top=(y-7*s)+'px';shadow.style.opacity=Math.max(.25,.55-(lift||0)/300);
+  cat.style.width=w+'px';cat.style.left=(x-ax+jx)+'px';cat.style.top=(y-h-(lift||0))+'px';
+  cat.style.transformOrigin=ax+'px 100%';cat.style.transform='scaleX('+f+') rotate('+(rot||0)+'deg)';
+  var sw=Math.min(w*0.8,150*s)*(1-Math.min(.5,(lift||0)/260));shadow.style.width=sw+'px';shadow.style.left=(x-sw/2)+'px';shadow.style.top=(y-7*s)+'px';shadow.style.opacity=Math.max(.25,.5-(lift||0)/300);
   say.style.top=(y-h-(lift||0)-14)+'px';say._x=x}
 function speak(t,ms){if(!t){say.classList.remove('on');return}say.textContent=t;say.classList.add('on');clearTimeout(say._t);say._t=setTimeout(function(){say.classList.remove('on')},ms||1800)}
 function hop(from,to,dur,h,done){anim={a:from,b:to,t0:performance.now(),dur:dur,h:h,done:done}}
@@ -265,7 +263,7 @@ function frame(now){
   if(!script&&!anim&&still&&near&&now-moving>420)startScript(near,now);
   var k,pos,f=face,rot=0,lift=0,jit=0;
   if(anim){var u=Math.min(1,(now-anim.t0)/anim.dur),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
-    pos={x:anim.a.x+(anim.b.x-anim.a.x)*e,y:anim.a.y+(anim.b.y-anim.a.y)*e,s:anim.a.s+(anim.b.s-anim.a.s)*e};lift=anim.h*4*u*(1-u);
+    pos={x:anim.a.x+(anim.b.x-anim.a.x)*e,y:anim.a.y+(anim.b.y-anim.a.y)*e,s:1};lift=anim.h*4*u*(1-u);
     f=anim.b.x>=anim.a.x?1:-1;if(Math.abs(anim.b.x-anim.a.x)<3)f=face;
     k=u<.12?'jump_01':u<.3?'jump_03':u<.55?'jump_04':u<.75?'jump_06':u<.92?'jump_07':'sitg_01';
     if(u>=1){var dn=anim.done;anim=null;if(dn)dn()}}
@@ -277,9 +275,10 @@ function frame(now){
       k=u<.06?'jump_01':u<.14?'jump_02':u<.3?'jump_03':u<.48?'jump_04':u<.6?'jump_05':u<.8?'jump_06':u<.92?'jump_07':'jump_08';seq=null;idleSince=now}
     else if(!still){var stair=Math.abs(p.dy)>Math.abs(p.dx)*0.6&&p.seg.t==='walk';
       if(stair){var down=(v>0)===(p.dy>0);k=(down?'fb_0':'fb_0')+(down?(1+Math.floor(acc/30)%4):(5+Math.floor(acc/30)%4));f=1}
-      else if(spd>9){k='trot_0'+(5+Math.floor(acc/40)%2)}
-      else if(spd>4.5){k='trot_0'+(1+Math.floor(acc/22)%4)}
-      else{k='walkg_0'+(1+Math.floor(acc/22)%8);lift=Math.abs(Math.sin(acc/22*Math.PI/4))*2.5}
+      else{ if(gait===2&&spd<7)gait=1;else if(gait===1&&spd>12)gait=2;else if(gait===1&&spd<3)gait=0;else if(gait===0&&spd>6)gait=1;
+        if(gait===2)k='trot_0'+(5+Math.floor(acc/46)%2);
+        else if(gait===1)k='trot_0'+(1+Math.floor(acc/26)%4);
+        else{k='walkg_0'+(1+Math.floor(acc/24)%8);lift=Math.abs(Math.sin(acc/24*Math.PI/2))*2}}
       seq=null;idleSince=now;napped=false}
     else{ // 가만히: ㄱ을 내려놓고 이런저런 몸짓
       if(carry&&now-moving<520){k='trot_07'}
@@ -292,8 +291,7 @@ function frame(now){
           var st2=seqFrame(now);k=st2[0];jit=st2[2]||0;lift=st2[3]||0}}}
   }
   curPos=pos;
-  var breathe=(!anim&&(still||script))?1+Math.sin(now/520)*0.01:1;
-  setPose(k,pos.x,pos.y,pos.s*breathe,f,rot,lift,jit);
+  setPose(k,pos.x,pos.y,1,f,rot,lift,jit);
   if(say.classList.contains('on')){var bw=say.offsetWidth;var sx2=Math.max(c.x+bw/2+10,Math.min(say._x,c.x+VW-bw/2-10));say.style.left=sx2+'px'}
   PL.forEach(function(s){if(s.pcel)s.pcel.classList.toggle('near',s===near)});
   var sn=near&&!near.corner?near:null;if(sn!==stopNow){stopNow=sn;showStop(sn)}
@@ -321,14 +319,15 @@ var hold=0;function holdOn(d){clearInterval(hold);move(d*40);hold=setInterval(fu
 [['fw',1],['bk',-1]].forEach(function(a){var b=$(a[0]);b.addEventListener('pointerdown',function(){holdOn(a[1])});['pointerup','pointerleave','pointercancel'].forEach(function(ev){b.addEventListener(ev,function(){clearInterval(hold)})})});
 cat.style.pointerEvents='auto';cat.addEventListener('click',function(){if(!started)return;var lines=['…','냐.','무슨 일이오.','흠.','쓰다듬지 마시오.'];speak(lines[Math.floor(Math.random()*lines.length)],1300);if(!script&&!anim&&performance.now()-moving>600){playSeq(['startle','grumpy','knead','rub','tilt','sneeze'][Math.floor(Math.random()*6)],performance.now(),false)}});
 /* ── 자정 엔딩: 편집국 앞 → 편집장 책상 → 지도 ── */
-var endDiv=document.createElement('div');endDiv.id='end';endDiv.innerHTML='<div id="estage"><img id="ebg" alt=""><img id="etype" src="m/type.webp" alt=""><div id="eshadow"></div><img id="ecat" alt="심묘"><div id="esay" class="say"></div></div><div id="ecap"></div><button id="ebtn">다음 날 아침 · 편집장이 지도를 이어 보다 →</button>';
+var endDiv=document.createElement('div');endDiv.id='end';endDiv.innerHTML='<div id="estage"><img id="ebg" alt=""><img id="etype" src="m2/type.webp" alt=""><div id="eshadow"></div><img id="ecat" alt="심묘"><div id="esay" class="say"></div></div><div id="ecap"></div><button id="ebtn">다음 날 아침 · 편집장이 지도를 이어 보다 →</button>';
 document.body.appendChild(endDiv);
 var estage=$('estage'),ecat=$('ecat'),etype=$('etype'),esay=$('esay'),eshadow=$('eshadow');
 var EW=1600,EH=897,efx=.5;
 function efit(){var s=Math.max(innerWidth/EW,innerHeight/EH);var ox=innerWidth/2-efx*EW*s;ox=Math.min(0,Math.max(innerWidth-EW*s,ox));var oy=(innerHeight-EH*s)/2;estage.style.transform='translate('+ox+'px,'+oy+'px) scale('+s+')'}
 addEventListener('resize',efit);
-function ecatSet(k,x,y,h,f,lift){var w=h*AR[k];ecat.src=IMG[k].src;ecat.style.width=w+'px';ecat.style.left=(x-w/2)+'px';ecat.style.top=(y-h-(lift||0))+'px';ecat.style.transform='scaleX('+f+')';
-  var sw=w*.7*(1-Math.min(.5,(lift||0)/300));eshadow.style.width=sw+'px';eshadow.style.left=(x-sw/2)+'px';eshadow.style.top=(y-6)+'px';eshadow.style.opacity=.5-(lift||0)/400;esay.style.left=x+'px';esay.style.top=(y-h-(lift||0)-12)+'px'}
+var ES=1;
+function ecatSet(k,x,y,h,f,lift){var z=SZ[k],sc=K*ES,w=z[0]*sc,hh=z[1]*sc,ax=(f>0?z[2]:z[0]-z[2])*sc;ecat.src=IMG[k].src;ecat.style.width=w+'px';ecat.style.left=(x-ax)+'px';ecat.style.top=(y-hh-(lift||0))+'px';ecat.style.transformOrigin=ax+'px 100%';ecat.style.transform='scaleX('+f+')';
+  var sw=Math.min(w*.75,150*ES)*(1-Math.min(.5,(lift||0)/300));eshadow.style.width=sw+'px';eshadow.style.left=(x-sw/2)+'px';eshadow.style.top=(y-6)+'px';eshadow.style.opacity=.5-(lift||0)/400;esay.style.left=x+'px';esay.style.top=(y-hh-(lift||0)-12)+'px'}
 function wait(ms){return new Promise(function(r){setTimeout(r,reduce?0:ms)})}
 function tween(dur,fn){return new Promise(function(r){if(reduce){fn(1);r();return}var t0=performance.now();(function f(now){var u=Math.min(1,(now-t0)/dur);fn(u);if(u<1)requestAnimationFrame(f);else r()})(t0)})}
 function esp(t,ms){esay.textContent=t;esay.style.marginLeft='0px';esay.classList.add('on');requestAnimationFrame(function(){var r=esay.getBoundingClientRect(),sc=r.width/esay.offsetWidth||1,dx=0;if(r.left<8)dx=(8-r.left)/sc;if(r.right>innerWidth-8)dx=(innerWidth-8-r.right)/sc;esay.style.marginLeft=dx+'px'});setTimeout(function(){esay.classList.remove('on')},ms||1800)}
@@ -338,12 +337,12 @@ async function runEnding(){
   if(ending)return;ending=true;started=false;speak(null);$('stop').classList.remove('on');
   endDiv.classList.add('on');var bg=$('ebg');bg.src='e2.jpg';efx=.42;efit();etype.style.opacity=0;
   await wait(500);cap('자정.<br>심묘가 편집국으로 돌아왔소.');
-  var gy=EH*.885;
+  var gy=EH*.885;ES=1.0;
   await tween(3600,function(u){var x=1700-(1700-560)*u;var k='walkg_0'+(1+Math.floor(u*3600/110)%8);ecatSet(k,x,gy,112,-1,Math.abs(Math.sin(u*40))*2)});
   ecatSet('sitg_11',560,gy,122,-1);await wait(1400);
   ecatSet('trot_08',560,gy,126,1);esp('창에 불이 켜져 있소.',1600);await wait(1800);
   endDiv.classList.add('fade');await wait(700);
-  bg.src='e1.jpg';efx=.6;efit();cap('편집장 책상.');
+  bg.src='e1.jpg';efx=.6;efit();ES=1.3;cap('편집장 책상.');
   ecatSet('jump_01',1560,EH+60,110,-1);endDiv.classList.remove('fade');await wait(500);
   var dy=EH*.86;
   await tween(900,function(u){var x=1560+(1150-1560)*u,y=(EH+60)+(dy-(EH+60))*u;var k=u<.15?'jump_03':u<.5?'jump_04':u<.8?'jump_06':'jump_07';ecatSet(k,x,y,u<.5?105:130,-1,180*4*u*(1-u))});
