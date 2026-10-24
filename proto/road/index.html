@@ -115,8 +115,15 @@ h1 .sl{border-width:3px}
 #photo p{margin:8px 0 2px;font:24px/1.15 var(--hand);color:#2a2a46}
 #photo .nx{font:12px/1 var(--ui);color:#a8402c}
 
-#albb{position:fixed;left:108px;bottom:16px;z-index:60;font:12.5px/1 var(--ui);background:rgba(243,236,219,.92);color:#211c17;border:1px solid #211c17;border-radius:16px;padding:8px 12px 7px 12px;cursor:pointer}
-@media (max-width:640px){#albb{left:12px;bottom:14px}}
+#albb{position:fixed;left:16px;bottom:62px;z-index:60;display:flex;align-items:center;gap:10px;background:#e9dcbd;color:#1f1a15;border:2px solid #1f1a15;padding:9px 14px 9px 10px;cursor:pointer;box-shadow:4px 5px 0 rgba(31,26,21,.85);transform:rotate(-2deg);transition:transform .2s;font:inherit}
+#albb:hover{transform:rotate(0) translateY(-2px)}
+#albb .np{width:30px;height:36px;background:#f6ecd2;border:1.5px solid #1f1a15;position:relative;flex:none;background-image:linear-gradient(#1f1a15,#1f1a15),repeating-linear-gradient(#8a7b66 0 1.5px,transparent 1.5px 5px);background-size:22px 5px,22px 18px;background-position:3px 4px,3px 13px;background-repeat:no-repeat}
+#albb .tx{display:flex;flex-direction:column;align-items:flex-start;font:800 17px/1.1 var(--disp)}
+#albb small{font:11px/1 var(--ui);letter-spacing:.14em;color:#a8402c;margin-bottom:4px}
+#albb .nw{position:absolute;right:-10px;top:-12px;background:#a8402c;color:#fff4e3;font:700 11px/1 var(--ui);padding:5px 7px;border-radius:999px;animation:nwp 1.6s ease-in-out infinite}
+#albb.seen .nw{display:none}
+@keyframes nwp{50%{transform:scale(1.12)}}
+@media (max-width:640px){#albb{left:12px;bottom:auto;top:96px;padding:6px 10px 6px 7px;transform:rotate(-1deg)}#albb .tx{font-size:14px}#albb small{font-size:10px}#albb .np{width:20px;height:26px}#albb .nw{right:-14px;top:-12px;font-size:10px;padding:4px 6px}}
 .sndbtn{position:fixed;left:14px;bottom:16px;z-index:60;font:12.5px/1 var(--ui);background:rgba(243,236,219,.92);color:#211c17;border:1px solid #211c17;border-radius:16px;padding:8px 12px 7px 30px;cursor:pointer}
 .sndbtn::before{content:'';position:absolute;left:11px;top:50%;width:12px;height:12px;margin-top:-6px;background:#211c17;clip-path:polygon(0 30%,35% 30%,80% 0,80% 100%,35% 70%,0 70%)}
 .sndbtn[aria-pressed=false]{opacity:.7;text-decoration:line-through}
@@ -213,7 +220,7 @@ h1 .sl{border-width:3px}
 <div id="ctrl"><button id="bk" aria-label="뒤로 걷기">←</button><button id="fw" aria-label="앞으로 걷기">→</button></div>
 <div id="toast" role="status"></div>
 <button class="sndbtn" id="sndb" aria-pressed="true">소리 켬</button>
-<button id="albb" aria-label="심묘 화첩 보기">화첩</button>
+<button id="albb" aria-label="연재만화 심묘 읽기"><span class="np"></span><span class="tx"><small>京城野錄 連載漫畵</small>신문 연재 「심묘」</span><span class="nw">새 연재</span></button>
 
 <div id="open">
   <div id="hoe" role="button" tabindex="0" aria-label="호외 · 누르면 산책 시작">
@@ -596,7 +603,8 @@ async function runEnding(){
   cap('편집장은 목격 엽서를<br>지도 위에 하나씩 이어 보았다.');await wait(900);$('ebtn').classList.add('on');var _sk=document.getElementById('eskip');if(_sk)_sk.remove();
 }
 $('ebtn').addEventListener('click',runFinal);
-$('albb').addEventListener('click',function(){var r=this.getBoundingClientRect();hopTo('../album/index.html?at='+Math.round(D),r.left+r.width/2,r.top+r.height/2)});
+try{if(localStorage.getItem('simmyo_alb'))$('albb').classList.add('seen')}catch(e){}
+$('albb').addEventListener('click',function(){try{localStorage.setItem('simmyo_alb','1')}catch(e){};var r=this.getBoundingClientRect();hopTo('../album/index.html?at='+Math.round(D),r.left+r.width/2,r.top+r.height/2)});
 /* ── 마지막: 편집장의 지도 · 되찾은 호외 · 엽서 · 만든 것들 ── */
 var FPOS={1:[30,28],2:[43,28],3:[56,28],4:[69,28],5:[85,43],6:[85,57],7:[85,71],8:[85,86]},FCORNER=[85,28];
 function runFinal(){if(runFinal.d)return;runFinal.d=1;
