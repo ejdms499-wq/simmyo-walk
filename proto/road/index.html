@@ -248,14 +248,14 @@ function at(d){var q=seg(d),s=q.s,u=q.u;var x=s.a.x+(s.b.x-s.a.x)*u,y=s.a.y+(s.b
   var lift=s.t==='jump'?s.h*4*u*(1-u)+Math.max(0,(s.a.y-s.b.y))*0:0;return{x:x,y:y,gy:y,lift:lift,sc:sc,seg:s,u:u,dx:s.b.x-s.a.x,dy:s.b.y-s.a.y}}
 /* ── 장소 ── */
 var PL=[
- {n:1,name:'종로 전차',url:'../lens/index.html?p=1',x:2120,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',pc:[2480,470,-4],keep:1,
-  steps:[{s:'wind',say:'바람이 좋소.'},{s:'wire'},{s:'bell',say:'…땡땡.'},{s:'rope2',say:'줄이 있으면 당기오.'},{s:'ticket2',say:'차표 여기 있소.'},{s:'tflat',say:'차표는 없소.'},{s:'ttail'},{s:'tram'},{s:'tyawn'},{s:'roll'}],x0:2120,y0:508},
- {n:2,name:'종로 음반가게',url:'../lens/index.html?p=2',x:3330,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
-  steps:[{s:'follow',x:3230,y:692,f:-1,say:'빙글빙글 도오.'},{s:'earl',x:3230,y:692,f:-1,say:'이 소리, 마음에 드오.'},{s:'beat',x:3230,y:692,f:-1},{s:'spin',x:3330,y:GY,f:-1,say:'빙글빙글.'},{s:'follow',x:3230,y:692,f:-1},{s:'over',x:3230,y:692,f:-1,say:'…끝났소.'},{s:'recsit',x:3330,y:GY,f:-1,say:'이건 내 방석이오.'},{s:'rectap',x:3330,y:GY,f:-1}]},
+ {n:1,name:'종로 전차',url:'../lens/index.html?p=1',x:2230,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',pc:[2480,470,-4],keep:1,
+  steps:[{s:'wind',say:'바람이 좋소.'},{s:'wire'},{s:'bell',say:'…땡땡.'},{s:'rope2',say:'줄이 있으면 당기오.'},{s:'ticket2',say:'차표 여기 있소.'},{s:'tflat',say:'차표는 없소.'},{s:'ttail'},{s:'tram'},{s:'tyawn'},{s:'roll'}],x0:2230,y0:605},
+ {n:2,name:'종로 음반가게',url:'../lens/index.html?p=2',x:3500,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
+  steps:[{s:'follow',x:3400,y:775,f:-1,say:'빙글빙글 도오.'},{s:'earl',x:3400,y:775,f:-1,say:'이 소리, 마음에 드오.'},{s:'beat',x:3400,y:775,f:-1},{s:'spin',x:3500,y:GY,f:-1,say:'빙글빙글.'},{s:'follow',x:3400,y:775,f:-1},{s:'over',x:3400,y:775,f:-1,say:'…끝났소.'},{s:'recsit',x:3500,y:GY,f:-1,say:'이건 내 방석이오.'},{s:'rectap',x:3500,y:GY,f:-1}]},
  {n:3,name:'종로 야시',url:'../lens/index.html?p=3',x:4450,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',pc:[4880,470,-3],
   steps:[{s:'sniff',x:4440,y:GY,say:'군밤 냄새요.'},{s:'hot',x:4440,y:GY,say:'앗.'},{s:'cwalk',x:4520,y:GY},{s:'proll',x:4470,y:GY,say:'둥근 건 다 내 것이오.'},{s:'glow',x:4470,y:GY},{s:'chroll',x:4470,y:GY,say:'군밤도 둥글소.'},{s:'hat',x:4470,y:GY,say:'여기 숨었소.'}]},
- {n:4,name:'단성사 앞',url:'../lens/index.html?p=4',x:5923,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',pc:[5153,520,2],
-  steps:[{s:'under',x:5860,y:GY},{s:'proud4',x:5900,y:GY,say:'줄은 사람이 서는 것이오.'},{s:'sign',x:5900,y:GY},{s:'rope',x:5940,y:GY},{s:'stand',x:5940,y:GY},{s:'ticket',x:5900,y:GY,say:'표는 이것이오.'},{s:'ticket2',x:5900,y:GY},{s:'smug',x:5900,y:GY},{s:'nod',x:5900,y:GY,say:'…아직이오?'},{s:'nap',x:5900,y:GY}]},
+ {n:4,name:'단성사 앞',url:'../lens/index.html?p=4',x:6095,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',pc:[5153,520,2],
+  steps:[{s:'under',x:6040,y:GY},{s:'proud4',x:6095,y:GY,say:'줄은 사람이 서는 것이오.'},{s:'sign',x:6095,y:GY},{s:'rope',x:6140,y:GY},{s:'stand',x:6140,y:GY},{s:'ticket',x:6095,y:GY,say:'표는 이것이오.'},{s:'ticket2',x:6095,y:GY},{s:'smug',x:6095,y:GY},{s:'nod',x:6095,y:GY,say:'…아직이오?'},{s:'nap',x:6095,y:GY}]},
  {n:0,name:'모퉁이',d:vd(2),corner:1,
   steps:[{s:'gaze',x:7290,y:664},{s:'lookback',x:7290,y:664,say:'저 아래도 경성이오.'},{s:'gaze',x:7290,y:664}]},
  {n:5,name:'청계천 빨래터',url:'../lens/index.html?p=5',d:vd(7),q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
@@ -353,10 +353,10 @@ visited.forEach(function(n){stamp(n,false)});
 var gc=document.createElement('span');gc.id='gagc';$('strip').appendChild(gc);
 /* ── 숨은 심묘: 장소마다 반짝이는 곳을 누르면 ── */
 var GAGS=[
- {n:1,hx:2206,hy:598,type:'peek',clip:[2168,552,77,93],cx:2206,show:52,say:'차표 검사요.',snd:'mrrp',after:'proud',ph:[['w/w07.webp','전차 지붕 위, 바람 맞으며'],['w/w01.webp','냉면 배달 자전거 옆에서']]},
- {n:2,hx:3213,hy:600,type:'peek',clip:[3168,562,92,80],round:1,cx:3214,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1,ph:[['w/w05.webp','유성기 나팔 속에서 빼꼼']]},
- {n:3,hx:4752,hy:610,type:'peek',clip:[4690,520,124,122],cx:4752,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll',ph:[['w/w10.webp','군밤 한 톨 머리에 얹고']]},
- {n:4,hx:5870,hy:462,type:'peek',clip:[5790,380,160,96],cx:5870,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4',ph:[['w/w09.webp','「아리랑」 줄 맨 앞 자리'],['w/w02.webp','극장 옆 호떡집, 한 장 물고']]},
+ {n:1,hx:2148,hy:690,type:'peek',clip:[2122,655,52,75],cx:2148,show:46,say:'차표 검사요.',snd:'mrrp',after:'proud',ph:[['w/w07.webp','전차 지붕 위, 바람 맞으며'],['w/w01.webp','냉면 배달 자전거 옆에서']]},
+ {n:2,hx:3297,hy:705,type:'peek',clip:[3264,672,66,64],round:1,cx:3297,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1,ph:[['w/w05.webp','유성기 나팔 속에서 빼꼼']]},
+ {n:3,hx:4500,hy:680,type:'peek',clip:[4440,610,120,100],cx:4500,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll',ph:[['w/w10.webp','군밤 한 톨 머리에 얹고']]},
+ {n:4,hx:5980,hy:560,type:'peek',clip:[5900,489,160,96],cx:5980,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4',ph:[['w/w09.webp','「아리랑」 줄 맨 앞 자리'],['w/w02.webp','극장 옆 호떡집, 한 장 물고']]},
  {n:5,hx:7016,hy:2128,type:'peek',clip:[6950,2040,140,98],cx:7020,show:52,say:'빨래는 따뜻하오.',snd:'mrrp',after:'lick'},
  {n:6,hx:7123,hy:2648,type:'peek',clip:[7080,2560,90,96],cx:7123,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm',ph:[['w/w06.webp','배달 자전거 옆 놋그릇 속']]},
  {n:7,hx:7352,hy:3376,type:'paw',clip:[7290,3300,200,97],px:7372,item:{src:'m2/kastera.webp',x:7350,y:3393,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum',ph:[['w/w03.webp','탁자 밑에서 발만 쏙'],['w/w04.webp','소다수 앞, 아무 일도 없었다는 얼굴'],['w/w08.webp','등나무 의자 위 낮잠']]},
