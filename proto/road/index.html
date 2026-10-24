@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>심묘한 산책 · ㄱ자 길</title>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta property="og:title" content="심묘한 산책 — 수배 고양이를 따라 걷는 1930년대 경성"><meta property="og:description" content="까만 고양이 심묘를 따라 1930년대 경성 골목을 걷는 그림 산책"><meta property="og:image" content="https://ejdms499-wq.github.io/simmyo-walk/proto/share/og/il-a_jar.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>심묘한 산책 · ㄱ자 길</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap">
 <style>
@@ -351,13 +351,13 @@ PL.forEach(function(p){return; /* 벽에 붙던 엽서는 멈춤 카드와 겹�
 
 
 /* ── 곁골목: 산책길 옆으로 새는 골목(예전 「심묘가 보는 경성」 장소들) ── */
-var SIDES=[['expo',700,760,-3],['hwasin',1300,760,3],['photo',2900,760,-2],['jodk',3350,760,3],['barber',4980,760,-3],['bingsu',5480,760,2],['books',6750,700,-2],['sakura',7440,1450,-3],['stadium',7440,1900,3],['bonjeong',5920,2650,-2],['post',7440,3750,2],['seoulst',7440,4200,-3],['mitsu',5920,5000,2],['market',7440,6300,-2]];
+var SIDES=[['expo',700,760,-3],['hwasin',1300,760,3],['photo',2900,760,-2],['jodk',3350,760,3],['barber',4980,760,-3],['bingsu',5480,760,2],['books',6750,700,-2],['sakura',6600,1640,-3],['stadium',6230,1960,3],['bonjeong',6560,2780,-2],['post',6700,4060,2],['seoulst',6960,4130,-3],['mitsu',6930,5000,2],['market',6980,6440,-2]];
 function sideImg(p){var N=window.SIDE_ART&&SIDE_ART[p.id];if(N)return '../../'+N.src;return p.ph||!(p.arc&&p.arc.length)?'../../assets/simmyo/s/'+p.img+'.webp':'../../'+p.arc[0].img}
 var SD={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){SD[p.id]=p});
 var sideV=[];try{sideV=JSON.parse(localStorage.getItem('simmyo_side')||'[]')}catch(e){}
 var sc2=document.createElement('div');sc2.id='sidecard';sc2.innerHTML='<img alt=""><div><div class="t"></div><q></q><button class="go">곁골목 들어가기 →</button><button class="x">닫기</button></div>';document.body.appendChild(sc2);
 var sideBtns=[];
-function sideNear(x,y){sideBtns.forEach(function(b){b.classList.toggle('near',Math.abs(b._x-x)<330&&Math.abs(b._y-y)<420)})}
+function sideNear(x,y){sideBtns.forEach(function(b){b.classList.toggle('near',Math.abs(b._x-x)<420&&Math.abs(b._y-y)<480)})}
 SIDES.forEach(function(sd){var p=SD[sd[0]];if(!p)return;var b=document.createElement('button');b.className='side'+(sideV.indexOf(sd[0])>=0?' v':'');b.style.left=sd[1]+'px';b.style.top=sd[2]+'px';b.style.setProperty('--r',sd[3]+'deg');
   b.innerHTML='<span class="seal"></span><span class="tag"><small>곁골목 · '+p.yr+'</small>'+p.name+'</span>';b._x=sd[1];b._y=sd[2];sideBtns.push(b);b.setAttribute('aria-label','곁골목 '+p.name);world.appendChild(b);
   b.addEventListener('click',function(e){e.stopPropagation();openSide(sd[0])})});

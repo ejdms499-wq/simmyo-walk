@@ -32,7 +32,7 @@ function ensure(){if(root)return;root=document.createElement('div');root.id='shr
   '<button data-a="x"><i style="background:#111">X</i>X(트위터)</button>'+
   '<button data-a="threads"><i style="background:#111">@</i>스레드</button>'+
   '<button data-a="link"><i style="background:#a8402c">⧉</i>링크 복사</button>'+
-  '</div><div class="msg" aria-live="polite"></div></div>';
+  '</div><div class="msg" aria-live="polite"></div><div style="font:12px/1.5 Gowun Dodum,sans-serif;color:#8a7b66;text-align:center;margin-top:4px">휴대폰에서는 위 그림을 길게 눌러 바로 저장할 수도 있소</div></div>';
   document.body.appendChild(root);
   root.addEventListener('click',function(e){if(e.target===root)close()});
   root.querySelector('.x').onclick=close;
@@ -51,7 +51,7 @@ async function makeCard(){
   x.fillStyle='#ebe2cc';x.fillRect(0,0,W,H);
   for(var i=0;i<2600;i++){x.fillStyle='rgba(90,70,40,'+(Math.random()*.06)+')';x.fillRect(Math.random()*W,Math.random()*H,1.6,1.6)}
   var pw=W-150,ph=Math.min(pw*im.height/im.width,880),iw=ph*im.width/im.height;if(iw>pw){iw=pw;ph=pw*im.height/im.width}
-  var fx=(W-iw)/2-22,fy=Math.max(90,(H-(ph+44)-300)/2);
+  var fx=(W-iw)/2-22,fy=Math.max(80,(H-(ph+44)-250)/2);
   x.save();x.translate(W/2,fy+ph/2+22);x.rotate(-0.012);x.translate(-W/2,-(fy+ph/2+22));
   x.shadowColor='rgba(40,25,10,.35)';x.shadowBlur=30;x.shadowOffsetY=12;x.fillStyle='#fbf6e8';x.fillRect(fx,fy,iw+44,ph+44);x.shadowColor='transparent';
   x.drawImage(im,fx+22,fy+22,iw,ph);x.strokeStyle='rgba(33,28,23,.5)';x.lineWidth=2;x.strokeRect(fx+22,fy+22,iw,ph);
@@ -60,36 +60,48 @@ async function makeCard(){
   var ty=fy+ph+44+86;
   x.fillStyle='#2a2a46';x.font='64px "Nanum Pen Script", cursive';x.textAlign='center';
   var t=cur.caption||cur.title||'심묘';wrap(x,t,W/2,ty,W-160,64);
-  x.fillStyle='#a8402c';x.font='700 26px "Nanum Myeongjo", serif';x.fillText(SITE,W/2,H-74);
-  x.fillStyle='#8a7b66';x.font='20px "Gowun Dodum", sans-serif';x.fillText(cur.title?cur.title:'',W/2,H-40);
+  var by=Math.min(H-60,ty+64*Math.min(3,Math.ceil(x.measureText(t).width/(W-160)))+70);x.fillStyle='#a8402c';x.font='700 26px "Nanum Myeongjo", serif';x.fillText(SITE,W/2,by);
+  x.fillStyle='#8a7b66';x.font='20px "Gowun Dodum", sans-serif';x.fillText(cur.title?cur.title:'',W/2,by+34);
   // 발도장
   x.fillStyle='rgba(168,64,44,.85)';paw(x,W-120,H-120,38);
-  return new Promise(function(ok){c.toBlob(function(b){ok(b)},'image/jpeg',.9)})}
+  return new Promise(function(ok){c.toBlob(function(b){ok(b)},'image/jpeg',.86)})}
 function wrap(x,t,cx,y,maxw,lh){var w=t.split(''),line='',lines=[];w.forEach(function(ch){if(x.measureText(line+ch).width>maxw){lines.push(line);line=ch}else line+=ch});lines.push(line);lines.slice(0,3).forEach(function(l,i){x.fillText(l,cx,y+i*lh)})}
 function paw(x,cx,cy,r){x.beginPath();x.ellipse(cx,cy+r*.25,r*.42,r*.34,0,0,7);x.fill();[[-.5,-.15],[-.18,-.5],[.18,-.5],[.5,-.15]].forEach(function(p){x.beginPath();x.ellipse(cx+p[0]*r,cy+p[1]*r,r*.15,r*.2,0,0,7);x.fill()})}
-function fname(){return 'simmyo_'+(cur.title||'그림').replace(/[\\/:*?"<>|\s]+/g,'_')+'.jpg'}
+function fname(){return 'simmyo-'+(idOf(cur.src)||'card')+'.jpg'}
+var BASE=(function(){var h=location.href.split('#')[0].split('?')[0],i=h.indexOf('/proto/');return i>=0?h.slice(0,i+1):h.replace(/[^\/]*$/,'')})();
+var shareURL='';
+function idOf(src){try{var p=new URL(src,location.href).pathname.split('/');return p[p.length-2]+'-'+p[p.length-1].replace(/\.\w+$/,'')}catch(e){return ''}}
+var INAPP=/KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER|DaumApps/i.test(navigator.userAgent);
 function file(){return new File([cardBlob],fname(),{type:'image/jpeg'})}
 function canFiles(){try{return !!(navigator.canShare&&navigator.canShare({files:[file()]}))}catch(e){return false}}
 function download(){var a=document.createElement('a');a.href=cardURL;a.download=fname();document.body.appendChild(a);a.click();a.remove()}
-async function sysShare(){try{await navigator.share({files:[file()],title:SITE,text:text()+' '+pageURL()});return true}catch(e){return e&&e.name==='AbortError'}}
-async function copy(t){try{await navigator.clipboard.writeText(t);return true}catch(e){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();return ok}}
+async function shareFiles(){try{await navigator.share({files:[file()]});return 'ok'}catch(e){return e&&e.name==='AbortError'?'cancel':'fail'}}
+async function shareLink(){try{await navigator.share({title:(cur.title||'심묘')+' — '+SITE,text:text(),url:shareURL});return 'ok'}catch(e){return e&&e.name==='AbortError'?'cancel':'fail'}}
+async function copy(t){try{await navigator.clipboard.writeText(t);return true}catch(e){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();return ok}}
 function kakaoReady(){return new Promise(function(ok){if(!KAKAO_KEY)return ok(false);if(window.Kakao&&Kakao.isInitialized&&Kakao.isInitialized())return ok(true);var s=document.createElement('script');s.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js';s.onload=function(){try{Kakao.init(KAKAO_KEY);ok(true)}catch(e){ok(false)}};s.onerror=function(){ok(false)};document.head.appendChild(s)})}
+function go(u){var w=window.open(u,'_blank');if(!w)location.href=u}
 async function act(a){say('');window.snd&&snd('paper');
-  if(a==='save'){download();say('그림을 저장했소. (휴대폰이면 사진 보관함이나 다운로드 폴더를 보시오)');return}
-  if(a==='x'){open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text())+'&url='+encodeURIComponent(pageURL()),'_blank','noopener');return}
-  if(a==='threads'){open('https://www.threads.net/intent/post?text='+encodeURIComponent(text()+' '+pageURL()),'_blank','noopener');return}
-  if(a==='link'){say(await copy(pageURL())?'링크를 복사했소. 원하는 곳에 붙여 넣으시오.':'복사가 안 되었소. 주소창의 주소를 직접 복사하시오.');return}
+  if(a==='x'){go('https://twitter.com/intent/tweet?text='+encodeURIComponent(text())+'&url='+encodeURIComponent(shareURL));return}
+  if(a==='threads'){go('https://www.threads.net/intent/post?text='+encodeURIComponent(text()+'\n'+shareURL));return}
+  if(a==='link'){say(await copy(shareURL)?'링크를 복사했소. 붙여 넣으면 그림이 미리보기로 뜨오.':'복사가 안 되었소. 아래 주소를 길게 눌러 복사하시오: '+shareURL);return}
+  if(a==='save'){
+    if(INAPP){say('앱 안 브라우저에서는 저장이 막혀 있소. 위 그림을 길게 눌러 「이미지 저장」을 고르시오.');return}
+    if(/iPhone|iPad|Android/i.test(navigator.userAgent)&&canFiles()){var r=await shareFiles();if(r!=='fail'){say(r==='ok'?'「이미지 저장」을 고르면 사진에 들어가오.':'');return}}
+    download();say('그림을 저장했소. 휴대폰이면 위 그림을 길게 눌러 저장할 수도 있소.');return}
   if(a==='kakao'){
-    if(await kakaoReady()){try{Kakao.Share.sendDefault({objectType:'feed',content:{title:cur.title||'심묘',description:cur.caption||SITE,imageUrl:new URL(cur.src,location.href).href,link:{mobileWebUrl:pageURL(),webUrl:pageURL()}},buttons:[{title:'심묘 따라 걷기',link:{mobileWebUrl:pageURL(),webUrl:pageURL()}}]});return}catch(e){}}
-    if(canFiles()){await sysShare();return}
-    await copy(text()+' '+pageURL());say('링크를 복사했소. 카카오톡 대화창에 붙여 넣으시오. (휴대폰에서는 공유창으로 바로 보낼 수 있소)');return}
+    if(await kakaoReady()){try{Kakao.Share.sendDefault({objectType:'feed',content:{title:cur.title||'심묘',description:cur.caption||SITE,imageUrl:BASE+'proto/share/card/'+idOf(cur.src)+'.jpg',link:{mobileWebUrl:shareURL,webUrl:shareURL}},buttons:[{title:'심묘 따라 걷기',link:{mobileWebUrl:shareURL,webUrl:shareURL}}]});return}catch(e){}}
+    if(navigator.share){var r=await shareLink();if(r==='ok'||r==='cancel'){if(r==='ok')say('보냈소.');return}}
+    await copy(text()+'\n'+shareURL);say('링크를 복사했소. 카카오톡 대화창에 붙여 넣으면 그림이 미리보기로 뜨오.');return}
   if(a==='insta'){
-    if(canFiles()){var ok=await sysShare();if(!ok)say('공유창이 열리지 않았소. 「이미지 저장」 후 인스타그램 앱에서 올리시오.');return}
+    if(canFiles()){var r=await shareFiles();if(r==='ok'||r==='cancel')return}
+    if(INAPP){say('위 그림을 길게 눌러 저장한 뒤, 인스타그램 앱에서 올리시오.');return}
     download();say('그림을 저장했소. 인스타그램은 앱에서만 올릴 수 있으니, 휴대폰 인스타그램에서 이 그림을 골라 올리시오.');return}
 }
 async function openShare(o){ensure();cur=o||{};root.classList.add('on');say('그림을 준비하는 중…');root.querySelector('.pv').removeAttribute('src');
-  try{cardBlob=await makeCard();if(cardURL)URL.revokeObjectURL(cardURL);cardURL=URL.createObjectURL(cardBlob);root.querySelector('.pv').src=cardURL;root.querySelector('.pv').alt=(cur.title||'')+' 공유 그림';say('')}
+  var id=idOf(cur.src);shareURL=location.href.split('#')[0];cardBlob=null;
+  try{var r=await fetch(BASE+'proto/share/card/'+id+'.jpg');if(r.ok){cardBlob=await r.blob();shareURL=BASE+'proto/share/'+id+'.html'}}catch(e){}
+  try{if(!cardBlob)cardBlob=await makeCard();if(cardURL)URL.revokeObjectURL(cardURL);cardURL=URL.createObjectURL(cardBlob);root.querySelector('.pv').src=cardURL;root.querySelector('.pv').alt=(cur.title||'')+' 공유 그림';say('')}
   catch(e){say('그림을 불러오지 못했소.')}}
-window.SimmyoShare={open:openShare};
+window.SimmyoShare={open:openShare,card:function(o){cur=o;return makeCard()}};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-share-src]');if(!b)return;e.preventDefault();e.stopPropagation();openShare({src:b.getAttribute('data-share-src'),title:b.getAttribute('data-share-title')||'',caption:b.getAttribute('data-share-caption')||''})},true);
 })();
