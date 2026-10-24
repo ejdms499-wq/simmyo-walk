@@ -19,6 +19,8 @@ var css=''+
 '#shr .grid button:hover{background:#fff8e8}'+
 '#shr .grid i{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;font:700 15px/1 sans-serif;font-style:normal;color:#fff}'+
 '#shr .msg{min-height:20px;margin-top:10px;font:13px/1.5 "Gowun Dodum",sans-serif;color:#a8402c;text-align:center}'+
+'#shr .sh{position:relative}#shr .tst{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%) scale(.9);width:max-content;max-width:86%;background:#211c17;color:#f4eddc;font:15px/1.6 "Gowun Dodum",sans-serif;text-align:center;padding:16px 20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.25s;z-index:3}#shr .tst.on{opacity:1;transform:translate(-50%,-50%) scale(1)}#shr .tst b{color:#f7d27a}'+
+'#shr .lk{display:flex;gap:6px;margin-top:10px}#shr .lk[hidden]{display:none}#shr .lk input{flex:1;min-width:0;font:13px/1 sans-serif;padding:10px;border:1px solid #8a7b66;border-radius:8px;background:#fffaf0;color:#211c17}#shr .lk button{border:0;border-radius:8px;background:#211c17;color:#f4eddc;padding:0 14px;font:13px "Gowun Dodum",sans-serif;cursor:pointer}'+
 '.shrbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid #211c17;background:rgba(244,237,220,.95);color:#211c17;border-radius:999px;padding:7px 12px 6px;font:12.5px/1 "Gowun Dodum",sans-serif;cursor:pointer}'+
 '.shrbtn::before{content:"";width:13px;height:13px;background:currentColor;clip-path:polygon(50% 0,85% 35%,62% 35%,62% 70%,38% 70%,38% 35%,15% 35%);}'+
 '.shrbtn.mini{position:absolute;right:8px;top:8px;z-index:2;padding:6px 9px 5px;font-size:11.5px;box-shadow:0 2px 6px rgba(0,0,0,.2)}';
@@ -32,10 +34,10 @@ function ensure(){if(root)return;root=document.createElement('div');root.id='shr
   '<button data-a="x"><i style="background:#111">X</i>X(트위터)</button>'+
   '<button data-a="threads"><i style="background:#111">@</i>스레드</button>'+
   '<button data-a="link"><i style="background:#a8402c">⧉</i>링크 복사</button>'+
-  '</div><div class="msg" aria-live="polite"></div><div style="font:12px/1.5 Gowun Dodum,sans-serif;color:#8a7b66;text-align:center;margin-top:4px">휴대폰에서는 위 그림을 길게 눌러 바로 저장할 수도 있소</div></div>';
+  '</div><div class="tst" role="status"></div><div class="msg" aria-live="polite"></div><div class="lk" hidden><input readonly aria-label="공유 주소"><button class="cp">복사</button></div><div style="font:12px/1.5 Gowun Dodum,sans-serif;color:#8a7b66;text-align:center;margin-top:4px">휴대폰에서는 위 그림을 길게 눌러 바로 저장할 수도 있소</div></div>';
   document.body.appendChild(root);
   root.addEventListener('click',function(e){if(e.target===root)close()});
-  root.querySelector('.x').onclick=close;
+  root.querySelector('.x').onclick=close;root.querySelector('.lk .cp').onclick=function(){copyLink('링크를 복사했소.')};
   [].forEach.call(root.querySelectorAll('.grid button'),function(b){b.onclick=function(){act(b.dataset.a)}});
   addEventListener('keydown',function(e){if(e.key==='Escape'&&root.classList.contains('on'))close()});}
 function close(){root.classList.remove('on')}
@@ -79,29 +81,39 @@ async function shareFiles(){try{await navigator.share({files:[file()]});return '
 async function shareLink(){try{await navigator.share({title:(cur.title||'심묘')+' — '+SITE,text:text(),url:shareURL});return 'ok'}catch(e){return e&&e.name==='AbortError'?'cancel':'fail'}}
 async function copy(t){try{await navigator.clipboard.writeText(t);return true}catch(e){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();return ok}}
 function kakaoReady(){return new Promise(function(ok){if(!KAKAO_KEY)return ok(false);if(window.Kakao&&Kakao.isInitialized&&Kakao.isInitialized())return ok(true);var s=document.createElement('script');s.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js';s.onload=function(){try{Kakao.init(KAKAO_KEY);ok(true)}catch(e){ok(false)}};s.onerror=function(){ok(false)};document.head.appendChild(s)})}
-function go(u){var w=window.open(u,'_blank');if(!w)location.href=u}
-async function act(a){say('');window.snd&&snd('paper');
-  if(a==='x'){go('https://twitter.com/intent/tweet?text='+encodeURIComponent(text())+'&url='+encodeURIComponent(shareURL));return}
-  if(a==='threads'){go('https://www.threads.net/intent/post?text='+encodeURIComponent(text()+'\n'+shareURL));return}
-  if(a==='link'){say(await copy(shareURL)?'링크를 복사했소. 붙여 넣으면 그림이 미리보기로 뜨오.':'복사가 안 되었소. 아래 주소를 길게 눌러 복사하시오: '+shareURL);return}
+function go(u){var w=null;try{w=window.open(u,'_blank','noopener')}catch(e){}if(!w)location.href=u}
+var MOB=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Macintosh/.test(navigator.userAgent));
+var cardFile=null,kakaoOK=false;
+/* 크게 보이는 알림(시트 한가운데) */
+function toast(t,ms){var e=root.querySelector('.tst');e.innerHTML=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on')},ms||3600);say(t.replace(/<[^>]+>/g,' '))}
+function showLink(){var b=root.querySelector('.lk');b.hidden=false;var i=b.querySelector('input');i.value=shareURL;if(!MOB){try{i.focus();i.select()}catch(e){}}}
+function doDownload(){if(cardURL){download();return true}var a=document.createElement('a');a.href=cur.src;a.download=fname();document.body.appendChild(a);a.click();a.remove();return true}
+function copyLink(after){copy(shareURL).then(function(ok){showLink();toast(ok?after:'자동 복사가 막혔소.<br>아래 주소 칸을 길게 눌러 복사하시오.',5200)})}
+/* 휴대폰 공유창은 누른 그 순간에 바로 불러야 열림(기다렸다 부르면 막힘) */
+function nativeShare(data,onFail){try{var pr=navigator.share(data);pr.then(function(){toast('보냈소.')}).catch(function(e){if(e&&e.name==='AbortError')return;onFail()})}catch(e){onFail()}}
+function act(a){say('');window.snd&&snd('paper');
+  if(!cardFile&&(a==='save'||a==='insta')&&!cardURL){toast('그림을 준비하는 중이오. 잠깐 뒤 다시 눌러 주시오.');return}
+  if(a==='x'){go('https://twitter.com/intent/tweet?text='+encodeURIComponent(text())+'&url='+encodeURIComponent(shareURL));toast('X(트위터) 창을 열었소.');return}
+  if(a==='threads'){go('https://www.threads.net/intent/post?text='+encodeURIComponent(text()+'\n'+shareURL));toast('스레드 창을 열었소.');return}
+  if(a==='link'){copyLink('링크를 복사했소.<br>카톡·인스타 DM·문자에 붙여 넣으면<br>그림이 미리보기로 뜨오.');return}
   if(a==='save'){
-    if(INAPP){say('앱 안 브라우저에서는 저장이 막혀 있소. 위 그림을 길게 눌러 「이미지 저장」을 고르시오.');return}
-    if(/iPhone|iPad|Android/i.test(navigator.userAgent)&&canFiles()){var r=await shareFiles();if(r!=='fail'){say(r==='ok'?'「이미지 저장」을 고르면 사진에 들어가오.':'');return}}
-    download();say('그림을 저장했소. 휴대폰이면 위 그림을 길게 눌러 저장할 수도 있소.');return}
+    if(MOB&&cardFile&&canFiles()){nativeShare({files:[cardFile]},function(){doDownload();toast('그림을 받았소.<br>안 보이면 위 그림을 길게 눌러<br>「이미지 저장」을 고르시오.',5200)});return}
+    if(INAPP){toast('카톡 안 브라우저에서는 저장이 막혀 있소.<br>위 그림을 <b>길게 눌러</b> 「이미지 저장」을 고르시오.',6000);return}
+    doDownload();toast(MOB?'그림을 받았소.<br>안 보이면 위 그림을 길게 눌러 저장하시오.':'그림을 저장했소.<br>「다운로드」 폴더를 보시오.',5200);return}
   if(a==='kakao'){
-    if(await kakaoReady()){try{Kakao.Share.sendDefault({objectType:'feed',content:{title:cur.title||'심묘',description:cur.caption||SITE,imageUrl:BASE+'proto/share/card/'+idOf(cur.src)+'.jpg',link:{mobileWebUrl:shareURL,webUrl:shareURL}},buttons:[{title:'심묘 따라 걷기',link:{mobileWebUrl:shareURL,webUrl:shareURL}}]});return}catch(e){}}
-    if(navigator.share){var r=await shareLink();if(r==='ok'||r==='cancel'){if(r==='ok')say('보냈소.');return}}
-    await copy(text()+'\n'+shareURL);say('링크를 복사했소. 카카오톡 대화창에 붙여 넣으면 그림이 미리보기로 뜨오.');return}
+    if(kakaoOK){try{Kakao.Share.sendDefault({objectType:'feed',content:{title:cur.title||'심묘',description:cur.caption||SITE,imageUrl:BASE+'proto/share/og/'+idOf(cur.src)+'.jpg',link:{mobileWebUrl:shareURL,webUrl:shareURL}},buttons:[{title:'그림 보러 가기',link:{mobileWebUrl:shareURL,webUrl:shareURL}}]});return}catch(e){}}
+    if(MOB&&navigator.share){nativeShare({title:(cur.title||'심묘')+' — '+SITE,text:text(),url:shareURL},function(){copyLink('링크를 복사했소.<br>카카오톡 대화방에 붙여 넣으시오.')});return}
+    copyLink(MOB?'링크를 복사했소.<br>카카오톡 대화방에 붙여 넣으면<br>그림이 미리보기로 뜨오.':'링크를 복사했소.<br>카카오톡 PC 대화방에 <b>Ctrl+V</b>로 붙여 넣으면<br>그림이 미리보기로 뜨오.');return}
   if(a==='insta'){
-    if(canFiles()){var r=await shareFiles();if(r==='ok'||r==='cancel')return}
-    if(INAPP){say('위 그림을 길게 눌러 저장한 뒤, 인스타그램 앱에서 올리시오.');return}
-    download();say('그림을 저장했소. 인스타그램은 앱에서만 올릴 수 있으니, 휴대폰 인스타그램에서 이 그림을 골라 올리시오.');return}
+    if(MOB&&cardFile&&canFiles()){nativeShare({files:[cardFile]},function(){doDownload();toast('그림을 받았소.<br>인스타그램 앱에서 이 그림을 골라 올리시오.',5600)});return}
+    if(INAPP){toast('위 그림을 <b>길게 눌러</b> 저장한 뒤,<br>인스타그램 앱에서 올리시오.',6000);return}
+    doDownload();toast(MOB?'그림을 받았소.<br>인스타그램 앱에서 이 그림을 골라 올리시오.':'그림을 저장했소(다운로드 폴더).<br>인스타그램은 휴대폰 앱에서만 올릴 수 있소.',6000);return}
 }
-async function openShare(o){ensure();cur=o||{};root.classList.add('on');say('그림을 준비하는 중…');root.querySelector('.pv').removeAttribute('src');
+async function openShare(o){ensure();cur=o||{};root.classList.add('on');say('');root.querySelector('.lk').hidden=true;root.querySelector('.tst').classList.remove('on');cardFile=null;root.querySelector('.pv').src=cur.src;if(KAKAO_KEY)kakaoReady().then(function(v){kakaoOK=v});
   var id=idOf(cur.src);shareURL=location.href.split('#')[0];cardBlob=null;
   try{var r=await fetch(BASE+'proto/share/card/'+id+'.jpg');if(r.ok){cardBlob=await r.blob();shareURL=BASE+'proto/share/'+id+'.html'}}catch(e){}
-  try{if(!cardBlob)cardBlob=await makeCard();if(cardURL)URL.revokeObjectURL(cardURL);cardURL=URL.createObjectURL(cardBlob);root.querySelector('.pv').src=cardURL;root.querySelector('.pv').alt=(cur.title||'')+' 공유 그림';say('')}
-  catch(e){say('그림을 불러오지 못했소.')}}
+  try{if(!cardBlob)cardBlob=await makeCard();if(cardURL)URL.revokeObjectURL(cardURL);cardURL=URL.createObjectURL(cardBlob);root.querySelector('.pv').src=cardURL;root.querySelector('.pv').alt=(cur.title||'')+' 공유 그림';try{cardFile=file()}catch(e){}}
+  catch(e){}}
 window.SimmyoShare={open:openShare,card:function(o){cur=o;return makeCard()}};
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-share-src]');if(!b)return;e.preventDefault();e.stopPropagation();openShare({src:b.getAttribute('data-share-src'),title:b.getAttribute('data-share-title')||'',caption:b.getAttribute('data-share-caption')||''})},true);
 })();

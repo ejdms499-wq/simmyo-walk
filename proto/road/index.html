@@ -243,7 +243,7 @@ h1 .sl{border-width:3px}
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
 <script src="../sfx.js?v=6"></script>
-<script src="../share.js"></script>
+<script src="../share.js?v=2"></script>
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
@@ -410,13 +410,13 @@ async function playGag(g){if(gagBusy||!script||script.p.n!==g.n)return;gagBusy=t
   if(g.type==='perch'){snd('hop');hop({x:curPos.x,y:curPos.y,s:curPos.s},g.to,520,70,function(){snd('land');if(script!==sp){gagBusy=false;return}script.x=g.to.x;script.y=g.to.y;playSeq(g.after,performance.now(),false);snd(g.snd);speak(g.say,2400);setTimeout(function(){gagBusy=false;if(g.ph)showPhotos(g.ph)},2600)});return}
   playSeq('hide',performance.now(),false);snd('hop');catVis(false);await wait(260);
   var z=document.createElement('div');z.className='gagz'+(g.round?' round':'');var c=g.clip;z.style.left=c[0]+'px';z.style.top=c[1]+'px';z.style.width=c[2]+'px';z.style.height=c[3]+'px';world.appendChild(z);
-  if(g.type==='peek'){var im=document.createElement('img');im.src=IMG.s2_02.src;var w=SZ.s2_02[0]*K,h=SZ.s2_02[1]*K;im.style.width=w+'px';im.style.left=(g.cx-w/2-c[0])+'px';z.appendChild(im);
+  if(g.type==='peek'){var im=document.createElement('img');im.src=IMG.sitg_01.src;var w=SZ.sitg_01[0]*K,h=SZ.sitg_01[1]*K;im.style.width=w+'px';im.style.left=(g.cx-w/2-c[0])+'px';z.appendChild(im);
     var hat=null;if(g.hat){hat=document.createElement('img');hat.src='m2/pers.webp';hat.style.width='30px';z.appendChild(hat)}
     var base=c[3];function at2(o){im.style.top=(base-o)+'px';if(hat){hat.style.left=(g.cx-15-c[0]+4)+'px';hat.style.top=(base-o-24)+'px'}}
     at2(-4);snd('pop');await tween(380,function(u){at2(g.show*(1-Math.pow(1-u,3)))});
     sayAt={x:g.cx,y:g.clip[1]+c[3]-g.show-8};speak(g.say,g.song?5200:2200);
     if(g.song){snd('crackle');var ok=window.playSong?await (window.HORN?playSong(window.HORN,16):Promise.resolve(false)):false;if(!ok)snd('horn');await wait(ok?3600:400)}else snd(g.snd);
-    await wait(700);im.src=IMG.s2_03.src;await wait(650);im.src=IMG.s2_01.src;await wait(600);im.src=IMG.s2_02.src;await wait(500);
+    await wait(700);im.src=IMG.sitg_11.src;await wait(650);im.src=IMG.sitg_10.src;await wait(600);im.src=IMG.sitg_01.src;await wait(500);
     await tween(260,function(u){at2(g.show*(1-u*u)-6*u)});}
   else if(g.type==='paw'){var pw=document.createElement('img');pw.src='m2/paw2.webp';var pwW=48,pwH=48*316/226;pw.style.width=pwW+'px';z.appendChild(pw);
     var it=g.itemEl,iw=g.item.w,ih=it.offsetHeight||26;var ic=document.createElement('img');ic.src=g.item.src;ic.style.width=iw+'px';z.appendChild(ic);it.style.opacity=0;
