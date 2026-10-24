@@ -15,7 +15,7 @@
 .pn{margin:0;cursor:pointer;position:relative;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
 .pn:nth-child(3n+1){transform:rotate(-.8deg)}.pn:nth-child(3n+2){transform:rotate(.6deg)}.pn:nth-child(3n){transform:rotate(-.3deg)}
 .pn:hover,.pn:focus-visible{transform:rotate(0) translateY(-5px)}
-.pn .fr{background:#fbf6e8;padding:8px;box-shadow:0 10px 22px -10px rgba(40,25,10,.5);outline:1px solid rgba(33,28,23,.25)}
+.pn .fr{position:relative;background:#fbf6e8;padding:8px;box-shadow:0 10px 22px -10px rgba(40,25,10,.5);outline:1px solid rgba(33,28,23,.25)}
 .pn img{display:block;width:100%;aspect-ratio:1232/928;object-fit:cover}
 .pn figcaption{display:flex;align-items:baseline;gap:10px;margin-top:11px}
 .pn .n{font:700 12px/1 var(--ui);color:var(--seal);letter-spacing:.08em;flex:none}
@@ -47,11 +47,12 @@
 <div class="tabs" role="group" aria-label="때 고르기"><button data-t="all" aria-pressed="true">전부</button><button data-t="am">아침·낮</button><button data-t="pm">저녁·밤</button><button data-t="wi">겨울</button></div>
 <div class="grid" id="grid"></div>
 <footer class="leave" style="max-width:1180px;margin:40px auto 0;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))"><span>재현 그림 · 배경은 미드저니, 심묘는 챗GPT로 그려 합친 것. 사실은 각 골목 쪽에 출처와 함께.</span><button id="go">산책길로 돌아가기 →</button></footer>
-<div id="big" role="dialog" aria-modal="true" aria-label="화첩 크게 보기"><button class="nav pv" aria-label="앞 칸">‹</button><div class="bx"><img alt=""><div class="cap"><b></b><q></q><span class="sp"></span><button class="x">닫기</button><button class="go">이 골목 들어가기 →</button></div></div><button class="nav nx" aria-label="다음 칸">›</button></div>
+<div id="big" role="dialog" aria-modal="true" aria-label="화첩 크게 보기"><button class="nav pv" aria-label="앞 칸">‹</button><div class="bx"><img alt=""><div class="cap"><b></b><q></q><span class="sp"></span><button class="x">닫기</button><button class="shr" style="background:#f4eddc;border:1px solid #211c17!important">저장·공유</button><button class="go">이 골목 들어가기 →</button></div></div><button class="nav nx" aria-label="다음 칸">›</button></div>
 <script src="../../simmyo-data.js"></script>
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
 <script src="../sfx.js?v=5"></script>
+<script src="../share.js"></script>
 <script>
 (function(){
 var IDS=[['well','am'],['herb','am'],['cotton','am'],['noodle','am'],['yeot','am'],['gomu','am'],['smithy','pm'],['kimchi','am'],['rick','pm'],['dadeum','pm'],['muk','wi'],['kite','wi']];
@@ -59,10 +60,11 @@ var P={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){P[p.id]=p})
 var L=IDS.filter(function(q){return P[q[0]]&&window.SIDE_ART&&SIDE_ART[q[0]]});
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var g=document.getElementById('grid');
-g.innerHTML=L.map(function(q,i){var p=P[q[0]],a=SIDE_ART[q[0]];return '<figure class="pn" tabindex="0" data-i="'+i+'" data-t="'+q[1]+'"><div class="fr"><img src="../../'+a.src+'" alt="'+esc(a.alt)+'" loading="lazy"></div><figcaption><span class="n">第'+(i+1)+'</span><span><span class="t">'+esc(p.name)+'</span><span class="q">「'+esc((p.say||[''])[0])+'」</span></span><span class="y">'+esc(p.yr)+'</span></figcaption></figure>'}).join('');
+g.innerHTML=L.map(function(q,i){var p=P[q[0]],a=SIDE_ART[q[0]];return '<figure class="pn" tabindex="0" data-i="'+i+'" data-t="'+q[1]+'"><div class="fr"><button class="shrbtn mini" data-share-src="../../'+a.src+'" data-share-title="'+esc(p.name)+'" data-share-caption="'+esc((p.say||[''])[0])+'">공유</button><img src="../../'+a.src+'" alt="'+esc(a.alt)+'" loading="lazy"></div><figcaption><span class="n">第'+(i+1)+'</span><span><span class="t">'+esc(p.name)+'</span><span class="q">「'+esc((p.say||[''])[0])+'」</span></span><span class="y">'+esc(p.yr)+'</span></figcaption></figure>'}).join('');
 var big=document.getElementById('big'),cur=0;
 function show(i){cur=(i+L.length)%L.length;var q=L[cur],p=P[q[0]],a=SIDE_ART[q[0]];big.querySelector('img').src='../../'+a.src;big.querySelector('img').alt=a.alt;big.querySelector('b').textContent=p.name;big.querySelector('q').textContent=(p.say||[''])[0];big.classList.add('on');window.snd&&snd('paper')}
 [].forEach.call(g.querySelectorAll('.pn'),function(el){el.onclick=function(){show(+el.dataset.i)};el.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();show(+el.dataset.i)}}});
+big.querySelector('.shr').onclick=function(){var q=L[cur],p=P[q[0]],a=SIDE_ART[q[0]];SimmyoShare.open({src:'../../'+a.src,title:p.name,caption:(p.say||[''])[0]})};
 big.querySelector('.x').onclick=function(){big.classList.remove('on')};big.onclick=function(e){if(e.target===big)big.classList.remove('on')};
 big.querySelector('.pv').onclick=function(){show(cur-1)};big.querySelector('.nx').onclick=function(){show(cur+1)};
 addEventListener('keydown',function(e){if(!big.classList.contains('on'))return;if(e.key==='Escape')big.classList.remove('on');if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});

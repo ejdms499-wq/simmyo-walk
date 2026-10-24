@@ -70,7 +70,7 @@
   </figure>
   <div class="modes" role="group" aria-label="보는 눈 고르기"><button id="m0" aria-pressed="true">사람들의 눈 · 실제 자료</button><button id="m1" aria-pressed="false">심묘의 눈 · 재현 그림</button></div>
   <div class="note" id="note" hidden></div>
-  <p class="cap"><span id="capb"></span><span>심묘의 눈: 바닥 높이, 파랑·노랑 위주로 보는 고양이 색을 흉내 낸 재현 그림</span></p>
+  <p class="cap"><span id="capb"></span><button class="shrbtn" id="eyeshr">심묘의 눈 저장·공유</button><span>심묘의 눈: 바닥 높이, 파랑·노랑 위주로 보는 고양이 색을 흉내 낸 재현 그림</span></p>
   <div class="sheet">
     <article class="read">
       <div class="cs"><p class="catsay" id="csay"></p></div>
@@ -84,7 +84,7 @@
     <aside class="side">
       <section id="witw" hidden>
         <h2 class="h">목격 그림<span class="badge b-fic">지어낸 이야기</span></h2>
-        <figure class="wit"><img id="witimg" alt="" loading="lazy"><figcaption id="witcap"></figcaption></figure>
+        <figure class="wit"><button class="shrbtn mini" id="witshr">공유</button><img id="witimg" alt="" loading="lazy"><figcaption id="witcap"></figcaption></figure>
       </section>
       <section>
         <h2 class="h">목격 엽서<span class="badge b-fic">지어낸 이야기</span></h2>
@@ -105,6 +105,7 @@
   </footer>
 </div>
 <script src="../sfx.js?v=5"></script>
+<script src="../share.js"></script>
 <script>
 (function(){
 var A='../../assets/walk/';
@@ -166,13 +167,13 @@ if(n===5){document.getElementById('m0').textContent='사람들의 눈 · 재현 
 var YS={1:['1899~','이른 봄'],2:['1935','가을'],3:['1916~','초가을 밤'],4:['1926','시월'],5:['1930년대','초여름'],6:['1924','칠월'],7:['1934','비 오는 밤'],8:['1930년대','한겨울']};
 $('pnum').textContent='京城野錄 · '+n+'번째 골목';$('pname').textContent=P.name;$('pyr').innerHTML=YS[n][0]+'<br>'+YS[n][1];
 $('bw').src='p/b'+n+'.webp';$('bw').alt=P.name+' — 사람들의 눈. 실제 자료 위에 합성한 까만 고양이';
-$('color').src='p/c'+n+'.webp';$('color').alt=P.name+' — 심묘의 눈으로 본 재현 그림';
+$('color').src='p/c'+n+'.webp';var es=document.getElementById('eyeshr');es.setAttribute('data-share-src','p/c'+n+'.webp');es.setAttribute('data-share-title',P.name+' · 심묘의 눈');es.setAttribute('data-share-caption','고양이 눈높이로 본 '+P.name);$('color').alt=P.name+' — 심묘의 눈으로 본 재현 그림';
 $('capb').textContent=P.capb;
 var cat=$('cat');cat.style.left=P.hs[0]+'%';cat.style.top=P.hs[1]+'%';cat.style.width=P.hs[2]+'%';cat.style.height=P.hs[3]+'%';
 var hint=$('hint');if(P.hs[0]>50){hint.classList.add('r');hint.style.right=(100-P.hs[0]+1)+'%'}else hint.style.left=(P.hs[0]+P.hs[2]+1.5)+'%';hint.style.top=(P.hs[1]+P.hs[3]*.3)+'%';
 $('say').innerHTML=P.say;$('say').setAttribute('data-k',P.kind);
 var WIT={1:['w1','종로 전차 지붕 위, 아무도 모르는 무임승차'],3:['w3','군밤 한 톨을 슬쩍 끌어당기는 앞발'],4:['w4','줄 맨 앞, 매표창 바로 아래'],5:['w5','빨랫돌 위에서 물방울을 피하는 중'],6:['w6','배달통 맨 위에서 김을 쬐는 중'],7:['w7','시인과 같은 각도로 비 구경']};
-if(WIT[n]){$('witimg').src='../il/'+WIT[n][0]+'_s.webp';$('witimg').alt=WIT[n][1]+' (재현 그림)';$('witcap').textContent=WIT[n][1];$('witw').hidden=false;$('witimg').onclick=function(){window.open('../il/'+WIT[n][0]+'.webp','_blank')}}
+if(WIT[n]){$('witimg').src='../il/'+WIT[n][0]+'_s.webp';$('witimg').alt=WIT[n][1]+' (재현 그림)';$('witcap').textContent=WIT[n][1];$('witw').hidden=false;var ws=$('witshr');ws.setAttribute('data-share-src','../il/'+WIT[n][0]+'.webp');ws.setAttribute('data-share-title',P.name||'목격 그림');ws.setAttribute('data-share-caption',WIT[n][1]);$('witimg').onclick=function(){window.open('../il/'+WIT[n][0]+'.webp','_blank')}}
 $('pq').textContent=P.q;$('pfrom').textContent='— '+P.from+' 올림';
 $('nk').textContent=P.note[0];$('nt').textContent=P.note[1];
 if(P.arc&&[1,2,3,6].indexOf(n)<0)$('arc').innerHTML='<figure><img src="'+A+P.arc[0]+'" alt="'+P.arc[1]+'" loading="lazy"><figcaption>'+P.arc[1]+' · 실제 자료</figcaption></figure>';else $('arcw').remove();
