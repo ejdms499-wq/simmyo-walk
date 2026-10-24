@@ -118,14 +118,17 @@ h1 .sl{border-width:3px}
 var $=function(i){return document.getElementById(i)};
 var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ── 배경: 한 장으로 이어 붙인 길(타일) ── */
-var TILES=[[0,0,1400,960],[1400,0,1400,960],[2800,0,1400,960],[4200,0,1400,960],[5600,0,733,960],[6333,0,1713,800],[6333,800,1713,800],[6333,1600,1713,780]];
-var WW=8046,WH=2380,COLX=6333,COLW=1713;
+var TILES=[[0,0,1400,960],[1400,0,1400,960],[2800,0,1400,960],[4200,0,1400,960],[5600,0,733,960],[6333,0,1713,800],[6333,800,1713,800],[6333,1600,1713,800],[6333,2400,1713,800],[6333,3200,1713,800],[6333,4000,1713,360]];
+var WW=8046,WH=4360,COLX=6333,COLW=1713;
 var world=$('world');
 world.innerHTML=TILES.map(function(t,i){return '<img class="bgt" src="t'+i+'.jpg" alt="" style="position:absolute;left:'+t[0]+'px;top:'+t[1]+'px;width:'+t[2]+'px;height:'+t[3]+'px">'}).join('');
 /* ── 길(ㄱ): 종로를 따라 동쪽 → 모퉁이 축대에 뛰어올라 → 아래 계단으로 뛰어내려 → 청계천 ── */
 var GY=858;
 var V=[ {x:200,y:GY,s:1},{x:6923,y:GY,s:1,t:'walk'},{x:7290,y:664,s:.86,t:'jump',h:110},{x:7033,y:1180,s:.82,t:'jump',h:70,cine:1},
-        {x:7023,y:1300,s:.92,t:'walk'},{x:7073,y:1450,s:1.06,t:'walk'},{x:7173,y:2000,s:1.15,t:'jump',h:80,cine:1},{x:7183,y:2192,s:1.18,t:'walk'} ];
+        {x:7023,y:1300,s:.92,t:'walk'},{x:7073,y:1450,s:1.06,t:'walk'},{x:7173,y:2000,s:1.15,t:'jump',h:80,cine:1},{x:7183,y:2192,s:1.18,t:'walk'},
+        {x:7533,y:2862,s:.95,t:'jump',h:50,cine:1},{x:7093,y:2862,s:.95,t:'walk'},
+        {x:7133,y:3528,s:.9,t:'jump',h:50,cine:1},{x:7513,y:3528,s:.9,t:'walk'},
+        {x:7233,y:4240,s:.8,t:'jump',h:50,cine:1},{x:6973,y:4300,s:.82,t:'walk'} ];
 var SEG=[],TOT=0;for(var i=1;i<V.length;i++){var a=V[i-1],b=V[i],l=Math.hypot(b.x-a.x,b.y-a.y);SEG.push({a:a,b:b,l:l,s:TOT,t:b.t,h:b.h||0,cine:b.cine});TOT+=l}
 function vd(k){var d=0;for(var i=0;i<k;i++)d+=SEG[i].l;return d}
 var DC=vd(1);
@@ -144,8 +147,14 @@ var PL=[
   steps:[{p:'sitf',x:5900,y:GY,d:2000,say:'줄은 사람이 서는 것이오.'},{p:'swish',x:5900,y:GY,d:1600},{p:'loaf2',x:5900,y:GY,d:2000,say:'…아직이오?'},{p:'curl',x:5900,y:GY,d:2600}],loop:1},
  {n:0,name:'모퉁이',d:vd(2),corner:1,
   steps:[{p:'back',x:7290,y:664,d:2600,s:.86,say:'저 아래도 경성이오.'},{p:'swish',x:7290,y:664,d:1500,s:.86,f:-1},{p:'back',x:7290,y:664,d:2200,s:.86}],loop:0},
- {n:5,name:'청계천 빨래터',d:TOT,q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
-  steps:[{p:'puddle',x:7183,y:2192,d:1900,s:1.18},{p:'basin',x:7340,y:2200,d:2100,s:1.18,say:'물은 차오.'},{p:'fish',x:7200,y:2196,d:2200,s:1.18,say:'멸치 한 줌, 받으러 가야겠소.'}],loop:1}
+ {n:5,name:'청계천 빨래터',d:vd(7),q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
+  steps:[{p:'puddle',x:7183,y:2192,d:1900,s:1.18},{p:'basin',x:7340,y:2200,d:2100,s:1.18,say:'물은 차오.'},{p:'groom',x:7183,y:2192,d:1800,s:1.18}],loop:0},
+ {n:6,name:'설렁탕집',d:vd(9),q:'배달통 위에서 내려오질 않소.',from:'설렁탕집 배달꾼',ph:null,pc:[6453,2560,-2],
+  steps:[{p:'loaf',x:7010,y:2862,d:2200,s:.95,say:'여기가 제일 따뜻하오.'},{p:'groom',x:7010,y:2862,d:1700,s:.95},{p:'sit',x:7420,y:2800,d:1900,s:.9,say:'국물 냄새가 나오.'},{p:'curl',x:7010,y:2862,d:2600,s:.95}],loop:0},
+ {n:7,name:'다방 창가',d:vd(11),q:'시인보다 오래 창밖을 보더라.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
+  steps:[{p:'back',x:7623,y:3466,d:2400,s:.85,say:'안이 더 재미있소.'},{p:'ear',x:7623,y:3466,d:1500,s:.85,f:-1},{p:'lookup',x:7623,y:3466,d:1700,s:.85,say:'비가 오오.'},{p:'back',x:7623,y:3466,d:2000,s:.85}],loop:0},
+ {n:8,name:'한강',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더라.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
+  steps:[{p:'loaf',x:6990,y:4304,d:2400,s:.82,say:'기다리는 중이오.'},{p:'back',x:6990,y:4304,d:2000,s:.82},{p:'fish',x:7000,y:4306,d:2400,s:.82,say:'올라왔소. 멸치는 아니오.'},{p:'bounce',x:7000,y:4306,d:1200,s:.82}],loop:0}
 ];
 PL.forEach(function(p){if(p.d==null)p.d=p.x-200});
 /* ── 포즈 ── */
@@ -240,13 +249,13 @@ function frame(now){
   // HUD 꼬리 ㄱ
   var pr=D/TOT*100;$('hudp').setAttribute('stroke-dasharray',pr.toFixed(1)+' 100');
   var hl=48,vl=32,tl=hl+vl,dd=Math.min(1,D/DC)*hl+Math.max(0,(D-DC)/(TOT-DC))*vl;var hx=dd<hl?6+dd:54,hy=dd<hl?8:8+(dd-hl);$('hudd').setAttribute('cx',hx);$('hudd').setAttribute('cy',hy);
-  $('where').textContent=D<DC-20?'종로 · 동쪽으로 ('+Math.round(D/DC*100)+'%)':(D<TOT-200?'모퉁이에서 뛰어내려 남쪽으로':'청계천 빨래터');
+  $('where').textContent=D<DC-20?'종로 · 동쪽으로 ('+Math.round(D/DC*100)+'%)':(D<vd(7)-150?'모퉁이에서 뛰어내려 남쪽으로':D<vd(9)-150?'청계천 빨래터':D<vd(11)-150?'설렁탕집 · 밤':D<TOT-150?'다방 창가 · 비':'한강 · 자정');
   requestAnimationFrame(frame)}
 function showStop(p){var st=$('stop');if(!p){st.classList.remove('on');return}
   st.classList.toggle('np',!p.ph);if(p.ph)$('sph').src=p.ph;
   $('sname').innerHTML='<b>'+p.n+' · '+p.name+'</b>목격 엽서';
   $('sq').innerHTML='「'+p.q+'」<small> — '+p.from+'</small>';
-  var b=$('sgo');if(p.url){b.textContent='이 골목 들어가기 · 심묘의 눈 →';b.className=''}else{b.textContent=p.n===5?'여기부터 아래(설렁탕·다방·한강)는 다음 시안':'이 골목은 다음 시안에서 열려요';b.className='soon'}
+  var b=$('sgo');if(p.url){b.textContent='이 골목 들어가기 · 심묘의 눈 →';b.className=''}else{b.textContent=p.n===8?'여기서 자정 엔딩으로 (다음 시안)':'이 골목은 다음 시안에서 열려요';b.className='soon'}
   b.onclick=function(){if(p.url){stamp(p.n,true);speak('가보겠소.',900);setTimeout(function(){location.href=p.url},600)}};
   st.classList.add('on')}
 /* 입력 */
