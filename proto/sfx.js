@@ -5,7 +5,7 @@
 var FILES={}; // 예: {mew:'../audio/mew.mp3'}
 var ctx=null,master=null,muted=false,buf={};
 try{muted=localStorage.getItem('simmyo_mute')==='1'}catch(e){}
-function init(){if(ctx)return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=muted?0:0.55;
+function init(){if(ctx)return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=muted?0:0.4;
   var comp=ctx.createDynamicsCompressor();master.connect(comp);comp.connect(ctx.destination);
   Object.keys(FILES).forEach(function(k){fetch(FILES[k]).then(function(r){return r.arrayBuffer()}).then(function(a){return ctx.decodeAudioData(a)}).then(function(b){buf[k]=b}).catch(function(){})})}
 function unlock(){init();if(ctx&&ctx.state==='suspended')ctx.resume()}
@@ -37,7 +37,7 @@ var LIB={
   mew:function(t){mew(t)},
   mewhi:function(t){mew(t,{pitch:1.25,dur:.38,vol:.45})},
   mewlow:function(t){mew(t,{pitch:.8,dur:.75,vol:.42})},
-  mrrp:function(t){mew(t,{pitch:1.1,dur:.24,vol:.35});purr(t+.05,.35,.5)},
+  mrrp:function(t){mew(t,{pitch:1.15,dur:.26,vol:.3})},
   horn:function(t){mew(t,{pitch:1.05,dur:.6,vol:.5,horn:1})},
   purr:function(t){purr(t,2.2)},
   hop:function(t){hiss(t,.16,900,.8,.08,'bandpass',2400)},
@@ -62,7 +62,10 @@ var LIB={
   steam:function(t){hiss(t,1.4,2600,.4,.06,'highpass')},
   yawn:function(t){mew(t,{pitch:.7,dur:.9,vol:.25})}
 };
-function snd(name,opt){try{if(muted||!ctx)return;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
+/* 웅웅거리는 소리(그르릉·떨림·바람·김 등)와 움직일 때마다 나던 소리는 모두 끔. 꼭 필요한 순간의 짧은 소리만 남김 */
+var KEEP={mew:1,mewhi:1,mewlow:1,mrrp:1,bell:1,tink:1,chime:1,clink:1,splash:1,horn:1};
+var lastPlay={};
+function snd(name,opt){try{if(muted||!ctx)return;if(!KEEP[name])return;var nowt=performance.now();if(lastPlay[name]&&nowt-lastPlay[name]<1500)return;lastPlay[name]=nowt;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
   if(buf[name]){var s=ctx.createBufferSource();s.buffer=buf[name];out(s,.9);s.start(t);return}
   var f=LIB[name];if(f)f(t,opt)}catch(e){}}
 function setMute(m){muted=m;if(m&&ctx)stopSong(.1);try{localStorage.setItem('simmyo_mute',m?'1':'0')}catch(e){}if(master)master.gain.value=m?0:.55;document.querySelectorAll('.sndbtn').forEach(function(b){b.textContent=m?'소리 끔':'소리 켬';b.setAttribute('aria-pressed',m?'false':'true')})}
