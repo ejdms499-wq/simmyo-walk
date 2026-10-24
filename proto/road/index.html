@@ -153,23 +153,23 @@ function at(d){var q=seg(d),s=q.s,u=q.u;var x=s.a.x+(s.b.x-s.a.x)*u,y=s.a.y+(s.b
   var lift=s.t==='jump'?s.h*4*u*(1-u)+Math.max(0,(s.a.y-s.b.y))*0:0;return{x:x,y:y,gy:y,lift:lift,sc:sc,seg:s,u:u,dx:s.b.x-s.a.x,dy:s.b.y-s.a.y}}
 /* ── 장소 ── */
 var PL=[
- {n:1,name:'종로 전차',x:2120,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',url:'../lens/index.html',pc:[2480,470,-4],keep:1,
+ {n:1,name:'종로 전차',url:'../lens/index.html?p=1',x:2120,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',pc:[2480,470,-4],keep:1,
   steps:[{s:'wind',say:'바람이 좋소.'},{s:'wire'},{s:'bell',say:'…땡땡.'},{s:'tflat',say:'차표는 없소.'},{s:'ttail'},{s:'tram'},{s:'tyawn'},{s:'roll'}],x0:2120,y0:508},
- {n:2,name:'종로 음반가게',x:3330,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
+ {n:2,name:'종로 음반가게',url:'../lens/index.html?p=2',x:3330,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
   steps:[{s:'follow',x:3230,y:692,f:-1,say:'빙글빙글 도오.'},{s:'earl',x:3230,y:692,f:-1,say:'이 소리, 마음에 드오.'},{s:'beat',x:3230,y:692,f:-1},{s:'follow',x:3230,y:692,f:-1},{s:'over',x:3230,y:692,f:-1,say:'…끝났소.'},{s:'recsit',x:3330,y:GY,f:-1,say:'이건 내 방석이오.'},{s:'rectap',x:3330,y:GY,f:-1}]},
- {n:3,name:'종로 야시',x:4450,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',pc:[4880,470,-3],
+ {n:3,name:'종로 야시',url:'../lens/index.html?p=3',x:4450,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',pc:[4880,470,-3],
   steps:[{s:'sniff',x:4440,y:GY,say:'군밤 냄새요.'},{s:'hot',x:4440,y:GY,say:'앗.'},{s:'cwalk',x:4520,y:GY},{s:'proll',x:4470,y:GY,say:'둥근 건 다 내 것이오.'},{s:'glow',x:4470,y:GY},{s:'hat',x:4470,y:GY,say:'여기 숨었소.'}]},
- {n:4,name:'단성사 앞',x:5923,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',pc:[5153,520,2],
+ {n:4,name:'단성사 앞',url:'../lens/index.html?p=4',x:5923,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',pc:[5153,520,2],
   steps:[{s:'under',x:5860,y:GY},{s:'proud4',x:5900,y:GY,say:'줄은 사람이 서는 것이오.'},{s:'sign',x:5900,y:GY},{s:'rope',x:5940,y:GY},{s:'stand',x:5940,y:GY},{s:'ticket',x:5900,y:GY,say:'표는 이것이오.'},{s:'nod',x:5900,y:GY,say:'…아직이오?'},{s:'nap',x:5900,y:GY}]},
  {n:0,name:'모퉁이',d:vd(2),corner:1,
   steps:[{s:'gaze',x:7290,y:664},{s:'lookback',x:7290,y:664,say:'저 아래도 경성이오.'},{s:'gaze',x:7290,y:664}]},
- {n:5,name:'청계천 빨래터',d:vd(7),q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
+ {n:5,name:'청계천 빨래터',url:'../lens/index.html?p=5',d:vd(7),q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
   steps:[{s:'look5',x:7183,y:2192,say:'누구요.'},{s:'splash',x:7183,y:2192},{s:'stir',x:7183,y:2192},{s:'lick',x:7183,y:2192},{s:'shakeoff',x:7183,y:2192,say:'물은 차오.'},{s:'proud',x:7300,y:2196}]},
- {n:6,name:'설렁탕집',d:vd(9),q:'배달통 위에서 내려오질 않소.',from:'설렁탕집 배달꾼',ph:null,pc:[6453,2560,-2],
+ {n:6,name:'설렁탕집',url:'../lens/index.html?p=6',d:vd(9),q:'배달통 위에서 내려오질 않소.',from:'설렁탕집 배달꾼',ph:null,pc:[6453,2560,-2],
   steps:[{s:'steam',x:7030,y:2862,say:'국물 냄새가 나오.'},{s:'peek6',x:7030,y:2862},{s:'hot6',x:7030,y:2862,say:'뜨겁소.'},{s:'bowls',x:7430,y:2808,say:'그릇 위가 제일 따뜻하오.'},{s:'warm',x:7430,y:2808},{s:'belly',x:7030,y:2862},{s:'sleep6',x:7030,y:2862}]},
- {n:7,name:'다방 창가',d:vd(11),q:'시인보다 오래 창밖을 보더라.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
+ {n:7,name:'다방 창가',url:'../lens/index.html?p=7',d:vd(11),q:'시인보다 오래 창밖을 보더라.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
   steps:[{s:'paws',x:7420,y:3528,say:'안이 더 재미있소.'},{s:'drops',x:7470,y:3528,say:'비가 오오.'},{s:'tap7',x:7470,y:3528},{s:'cup',x:7470,y:3528,say:'쓰오.'},{s:'lonely',x:7470,y:3528},{s:'sleep7',x:7470,y:3528}]},
- {n:8,name:'한강',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더라.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
+ {n:8,name:'한강',url:'../lens/index.html?p=8',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더라.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
   steps:[{s:'slip',x:7020,y:4300},{s:'cold',x:7000,y:4302,say:'발이 시리오.'},{s:'peer',x:6990,y:4304,say:'기다리는 중이오.'},{s:'catch',x:6990,y:4304,say:'올라왔소. 멸치는 아니오.'},{s:'shiver',x:6990,y:4304},{s:'moon',x:6990,y:4304}]}
 ];
 PL.forEach(function(p){if(p.d==null)p.d=p.x-200});
@@ -318,8 +318,8 @@ function showStop(p){var st=$('stop');if(!p){st.classList.remove('on');return}
   st.classList.toggle('np',!p.ph);if(p.ph)$('sph').src=p.ph;
   $('sname').innerHTML='<b>'+p.n+' · '+p.name+'</b>목격 엽서';
   $('sq').innerHTML='「'+p.q+'」<small> — '+p.from+'</small>';
-  var b=$('sgo');if(p.url){b.textContent='이 골목 들어가기 · 심묘의 눈 →';b.className=''}else if(p.n===8){b.textContent='자정 · 편집국으로 돌아가기 →';b.className=''}else{b.textContent='이 골목은 다음 시안에서 열려요';b.className='soon'}
-  b.onclick=function(){if(p.url){stamp(p.n,true);speak('가보겠소.',900);setTimeout(function(){location.href=p.url},600)}else if(p.n===8){stamp(8,true);runEnding()}};
+  var b=$('sgo');var endNow=p.n===8&&visited.indexOf(8)>=0;b.className='';b.textContent=endNow?'자정 · 편집국으로 돌아가기 →':'이 골목 들어가기 · 심묘의 눈 →';
+  b.onclick=function(){if(endNow){runEnding()}else{stamp(p.n,true);speak('가보겠소.',900);setTimeout(function(){location.href=p.url},600)}};
   st.classList.add('on')}
 /* 입력 */
 var started=false;
