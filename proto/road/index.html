@@ -114,19 +114,20 @@ h1 .sl{border-width:3px}
 var $=function(i){return document.getElementById(i)};
 var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ── 길(ㄱ) : 종로를 따라 동쪽으로, 모퉁이에서 남쪽 청계천으로 ── */
-var GY=845,WW=7473,WH=2600,CX=6420;
-/* 배경: 미드저니 장면을 이어 붙임 (가로 5장 + 세로 2장, 이음매는 부드럽게 겹침) */
-var BG=[{f:'bg0.jpg',x:0,y:0,w:1713},{f:'bg1.jpg',x:1473,y:-48,w:1581,e:'l'},{f:'bg2.jpg',x:2814,y:0,w:1713,e:'l'},{f:'bg4.jpg',x:4287,y:-57,w:1713,e:'l'},{f:'bgc.jpg',x:5760,y:-38,w:1713,e:'l'},
-        {f:'bgs.jpg',x:5760,y:880,w:1713,e:'t'},{f:'bgw.jpg',x:5760,y:1640,w:1713,e:'t'}];
-var PATH=[[180,GY],[CX,GY],[6470,1330],[6560,1560],[6700,1790],[6880,2060],[6620,2270],[6470,2335]];
+var GY=845,WW=8946,WH=2600,CX=7893;
+/* 배경: 미드저니 장면을 이어 붙임 (가로 6장 + 세로 2장, 이음매는 부드럽게 겹침) */
+var BG=[{f:'bg0.jpg',x:0,y:0,w:1713},{f:'bg1.jpg',x:1473,y:-48,w:1581,e:'l'},{f:'bg2.jpg',x:2814,y:0,w:1713,e:'l'},{f:'bg3.jpg',x:4287,y:-38,w:1713,e:'l'},{f:'bg4.jpg',x:5760,y:-57,w:1713,e:'l'},{f:'bgc.jpg',x:7233,y:-38,w:1713,e:'l'},
+        {f:'bgs.jpg',x:7233,y:880,w:1713,e:'t'},{f:'bgw.jpg',x:7233,y:1640,w:1713,e:'t'}];
+var PATH=[[180,GY],[CX,GY],[7943,1330],[8033,1560],[8173,1790],[8353,2060],[8093,2270],[7943,2335]];
 var SEG=[],TOT=0;for(var i=1;i<PATH.length;i++){var a=PATH[i-1],b=PATH[i],l=Math.hypot(b[0]-a[0],b[1]-a[1]);SEG.push({a:a,b:b,l:l,s:TOT});TOT+=l}
 var DC=CX-180;
 function at(d){d=Math.max(0,Math.min(TOT,d));for(var i=0;i<SEG.length;i++){var s=SEG[i];if(d<=s.s+s.l||i===SEG.length-1){var t=(d-s.s)/s.l;return{x:s.a[0]+(s.b[0]-s.a[0])*t,y:s.a[1]+(s.b[1]-s.a[1])*t,dx:s.b[0]-s.a[0],dy:s.b[1]-s.a[1]}}}}
 var PL=[
  {n:1,name:'종로 전차',x:2290,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',url:'../lens/index.html',gag:'g1.png',gx:2300,gy:508,gw:170,pc:[2660,470,-4]},
  {n:2,name:'종로 음반가게',x:3650,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',gag:'sit.png',gx:3690,gy:692,gw:92,pc:[3070,520,3]},
- {n:4,name:'단성사 앞',x:5150,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',gag:'g4.png',gx:5170,gy:850,gw:120,pc:[4400,520,2]},
- {n:5,name:'청계천 빨래터',x:null,d:TOT-30,q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,gag:null,pc:[6010,1960,-3]}
+ {n:3,name:'종로 야시',x:5030,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',gag:'g3.png',gx:4990,gy:800,gw:96,pc:[5420,470,-3]},
+ {n:4,name:'단성사 앞',x:6623,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',gag:'g4.png',gx:6643,gy:850,gw:120,pc:[5873,520,2]},
+ {n:5,name:'청계천 빨래터',x:null,d:TOT-30,q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,gag:null,pc:[7483,1960,-3]}
 ];
 PL.forEach(function(p){if(p.d==null)p.d=p.x-180});
 function build(){var s='';BG.forEach(function(b){var m=b.e==='l'?'linear-gradient(to right,transparent 0,#000 240px)':(b.e==='t'?'linear-gradient(to bottom,transparent 0,#000 160px)':'none');
@@ -156,7 +157,7 @@ var D=0,T=0,last=0,moving=0,idle=0,face=1,acc=0;
 var qs=new URLSearchParams(location.search),from=+qs.get('from')||0;
 if(from){var fp=PL[from-1];D=T=fp.d-60;history.replaceState(null,'',location.pathname)}
 function cam(d){var p=at(d),t=Math.max(0,Math.min(1,(d-DC)/320));t=t*t*(3-2*t);
-  var cxH=Math.max(0,Math.min(at(Math.min(d,DC)).x-VW*0.38,WW-VW));var cxV=Math.max(5760,Math.min(6600-VW*0.5,WW-VW));
+  var cxH=Math.max(0,Math.min(at(Math.min(d,DC)).x-VW*0.38,WW-VW));var cxV=Math.max(7233,Math.min(8073-VW*0.5,WW-VW));
   var ay=GY-(GY-900*0.5)*t;return{x:cxH+(cxV-cxH)*t,y:Math.max(0,Math.min(p.y-ay+(VH/S-900)*0,WH-VH/S)),p:p,t:t}}
 var stopNow=null,gagOn=null;
 function frame(now){
