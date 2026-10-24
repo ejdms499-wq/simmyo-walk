@@ -65,9 +65,25 @@ var LIB={
 function snd(name,opt){try{if(muted||!ctx)return;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
   if(buf[name]){var s=ctx.createBufferSource();s.buffer=buf[name];out(s,.9);s.start(t);return}
   var f=LIB[name];if(f)f(t,opt)}catch(e){}}
-function setMute(m){muted=m;try{localStorage.setItem('simmyo_mute',m?'1':'0')}catch(e){}if(master)master.gain.value=m?0:.55;document.querySelectorAll('.sndbtn').forEach(function(b){b.textContent=m?'소리 끔':'소리 켬';b.setAttribute('aria-pressed',m?'false':'true')})}
+function setMute(m){muted=m;if(m&&ctx)stopSong(.1);try{localStorage.setItem('simmyo_mute',m?'1':'0')}catch(e){}if(master)master.gain.value=m?0:.55;document.querySelectorAll('.sndbtn').forEach(function(b){b.textContent=m?'소리 끔':'소리 켬';b.setAttribute('aria-pressed',m?'false':'true')})}
 /* 소리 버튼: class="sndbtn" 인 버튼을 찾아 연결 */
 function wire(){document.querySelectorAll('.sndbtn').forEach(function(b){if(b._w)return;b._w=1;b.addEventListener('click',function(e){e.stopPropagation();unlock();setMute(!muted);if(!muted)snd('mrrp')})});setMute(muted)}
 if(document.readyState!=='loading')wire();else document.addEventListener('DOMContentLoaded',wire);
+
+/* 유성기 노래: 진짜 녹음 파일(url)을 나팔 소리처럼(낮은음·높은음 깎고 지직 소리) 틀어 줌. 파일이 없으면 false */
+var songBuf={},cur=null;
+function stopSong(fade){if(!cur)return;var c=cur;cur=null;try{var t=ctx.currentTime;c.g.gain.cancelScheduledValues(t);c.g.gain.setValueAtTime(c.g.gain.value,t);c.g.gain.linearRampToValueAtTime(0,t+(fade||.6));c.src.stop(t+(fade||.6)+.05);c.cr&&c.cr.stop(t+(fade||.6)+.05)}catch(e){}}
+function playSong(url,maxSec,offset){return new Promise(function(res){try{if(muted||!ctx){res(false);return}if(ctx.state==='suspended')ctx.resume();
+  var go=function(b){if(!b){res(false);return}stopSong(.2);var t=ctx.currentTime+.05,d=Math.min(maxSec||14,b.duration-(offset||0));
+    var src=ctx.createBufferSource();src.buffer=b;
+    var hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=320;var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3400;
+    var pk=ctx.createBiquadFilter();pk.type='peaking';pk.frequency.value=1500;pk.gain.value=7;pk.Q.value=.9;
+    var g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.9,t+.8);g.gain.setValueAtTime(.9,t+Math.max(.9,d-1.2));g.gain.linearRampToValueAtTime(0,t+d);
+    src.connect(hp);hp.connect(lp);lp.connect(pk);pk.connect(g);g.connect(master);
+    if(!NB)NB=noiseBuf(2);var cr=ctx.createBufferSource();cr.buffer=NB;cr.loop=true;var cb=ctx.createBiquadFilter();cb.type='highpass';cb.frequency.value=3000;var cg=ctx.createGain();cg.gain.value=.025;cr.connect(cb);cb.connect(cg);cg.connect(g);
+    src.start(t,offset||0,d+.1);cr.start(t);cr.stop(t+d+.1);cur={src:src,g:g,cr:cr};src.onended=function(){if(cur&&cur.src===src)cur=null};res(true)};
+  if(songBuf[url]!==undefined){go(songBuf[url]);return}
+  fetch(url).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(a){return ctx.decodeAudioData(a)}).then(function(b){songBuf[url]=b;go(b)}).catch(function(){songBuf[url]=null;res(false)})}catch(e){res(false)}})}
+window.playSong=playSong;window.stopSong=stopSong;
 window.snd=snd;window.sndWire=wire;
 })();
