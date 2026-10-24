@@ -7,7 +7,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:#e9d9bb;font-family:var(--disp);color:var(--ink);overscroll-behavior:none;touch-action:none}
 #view{position:fixed;inset:0;overflow:hidden}
-#far,#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#far,#world,#fgl{position:absolute;left:0;top:0;transform-origin:0 0}
+#fgl{pointer-events:none;z-index:2}#fgl img{position:absolute;filter:brightness(.42) saturate(.7) blur(2.5px)}
 #world svg{display:block}
 #grain{position:fixed;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.22;z-index:5;
  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .32 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -92,14 +93,15 @@ h1 .sl{border-width:3px}
 #ebg{position:absolute;inset:0;width:1600px;height:897px}
 #ecat,#etype{position:absolute;transform-origin:50% 100%}#etype{opacity:0;transition:opacity .3s}
 #eshadow{position:absolute;height:12px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(20,14,8,.6),rgba(20,14,8,0) 70%)}
-#ecap{position:fixed;z-index:3;left:50%;top:7%;transform:translateX(-50%);font:30px/1.35 var(--hand);color:#f6efde;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.7);opacity:0;transition:opacity .6s;white-space:nowrap}
+#ecap{position:fixed;z-index:3;left:50%;top:6%;transform:translateX(-50%);background:rgba(25,20,16,.55);padding:10px 20px 8px;border-radius:6px;font:30px/1.35 var(--hand);color:#f6efde;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,.7);opacity:0;transition:opacity .6s;white-space:nowrap}
 #ecap.on{opacity:1}
 #ebtn{position:fixed;z-index:3;left:50%;bottom:7%;transform:translateX(-50%);font:700 16px/1 var(--disp);background:#f3ecdb;color:#211c17;border:2px solid #211c17;padding:13px 18px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .6s;white-space:nowrap}
 #ebtn.on{opacity:1;pointer-events:auto}
+#eskip{position:fixed;z-index:3;right:16px;bottom:16px;font:13px/1 var(--ui);background:rgba(243,236,219,.9);border:1px solid #211c17;padding:8px 11px;cursor:pointer}
 @media (max-width:640px){#ecap{font-size:22px}#ebtn{font-size:14px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
-<div id="view"><div id="far"></div><div id="world"></div></div>
+<div id="view"><div id="far"></div><div id="world"></div><div id="fgl"></div></div>
 <div id="vig"></div><div id="grain"></div>
 
 <div id="hud"><svg viewBox="0 0 64 44" aria-hidden="true"><path d="M6 8H54V40" fill="none" stroke="#c9b48e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path id="hudp" d="M6 8H54V40" fill="none" stroke="#211c17" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="100" stroke-dasharray="0 100"/><circle id="hudd" r="4.5" fill="#d99a2b" stroke="#211c17" stroke-width="1.5" cx="6" cy="8"/></svg><div>심묘한 산책<small id="where">해 질 녘 · 경성야록 편집국 앞</small></div></div>
@@ -122,7 +124,7 @@ h1 .sl{border-width:3px}
   </div>
 </div>
 <div id="ohint"><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><path d="M2 3H22V16" fill="none" stroke="#d99a2b" stroke-width="3" stroke-linecap="round"/></svg>호외를 누르시오</div>
-<img id="fly" src="m2/walkg_01.webp" alt="">
+<img id="fly" src="m2/wk_01.webp" alt="">
 
 <script>
 (function(){
@@ -132,6 +134,9 @@ var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var TILES=[[0,0,1400,960],[1400,0,1400,960],[2800,0,1400,960],[4200,0,1400,960],[5600,0,733,960],[6333,0,1713,800],[6333,800,1713,800],[6333,1600,1713,800],[6333,2400,1713,800],[6333,3200,1713,800],[6333,4000,1713,360]];
 var WW=8046,WH=4360,COLX=6333,COLW=1713;
 var world=$('world');
+var FG=[['o3.webp',1000,1.5],['o1.webp',2350,1.7],['o5.webp',3700,1.45],['o4.webp',4700,1.8],['o3.webp',5900,1.35],['o5.webp',7300,1.3],['o1.webp',8400,1.7]];
+$('fgl').innerHTML=FG.map(function(g){return '<img src="fg/'+g[0]+'" alt="" data-x="'+g[1]+'" data-s="'+g[2]+'">'}).join('');
+[].forEach.call($('fgl').children,function(im){im.onload=function(){var sc=+im.dataset.s;im.style.width=(im.naturalWidth*sc)+'px';im.style.left=im.dataset.x+'px';im.style.top=(900+70-im.naturalHeight*sc)+'px'}});
 world.innerHTML=TILES.map(function(t,i){return '<img class="bgt" src="t'+i+'.jpg" alt="" style="position:absolute;left:'+t[0]+'px;top:'+t[1]+'px;width:'+t[2]+'px;height:'+t[3]+'px">'}).join('');
 /* ── 길(ㄱ): 종로를 따라 동쪽 → 모퉁이 축대에 뛰어올라 → 아래 계단으로 뛰어내려 → 청계천 ── */
 var GY=858;
@@ -148,28 +153,29 @@ function at(d){var q=seg(d),s=q.s,u=q.u;var x=s.a.x+(s.b.x-s.a.x)*u,y=s.a.y+(s.b
   var lift=s.t==='jump'?s.h*4*u*(1-u)+Math.max(0,(s.a.y-s.b.y))*0:0;return{x:x,y:y,gy:y,lift:lift,sc:sc,seg:s,u:u,dx:s.b.x-s.a.x,dy:s.b.y-s.a.y}}
 /* ── 장소 ── */
 var PL=[
- {n:1,name:'종로 전차',x:2120,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',url:'../lens/index.html',pc:[2480,470,-4],
-  steps:[{s:'tram'},{s:'roll'},{s:'tram',say:'차표는 없소.'},{s:'lookback',x:2150,y:508}],x0:2120,y0:508},
+ {n:1,name:'종로 전차',x:2120,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',url:'../lens/index.html',pc:[2480,470,-4],keep:1,
+  steps:[{s:'wind',say:'바람이 좋소.'},{s:'wire'},{s:'bell',say:'…땡땡.'},{s:'tflat',say:'차표는 없소.'},{s:'ttail'},{s:'tram'},{s:'tyawn'},{s:'roll'}],x0:2120,y0:508},
  {n:2,name:'종로 음반가게',x:3330,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
-  steps:[{s:'tilt',x:3230,y:692,f:-1,say:'이 소리, 마음에 드오.'},{s:'blink',x:3230,y:692,f:-1},{s:'groom',x:3230,y:692,f:-1},{s:'lookback',x:3230,y:692,f:-1,say:'…또 돌아가오.'}]},
+  steps:[{s:'follow',x:3230,y:692,f:-1,say:'빙글빙글 도오.'},{s:'earl',x:3230,y:692,f:-1,say:'이 소리, 마음에 드오.'},{s:'beat',x:3230,y:692,f:-1},{s:'follow',x:3230,y:692,f:-1},{s:'over',x:3230,y:692,f:-1,say:'…끝났소.'},{s:'recsit',x:3330,y:GY,f:-1,say:'이건 내 방석이오.'},{s:'rectap',x:3330,y:GY,f:-1}]},
  {n:3,name:'종로 야시',x:4450,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',pc:[4880,470,-3],
-  steps:[{s:'persim',x:4440,y:GY,say:'둥근 건 다 내 것이오.'},{s:'chestnut',x:4500,y:GY},{s:'yawn',x:4500,y:GY},{s:'persim',x:4440,y:GY}]},
+  steps:[{s:'sniff',x:4440,y:GY,say:'군밤 냄새요.'},{s:'hot',x:4440,y:GY,say:'앗.'},{s:'cwalk',x:4520,y:GY},{s:'proll',x:4470,y:GY,say:'둥근 건 다 내 것이오.'},{s:'glow',x:4470,y:GY},{s:'hat',x:4470,y:GY,say:'여기 숨었소.'}]},
  {n:4,name:'단성사 앞',x:5923,q:'줄을 안 서고 맨 앞에 앉아 있었소.',from:'단성사 표 파는 아이',ph:'p4.jpg',pc:[5153,520,2],
-  steps:[{s:'queue',x:5900,y:GY,say:'줄은 사람이 서는 것이오.'},{s:'doze',x:5900,y:GY},{s:'bored',x:5900,y:GY,say:'…아직이오?'},{s:'nap',x:5900,y:GY}]},
+  steps:[{s:'under',x:5860,y:GY},{s:'proud4',x:5900,y:GY,say:'줄은 사람이 서는 것이오.'},{s:'sign',x:5900,y:GY},{s:'rope',x:5940,y:GY},{s:'stand',x:5940,y:GY},{s:'ticket',x:5900,y:GY,say:'표는 이것이오.'},{s:'nod',x:5900,y:GY,say:'…아직이오?'},{s:'nap',x:5900,y:GY}]},
  {n:0,name:'모퉁이',d:vd(2),corner:1,
   steps:[{s:'gaze',x:7290,y:664},{s:'lookback',x:7290,y:664,say:'저 아래도 경성이오.'},{s:'gaze',x:7290,y:664}]},
  {n:5,name:'청계천 빨래터',d:vd(7),q:'빨래 위에 발자국을 찍고 갔소.',from:'빨래하던 아낙',ph:null,pc:[6583,1960,-3],
-  steps:[{s:'shake',x:7183,y:2192,say:'물은 차오.'},{s:'drip',x:7183,y:2192},{s:'wash',x:7183,y:2192}]},
+  steps:[{s:'look5',x:7183,y:2192,say:'누구요.'},{s:'splash',x:7183,y:2192},{s:'stir',x:7183,y:2192},{s:'lick',x:7183,y:2192},{s:'shakeoff',x:7183,y:2192,say:'물은 차오.'},{s:'proud',x:7300,y:2196}]},
  {n:6,name:'설렁탕집',d:vd(9),q:'배달통 위에서 내려오질 않소.',from:'설렁탕집 배달꾼',ph:null,pc:[6453,2560,-2],
-  steps:[{s:'bowls',x:7430,y:2808,say:'그릇 위가 제일 따뜻하오.'},{s:'loafs',x:7030,y:2862},{s:'nap',x:7030,y:2862,say:'국물 냄새가 나오.'}]},
+  steps:[{s:'steam',x:7030,y:2862,say:'국물 냄새가 나오.'},{s:'peek6',x:7030,y:2862},{s:'hot6',x:7030,y:2862,say:'뜨겁소.'},{s:'bowls',x:7430,y:2808,say:'그릇 위가 제일 따뜻하오.'},{s:'warm',x:7430,y:2808},{s:'belly',x:7030,y:2862},{s:'sleep6',x:7030,y:2862}]},
  {n:7,name:'다방 창가',d:vd(11),q:'시인보다 오래 창밖을 보더라.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
-  steps:[{s:'glass',x:7420,y:3528,say:'안이 더 재미있소.'},{s:'rain',x:7470,y:3528,say:'비가 오오.'},{s:'tilt',x:7470,y:3528},{s:'glass',x:7420,y:3528}]},
+  steps:[{s:'paws',x:7420,y:3528,say:'안이 더 재미있소.'},{s:'drops',x:7470,y:3528,say:'비가 오오.'},{s:'tap7',x:7470,y:3528},{s:'cup',x:7470,y:3528,say:'쓰오.'},{s:'lonely',x:7470,y:3528},{s:'sleep7',x:7470,y:3528}]},
  {n:8,name:'한강',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더라.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
-  steps:[{s:'slide',x:7020,y:4300},{s:'hole',x:6990,y:4304,say:'기다리는 중이오.'},{s:'fish',x:6990,y:4304,say:'올라왔소. 멸치는 아니오.'},{s:'fishloaf',x:6990,y:4304}]}
+  steps:[{s:'slip',x:7020,y:4300},{s:'cold',x:7000,y:4302,say:'발이 시리오.'},{s:'peer',x:6990,y:4304,say:'기다리는 중이오.'},{s:'catch',x:6990,y:4304,say:'올라왔소. 멸치는 아니오.'},{s:'shiver',x:6990,y:4304},{s:'moon',x:6990,y:4304}]}
 ];
 PL.forEach(function(p){if(p.d==null)p.d=p.x-200});
+
 /* ── 심묘 몸짓 (챗GPT 시트 76컷) ── */
-var SZ={"jump_01":[292,114,154.8],"jump_02":[280,151,137.6],"jump_03":[244,181,114.5],"jump_04":[296,147,160.9],"jump_05":[269,145,137.1],"jump_06":[270,238,138.5],"jump_07":[248,200,109.5],"jump_08":[254,173,139.2],"fb_01":[174,241,81.3],"fb_02":[178,236,80.3],"fb_03":[179,237,82.1],"fb_04":[178,236,82.5],"fb_05":[158,221,80.6],"fb_06":[159,225,81.6],"fb_07":[161,219,81.9],"fb_08":[162,222,83.2],"end_01":[247,187,112.9],"end_02":[222,189,105.0],"end_03":[224,198,95.3],"end_04":[191,180,92.7],"end_05":[256,237,115.5],"end_06":[251,157,133.9],"end_07":[245,148,122.6],"end_08":[247,148,127.6],"gagb_01":[217,203,107.4],"gagb_02":[192,204,98.9],"gagb_03":[198,216,102.9],"gagb_04":[175,198,80.4],"gagb_05":[259,196,124.5],"gagb_06":[189,196,97.3],"gagb_07":[193,198,101.0],"gagb_08":[221,143,114.1],"sitg_01":[184,165,94.0],"sitg_02":[183,164,94.2],"sitg_03":[179,164,91.0],"sitg_04":[183,164,93.4],"sitg_05":[194,165,97.1],"sitg_06":[189,162,97.2],"sitg_07":[188,167,98.0],"sitg_08":[186,174,98.0],"sitg_09":[199,179,107.7],"sitg_10":[168,191,90.1],"sitg_11":[169,181,94.3],"sitg_12":[199,181,98.6],"trot_01":[264,158,139.4],"trot_02":[258,155,134.1],"trot_03":[259,156,136.1],"trot_04":[264,158,141.8],"trot_05":[258,152,135.9],"trot_06":[281,144,150.4],"trot_07":[277,175,142.2],"trot_08":[154,178,75.9],"gaga_01":[231,141,118.2],"gaga_02":[217,222,104.3],"gaga_03":[250,175,119.1],"gaga_04":[214,198,95.9],"gaga_05":[231,208,104.1],"gaga_06":[176,198,80.2],"gaga_07":[164,192,76.1],"gaga_08":[226,164,128.3],"walkg_01":[206,201,88.1],"walkg_02":[217,200,94.3],"walkg_03":[219,197,94.6],"walkg_04":[213,202,93.2],"walkg_05":[206,208,85.8],"walkg_06":[216,202,94.5],"walkg_07":[220,197,95.5],"walkg_08":[210,200,90.1],"lie_01":[210,123,107.9],"lie_02":[269,104,139.0],"lie_03":[265,167,117.6],"lie_04":[242,137,120.8],"lie_05":[208,149,97.9],"lie_06":[210,151,99.1],"lie_07":[195,147,91.9],"lie_08":[203,149,95.2],"react_01":[271,238,122.4],"react_02":[239,153,131.6],"react_03":[276,177,128.8],"react_04":[219,210,93.2],"react_05":[317,152,158.2],"react_06":[225,149,117.5],"react_07":[219,219,97.5],"react_08":[166,202,81.0]};
+var SZ={"jump_01":[292,114,154.8],"jump_02":[280,151,137.6],"jump_03":[244,181,114.5],"jump_04":[296,147,160.9],"jump_05":[269,145,137.1],"jump_06":[270,238,138.5],"jump_07":[248,200,109.5],"jump_08":[254,173,139.2],"fb_01":[174,241,81.3],"fb_02":[178,236,80.3],"fb_03":[179,237,82.1],"fb_04":[178,236,82.5],"fb_05":[158,221,80.6],"fb_06":[159,225,81.6],"fb_07":[161,219,81.9],"fb_08":[162,222,83.2],"end_01":[247,187,112.9],"end_02":[222,189,105.0],"end_03":[224,198,95.3],"end_04":[191,180,92.7],"end_05":[256,237,115.5],"end_06":[251,157,133.9],"end_07":[245,148,122.6],"end_08":[247,148,127.6],"gagb_01":[217,203,107.4],"gagb_02":[192,204,98.9],"gagb_03":[198,216,102.9],"gagb_04":[175,198,80.4],"gagb_05":[259,196,124.5],"gagb_06":[189,196,97.3],"gagb_07":[193,198,101.0],"gagb_08":[221,143,114.1],"sitg_01":[184,165,94.0],"sitg_02":[183,164,94.2],"sitg_03":[179,164,91.0],"sitg_04":[183,164,93.4],"sitg_05":[194,165,97.1],"sitg_06":[189,162,97.2],"sitg_07":[188,167,98.0],"sitg_08":[186,174,98.0],"sitg_09":[199,179,107.7],"sitg_10":[168,191,90.1],"sitg_11":[169,181,94.3],"sitg_12":[199,181,98.6],"trot_01":[264,158,139.4],"trot_02":[258,155,134.1],"trot_03":[259,156,136.1],"trot_04":[264,158,141.8],"trot_05":[258,152,135.9],"trot_06":[281,144,150.4],"trot_07":[277,175,142.2],"trot_08":[154,178,75.9],"gaga_01":[231,141,118.2],"gaga_02":[217,222,104.3],"gaga_03":[250,175,119.1],"gaga_04":[214,198,95.9],"gaga_05":[231,208,104.1],"gaga_06":[176,198,80.2],"gaga_07":[164,192,76.1],"gaga_08":[226,164,128.3],"walkg_01":[206,201,88.1],"walkg_02":[217,200,94.3],"walkg_03":[219,197,94.6],"walkg_04":[213,202,93.2],"walkg_05":[206,208,85.8],"walkg_06":[216,202,94.5],"walkg_07":[220,197,95.5],"walkg_08":[210,200,90.1],"lie_01":[210,123,107.9],"lie_02":[269,104,139.0],"lie_03":[265,167,117.6],"lie_04":[242,137,120.8],"lie_05":[208,149,97.9],"lie_06":[210,151,99.1],"lie_07":[195,147,91.9],"lie_08":[203,149,95.2],"react_01":[271,238,122.4],"react_02":[239,153,131.6],"react_03":[276,177,128.8],"react_04":[219,210,93.2],"react_05":[317,152,158.2],"react_06":[225,149,117.5],"react_07":[219,219,97.5],"react_08":[166,202,81.0],"s6_01":[205,190,92.1],"s6_02":[196,200,79.9],"s6_03":[224,190,121.1],"s6_04":[181,194,90.9],"s6_05":[194,219,95.3],"s6_06":[177,174,74.6],"s6_07":[231,155,110.7],"s6_08":[185,126,88.0],"eyeA_01":[520,365,258.3],"eyeA_02":[520,365,257.5],"eyeA_03":[520,366,258.1],"eyeA_04":[520,366,257.6],"eyeA_05":[520,366,257.3],"eyeA_06":[520,366,258.0],"s4_01":[223,188,91.7],"s4_02":[205,182,100.2],"s4_03":[200,227,95.3],"s4_04":[189,174,99.6],"s4_05":[183,198,94.6],"s4_06":[199,182,99.4],"s4_07":[193,156,97.1],"s4_08":[187,179,94.5],"s1_01":[260,246,125.6],"s1_02":[239,247,109.2],"s1_03":[298,194,151.7],"s1_04":[221,202,127.6],"s1_05":[214,205,121.2],"s1_06":[267,91,136.3],"s1_07":[246,152,111.2],"s1_08":[257,113,137.1],"s5_01":[246,207,121.6],"s5_02":[199,217,83.8],"s5_03":[194,218,87.0],"s5_04":[204,193,105.4],"s5_05":[211,211,91.2],"s5_06":[182,183,94.7],"s5_07":[221,187,96.8],"s5_08":[195,181,100.4],"fw_01":[165,273,78.7],"fw_02":[164,276,78.9],"fw_03":[164,270,78.3],"fw_04":[165,272,79.1],"fw_05":[165,275,82.2],"fw_06":[165,276,83.8],"fw_07":[163,275,85.0],"fw_08":[161,273,81.1],"fw_09":[162,273,82.8],"fw_10":[161,273,82.0],"fw_11":[160,275,82.5],"fw_12":[161,276,81.9],"wk_01":[226,185,99.5],"wk_02":[229,186,100.5],"wk_03":[229,185,99.1],"wk_04":[231,181,102.6],"wk_05":[227,186,99.5],"wk_06":[228,187,101.0],"wk_07":[229,186,100.1],"wk_08":[231,180,102.3],"s8_01":[260,229,126.3],"s8_02":[203,180,95.4],"s8_03":[183,233,86.1],"s8_04":[208,211,94.1],"s8_05":[228,234,103.2],"s8_06":[201,224,97.0],"s8_07":[199,179,101.9],"s8_08":[183,223,91.5],"s0_01":[224,194,97.5],"s0_02":[234,179,117.0],"s0_03":[235,193,116.2],"s0_04":[226,191,105.5],"s0_05":[201,198,97.6],"s0_06":[254,175,111.7],"s0_07":[247,171,123.8],"s0_08":[172,165,95.0],"s3_01":[240,209,104.9],"s3_02":[203,212,86.9],"s3_03":[244,204,111.2],"s3_04":[215,214,80.7],"s3_05":[240,196,104.8],"s3_06":[196,194,84.0],"s3_07":[198,195,76.6],"s3_08":[194,193,81.1],"s7_01":[180,220,90.7],"s7_02":[189,211,89.1],"s7_03":[179,195,91.8],"s7_04":[181,178,94.2],"s7_05":[198,178,91.2],"s7_06":[185,171,78.9],"s7_07":[205,189,98.3],"s7_08":[183,123,87.0],"tr_01":[307,148,164.9],"tr_02":[287,148,152.2],"tr_03":[301,137,161.6],"tr_04":[308,148,165.5],"tr_05":[288,147,152.8],"tr_06":[302,136,162.2],"eyeB_01":[520,433,258.0],"eyeB_02":[520,432,257.8],"eyeB_03":[520,432,257.9],"eyeB_04":[520,433,257.8],"eyeB_05":[520,432,258.4],"eyeB_06":[520,432,257.9],"s2_01":[168,180,94.0],"s2_02":[182,177,91.3],"s2_03":[174,180,88.1],"s2_04":[186,177,88.1],"s2_05":[204,181,94.5],"s2_06":[243,183,105.3],"s2_07":[185,167,92.8],"s2_08":[189,176,98.4]};
 var K=0.56; /* 모든 컷을 같은 배율로: 심묘 크기 일정 */
 var AR={};Object.keys(SZ).forEach(function(k){AR[k]=SZ[k][0]/SZ[k][1]});
 var IMG={};Object.keys(SZ).forEach(function(k){var i=new Image();i.src='m2/'+k+'.webp';IMG[k]=i});
@@ -190,7 +196,15 @@ var SEQ={
  shake:[['gagb_01',1600,2]], bowls:[['gagb_02',2600]], glass:[['gagb_03',2200]], rain:[['gagb_04',1900]],
  slide:[['gagb_05',1300]], hole:[['gagb_06',2400]], fish:[['gagb_07',2200]], fishloaf:[['gagb_08',2400]],
  drip:[['gagb_04',1500]], wash:[['sitg_08',420],['sitg_07',420],['sitg_08',420],['sitg_01',500]],
- gaze:[['fb_05',2400]],
+ gaze:[['fw_08',2400]],
+ wind:[['s1_03',1900,0.6]], wire:[['s1_04',1500]], bell:[['s1_05',300,2],['s1_05',1100]], tflat:[['s1_06',2200]], ttail:[['s1_07',2000]], tyawn:[['s1_08',1300],['s1_06',900]],
+ follow:[['s2_01',650],['s2_02',650],['s2_03',650],['s2_02',550],['s2_01',650]], earl:[['s2_04',1800]], beat:[['s2_07',500,0.8],['s2_07',500],['s2_07',500,0.8],['s2_07',500]], over:[['s2_08',1500]], recsit:[['s2_05',2000]], rectap:[['s2_06',500],['s2_05',450],['s2_06',500],['s2_05',600]],
+ sniff:[['s3_01',1500]], hot:[['s3_02',800,2.5],['s3_06',600]], cwalk:[['s3_03',1300]], proll:[['s3_04',900],['s3_05',1500]], glow:[['s3_06',1600]], hat:[['s3_07',1000],['s3_08',2200]],
+ under:[['s4_01',1100]], proud4:[['s4_04',1800]], sign:[['s4_05',1600]], rope:[['s4_02',500],['s4_04',300],['s4_02',500],['s4_04',400]], stand:[['s4_03',1400]], ticket:[['s4_06',1900]], nod:[['s4_07',1100],['s4_08',300,2],['s4_08',900]],
+ look5:[['s5_03',1700]], splash:[['s5_04',900,2.5]], stir:[['s5_05',1400]], lick:[['s5_06',1400]], shakeoff:[['s5_07',1000,3.5],['s5_08',1500]],
+ steam:[['s6_01',1600]], peek6:[['s6_02',1300]], hot6:[['s6_03',800,1.5],['s6_04',1100]], warm:[['s6_06',2200]], belly:[['s6_07',1700]], sleep6:[['s6_08',2800]],
+ paws:[['s7_01',1100],['s7_02',1500]], drops:[['s7_03',900],['s7_04',900],['s7_03',700]], tap7:[['s7_05',800]], cup:[['s7_06',1100,1.2]], lonely:[['s7_07',2200]], sleep7:[['s7_08',2800]],
+ slip:[['s8_01',1000],['s8_02',1400]], cold:[['s8_03',1500]], peer:[['s8_04',2000]], catch:[['s8_05',500,1.5],['s8_06',2000]], shiver:[['s8_07',1500,2.2]], moon:[['s8_08',2200]],
  hunt:[['react_03',800],['react_04',700,1],['react_04',500],['react_05',260,0,40],['jump_07',200],['sitg_01',500]],
  knead:[['react_06',260],['sitg_01',200],['react_06',260],['sitg_01',200],['react_06',260],['sitg_02',600]],
  rub:[['react_07',1300],['sitg_01',400]],
@@ -208,7 +222,7 @@ var say=el('div','say');
 PL.forEach(function(p){if(!p.pc)return;var c=el('div','pc');c.style.left=p.pc[0]+'px';c.style.top=p.pc[1]+'px';c.style.transform='rotate('+p.pc[2]+'deg)';
   c.innerHTML='「'+p.q+'」<small>— '+p.from+' 올림</small>';p.pcel=c});
 /* 연재만화 */
-['c1.png','c2.png','c3.png','c4.png','c5.png','c6.png','c7.png','c8.png'].forEach(function(c,i){var d=document.createElement('div');d.className='cell';d.id='cell'+(i+1);d.innerHTML='<span>'+(i+1)+'</span><img src="'+c+'" alt="">';$('strip').appendChild(d)});
+['c1.jpg','c2.jpg','c3.jpg','c4.jpg','c5.jpg','c6.jpg','c7.jpg','c8.jpg'].forEach(function(c,i){var d=document.createElement('div');d.className='cell';d.id='cell'+(i+1);d.innerHTML='<span>'+(i+1)+'</span><img src="'+c+'" alt="">';$('strip').appendChild(d)});
 var visited=[];try{visited=JSON.parse(localStorage.getItem('simmyo_road')||'[]')}catch(e){}
 function saveV(){try{localStorage.setItem('simmyo_road',JSON.stringify(visited))}catch(e){}}
 function stamp(n,anim){if(!n)return;var c=$('cell'+n);if(visited.indexOf(n)<0){visited.push(n);saveV();anim=true}c.classList.add('v');if(anim){c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop')}}
@@ -239,14 +253,14 @@ function hop(from,to,dur,h,done){anim={a:from,b:to,t0:performance.now(),dur:dur,
 function playSeq(name,now,loop){seq={f:SEQ[name],i:0,t0:now,loop:loop,name:name}}
 function seqFrame(now){if(!seq)return null;var st=seq.f[seq.i];if(now-seq.t0>st[1]){seq.i++;seq.t0=now;if(seq.i>=seq.f.length){if(seq.loop)seq.i=seq.loop===true?0:seq.loop;else{seq.done=true;seq.i=seq.f.length-1}}st=seq.f[seq.i]}return st}
 function placeType(x,y,s,f){typ.style.left=(x+f*48*s-11)+'px';typ.style.top=(y-16)+'px';typ.style.opacity=1}
-function startScript(p,now){script={p:p,i:-1,t0:now};carry=false;var gp=at(D);placeType(gp.x,gp.y,gp.sc,face);nextStep(now)}
+function startScript(p,now){script={p:p,i:-1,t0:now};if(!p.keep){carry=false;var gp=at(D);placeType(gp.x,gp.y,gp.sc,face)}nextStep(now)}
 function nextStep(now){var p=script.p;script.i=(script.i+1)%p.steps.length;var st=p.steps[script.i];
   var tx=st.x!=null?st.x:(p.x0!=null?p.x0:curPos.x),ty=st.y!=null?st.y:(p.y0!=null?p.y0:curPos.y),ts=st.sc||1;
   var go=function(){if(script.i===0&&!script.proud){script.proud=1;playSeq('proud',performance.now(),false);script.t0=performance.now();script.i=-1;return}playSeq(st.s,performance.now(),false);script.t0=performance.now();if(st.say)speak(st.say,2400)};
   if(Math.abs(tx-curPos.x)>4||Math.abs(ty-curPos.y)>4){var dy=Math.abs(ty-curPos.y);hop({x:curPos.x,y:curPos.y,s:curPos.s},{x:tx,y:ty,s:ts},dy>40?520:340,dy>40?60+dy*0.35:34,go)}else go();
   script.x=tx;script.y=ty;script.s=ts}
 function endScript(){if(!script)return;var p=at(D);script=null;seq=null;hop({x:curPos.x,y:curPos.y,s:curPos.s},{x:p.x,y:p.y,s:p.sc},300,Math.abs(curPos.y-p.y)>30?60:28,null);speak(null)}
-var stopNow=null;
+var stopNow=null,fgA=1;
 function frame(now){
   var dt=Math.min(50,now-(last||now));last=now;
   var q=seg(D);if(q.s.t==='jump'&&!anim&&!script){if(T>=D&&T<q.s.s+q.s.l+1)T=q.s.s+q.s.l+1;else if(T<D&&T>q.s.s-1)T=q.s.s-1}
@@ -259,6 +273,7 @@ function frame(now){
   world.style.filter=blur>.3?'blur('+blur.toFixed(1)+'px)':'none';
   var still=now-moving>260;
   var near=null;PL.forEach(function(s){if(Math.abs(D-s.d)<(s.corner?40:130))near=s});
+  var fgl=$('fgl');fgl.style.transform='translate('+(-c.x*1.32*S)+'px,0px) scale('+S+')';var fgT=(near||still)?0:1;fgA+=(fgT-fgA)*0.08;fgl.style.opacity=Math.max(0,1-c.t*2.5)*fgA;
   PL.forEach(function(s){if(s.n&&D>s.d+260&&!passed[s.n]){passed[s.n]=1;stamp(s.n)}});
   if(!script&&!anim&&still&&near&&now-moving>420)startScript(near,now);
   var k,pos,f=face,rot=0,lift=0,jit=0;
@@ -274,11 +289,11 @@ function frame(now){
     if(p.seg.t==='jump'){var u=p.u;f=p.dx>=0?1:-1;if(v<0)f=-f;
       k=u<.06?'jump_01':u<.14?'jump_02':u<.3?'jump_03':u<.48?'jump_04':u<.6?'jump_05':u<.8?'jump_06':u<.92?'jump_07':'jump_08';seq=null;idleSince=now}
     else if(!still){var stair=Math.abs(p.dy)>Math.abs(p.dx)*0.6&&p.seg.t==='walk';
-      if(stair){var down=(v>0)===(p.dy>0);k=(down?'fb_0':'fb_0')+(down?(1+Math.floor(acc/30)%4):(5+Math.floor(acc/30)%4));f=1}
+      if(stair){var down=(v>0)===(p.dy>0);var fi=Math.floor(acc/26)%6;k='fw_'+('0'+(down?fi+1:fi+7)).slice(-2);f=1}
       else{ if(gait===2&&spd<7)gait=1;else if(gait===1&&spd>12)gait=2;else if(gait===1&&spd<3)gait=0;else if(gait===0&&spd>6)gait=1;
-        if(gait===2)k='trot_0'+(5+Math.floor(acc/46)%2);
-        else if(gait===1)k='trot_0'+(1+Math.floor(acc/26)%4);
-        else{k='walkg_0'+(1+Math.floor(acc/24)%8);lift=Math.abs(Math.sin(acc/24*Math.PI/2))*2}}
+        if(gait===2)k='tr_0'+(1+Math.floor(acc/34)%6);
+        else if(gait===1)k='tr_0'+(1+Math.floor(acc/24)%6);
+        else{k='wk_0'+(1+Math.floor(acc/22)%8);lift=Math.abs(Math.sin(acc/24*Math.PI/2))*2}}
       seq=null;idleSince=now;napped=false}
     else{ // 가만히: ㄱ을 내려놓고 이런저런 몸짓
       if(carry&&now-moving<520){k='trot_07'}
@@ -338,7 +353,7 @@ async function runEnding(){
   endDiv.classList.add('on');var bg=$('ebg');bg.src='e2.jpg';efx=.42;efit();etype.style.opacity=0;
   await wait(500);cap('자정.<br>심묘가 편집국으로 돌아왔소.');
   var gy=EH*.885;ES=1.0;
-  await tween(3600,function(u){var x=1700-(1700-560)*u;var k='walkg_0'+(1+Math.floor(u*3600/110)%8);ecatSet(k,x,gy,112,-1,Math.abs(Math.sin(u*40))*2)});
+  await tween(3600,function(u){var x=1700-(1700-560)*u;var k='wk_0'+(1+Math.floor(u*3600/110)%8);ecatSet(k,x,gy,112,-1,Math.abs(Math.sin(u*40))*2)});
   ecatSet('sitg_11',560,gy,122,-1);await wait(1400);
   ecatSet('trot_08',560,gy,126,1);esp('창에 불이 켜져 있소.',1600);await wait(1800);
   endDiv.classList.add('fade');await wait(700);
@@ -347,7 +362,7 @@ async function runEnding(){
   var dy=EH*.86;
   await tween(900,function(u){var x=1560+(1150-1560)*u,y=(EH+60)+(dy-(EH+60))*u;var k=u<.15?'jump_03':u<.5?'jump_04':u<.8?'jump_06':'jump_07';ecatSet(k,x,y,u<.5?105:130,-1,180*4*u*(1-u))});
   ecatSet('jump_08',1150,dy,135,-1);await wait(500);
-  await tween(1500,function(u){var x=1150-(1150-930)*u;ecatSet('walkg_0'+(1+Math.floor(u*1500/110)%8),x,dy,150,-1,Math.abs(Math.sin(u*30))*2)});
+  await tween(1500,function(u){var x=1150-(1150-930)*u;ecatSet('wk_0'+(1+Math.floor(u*1500/110)%8),x,dy,150,-1,Math.abs(Math.sin(u*30))*2)});
   ecatSet('end_02',930,dy,145,-1);etype.style.left=(930-105)+'px';etype.style.top=(dy-36)+'px';etype.style.width='50px';await wait(350);etype.style.opacity=1;esp('여기 두겠소.',1600);await wait(1200);
   ecatSet('end_03',930,dy,145,-1);await wait(900);
   ecatSet('end_04',930,dy,170,-1);cap('ㄱ이 돌아왔소.');await wait(1600);
@@ -356,7 +371,13 @@ async function runEnding(){
   ecatSet('end_06',1060,dy,120,1);await wait(1000);
   ecatSet('end_07',1060,dy,118,1);esp('zZ',2400);await wait(2200);
   ecatSet('end_08',1060,dy,118,1);await wait(900);ecatSet('end_07',1060,dy,118,1);
-  cap('다음 날 아침, 편집장은 목격 엽서를<br>지도 위에 하나씩 이어 보았다.');await wait(900);$('ebtn').classList.add('on');
+  await wait(600);endDiv.classList.add('fade');await wait(800);
+  bg.src='e3.jpg';efx=.5;efit();ES=1.5;cap('다음 날 아침.');
+  etype.style.left='730px';etype.style.top='590px';etype.style.width='44px';etype.style.opacity=1;
+  ecatSet('end_07',1000,690,0,-1);endDiv.classList.remove('fade');await wait(2200);
+  ecatSet('end_08',1000,690,0,-1);await wait(900);ecatSet('end_07',1000,690,0,-1);
+  cap('ㄱ은 제자리로 돌아왔고,<br>그날 신문은 빈칸 없이 나갔다.');await wait(2600);
+  cap('편집장은 목격 엽서를<br>지도 위에 하나씩 이어 보았다.');await wait(900);$('ebtn').classList.add('on');
 }
 $('ebtn').addEventListener('click',function(){location.href='../board/index.html?end=1'});
 
@@ -367,6 +388,28 @@ document.querySelectorAll('.gap').forEach(function(el){var w=document.createTree
 var hoe=$('hoe'),op=$('open');
 function fitHoe(s){var k=Math.min(innerWidth/640,innerHeight/860);hoe.style.transform='scale('+k+')'+(s||'')}
 fitHoe();addEventListener('resize',function(){if(!started)fitHoe()});
+
+/* ── 프롤로그: 식자실, ㄱ이 사라진 순간 ── */
+async function runPrologue(){
+  op.style.visibility='hidden';$('ohint').style.visibility='hidden';
+  endDiv.classList.add('on');var bg=$('ebg');bg.src='p1.jpg';efx=.55;efit();ES=1.2;etype.style.opacity=0;ecat.style.opacity=0;
+  var skip=document.createElement('button');skip.id='eskip';skip.textContent='건너뛰기 →';endDiv.appendChild(skip);
+  var done=false;skip.onclick=function(){done=true;finish()};
+  function finish(){if(finish.d)return;finish.d=1;endDiv.classList.add('fade');setTimeout(function(){endDiv.classList.remove('on','fade');ecat.style.opacity=1;skip.remove();$('ecap').classList.remove('on');op.style.visibility='';$('ohint').style.visibility='';fitHoe()},700)}
+  var fl=834,dk=566;
+  cap('1934년 어느 해 질 녘,<br>경성야록 식자실.');await wait(1800);if(done)return;
+  ecat.style.opacity=1;
+  await tween(700,function(u){var x=560+(1010-560)*u,y=fl+(dk-fl)*u;ecatSet(u<.85?'react_05':'react_04',x,y,0,1,170*4*u*(1-u))});if(done)return;
+  ecatSet('sitg_01',1010,dk,0,1);await wait(900);ecatSet('sitg_10',1010,dk,0,1);await wait(900);if(done)return;
+  cap('활자함에서 따뜻한 쇠 냄새가 났다.');ecatSet('s0_02',1010,dk,0,1);await wait(1500);ecatSet('s0_03',1010,dk,0,1);await wait(900);if(done)return;
+  ecatSet('s0_04',1010,dk,0,1);cap('하필이면 「ㄱ」이었다.');await wait(1500);ecatSet('s0_05',1010,dk,0,-1);esp('…',1000);await wait(1100);if(done)return;
+  await tween(700,function(u){ecatSet('s0_06',1010-(1010-940)*u,dk,0,-1)});
+  await tween(650,function(u){var x=940+(620-940)*u,y=dk+(fl-dk)*u;ecatSet(u<.8?'s0_07':'s0_08',x,y,0,-1,90*4*u*(1-u))});if(done)return;
+  ecatSet('s0_08',620,fl,0,-1);await wait(1100);
+  cap('까만 것은 ㄱ을 물고 해 질 녘 경성으로 나갔다.');
+  await tween(1700,function(u){ecatSet('wk_0'+(1+Math.floor(u*1700/95)%8),620-(620+200)*u,fl,0,-1,Math.abs(Math.sin(u*28))*2)});if(done)return;
+  cap('다음 날, 신문에는 ㄱ 자리가 모두 비어 있었다.');await wait(2200);
+  finish()}
 function begin(){
   if(started)return;started=true;$('ohint').classList.add('off');
   var ph=$('ph');
@@ -378,7 +421,7 @@ function begin(){
     $('wimg').src='wanted_empty.jpg';
     fly.style.display='block';var fw=r.width*0.8;fly.style.width=fw+'px';fly.style.left=(r.left+r.width*0.1)+'px';fly.style.top=(r.top+r.height*0.3)+'px';
     var ex=(p.x-c.x)*S-58*S,ey=(p.y-c.y)*S-112*S,sc=115*S/fw;
-    var fi=0,fiv=setInterval(function(){fi=(fi+1)%8;fly.src=IMG['walkg_0'+(fi+1)].src},70);
+    var fi=0,fiv=setInterval(function(){fi=(fi+1)%8;fly.src=IMG['wk_0'+(fi+1)].src},70);
     fly.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate('+(ex-(r.left+r.width*0.1))*0.5+'px,'+(-40)+'px) scale('+(1+(sc-1)*0.5)+')',offset:.4},{transform:'translate('+(ex-(r.left+r.width*0.1))+'px,'+(ey-(r.top+r.height*0.3))+'px) scale('+sc+')'}],{duration:1500,easing:'cubic-bezier(.5,0,.3,1)',fill:'forwards'});
     cat.style.visibility='hidden';
     fitHoe(' translateY(-120%) rotate(-6deg)');hoe.style.opacity=0;op.classList.add('go');
@@ -387,6 +430,7 @@ function begin(){
 hoe.addEventListener('click',begin);hoe.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();begin()}});
 if(from){started=true;op.remove();$('ohint').remove();$('hint').classList.add('off');stamp(from,true);passed[from]=1;setTimeout(function(){toast(from+'번 골목 다녀옴 · 연재만화 한 칸')},300)}
 function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(function(){e.classList.remove('on')},2600)}
+if(!from){var seenP=false;try{seenP=sessionStorage.getItem('simmyo_pro')==='1';sessionStorage.setItem('simmyo_pro','1')}catch(e){}if(!seenP&&!reduce)runPrologue()}
 requestAnimationFrame(frame);
 })();
 </script>
