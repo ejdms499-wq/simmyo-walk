@@ -212,7 +212,8 @@ PL.forEach(function(p,i){
 /* 상태 */
 var visited=[];
 try{visited=JSON.parse(localStorage.getItem('simmyo_v')||'[]')}catch(e){}
-var qs=new URLSearchParams(location.search),justDone=+qs.get('done')||0;
+var qs=new URLSearchParams(location.search),justDone=+qs.get('done')||0,fromEnd=!!qs.get('end');
+if(fromEnd){visited=[1,2,3,4,5,6,7,8];}
 if(justDone&&visited.indexOf(justDone)<0)visited.push(justDone);
 function save(){try{localStorage.setItem('simmyo_v',JSON.stringify(visited))}catch(e){}}
 save();
@@ -326,7 +327,8 @@ $('sleep').addEventListener('click',function(){toast(visited.length>=8?'…(잔�
 window.addEventListener('resize',function(){if(camBusy)return;layout()});
 layout();
 var seen=false;try{seen=sessionStorage.getItem('simmyo_op')==='1'}catch(e){}
-if(justDone){drawThread(justDone);$('veil').classList.add('off');$('open-hint').classList.add('off');
+if(fromEnd){history.replaceState(null,'',location.pathname);drawThread();$('veil').classList.add('off');$('open-hint').classList.add('off');setTimeout(playEnding,900)}
+else if(justDone){drawThread(justDone);$('veil').classList.add('off');$('open-hint').classList.add('off');
   setTimeout(function(){toast(justDone+'번 골목 다녀옴 · 붉은 실 한 마디, 만화 한 칸')},400);
   if(visited.length>=8)setTimeout(playEnding,1800);}
 else if(!seen&&visited.length===0){drawThread();showHoe(true)}
