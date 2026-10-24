@@ -8,7 +8,7 @@ var SCENES={
   {k:'lickice',f:1,say:'…차오.',snd:'lick'},
   {k:'brainfreeze',say:'머리가 띵하오.',snd:'ice'},{k:'facewash'},
   {k:'tap'},
-  {to:[760,850],by:'hop',k:'loaf',say:'여기 시원하오.',snd:'purr'},
+  {to:[760,850],by:'hop',k:'loaf',say:'여기 시원하오.'},
   {k:'blink'},
   {to:[1000,760],by:'hop',f:-1,k:'sitlook'}]},
  expo:{bg:'bg/s01.webp',W:1232,H:928,sc:1.25,start:[880,812,-1],steps:[
@@ -23,20 +23,20 @@ var SCENES={
   {k:'button',say:'이 단추를 누르면…',snd:'tink'},{k:'startle',say:'!',snd:'land'},{k:'puff'},
   {k:'scratch',say:'흠.'},
   {to:[320,1150],by:'walk',f:-1,k:'groom'},
-  {k:'knead',snd:'purr'},{k:'stretch'},{k:'dozey'},
+  {k:'knead'},{k:'stretch'},{k:'dozey'},
   {to:[600,1155],by:'walk',k:'licklip',say:'몇 층이오?'}]},
  jodk:{bg:'bg/s03.webp',W:1232,H:928,sc:1.65,start:[540,865,-1],steps:[
   {k:'stare',f:-1,say:'이 쇠 꽃이 말을 하오?'},
   {k:'micnose',say:'쇠 냄새요.',snd:'sniff'},{k:'sneeze',snd:'sneeze'},
   {k:'sitlook',say:'야옹. 경성 들리오?',snd:'horn'},
   {to:[640,548],by:'hop',k:'tilt'},{k:'newsp',say:'오늘 소식이오.',snd:'paper'},
-  {k:'loaf',say:'방송은 잘 들었소.',snd:'purr'},
+  {k:'loaf',say:'방송은 잘 들었소.'},
   {to:[540,865],by:'hop',f:-1,k:'blink'}]},
  sakura:{bg:'bg/s05.webp',W:1232,H:928,sc:1.55,start:[880,815,1],steps:[
   {k:'swat',say:'꽃잎이 도망가오.',snd:'pop'},
   {k:'lookup'},
   {k:'petalcatch',say:'잡았소.'},{k:'petal',say:'…하나 더 오오.'},
-  {k:'roll',snd:'purr'},{k:'belly',snd:'purr'},
+  {k:'roll'},{k:'belly'},
   {to:[1060,800],by:'walk',k:'blink'},
   {k:'gazeup',say:'밤인데 밝소.'},
   {to:[880,815],by:'walk',f:-1,k:'sitlook'}]},
@@ -46,7 +46,7 @@ var SCENES={
   {k:'proud',snd:'mrrp'},
   {k:'finish',say:'결승선이오.'},{k:'smug'},
   {to:[420,868],by:'run',f:-1,k:'scratch'},
-  {k:'loaf',snd:'purr'}]},
+  {k:'loaf'}]},
  bonjeong:{bg:'bg/s07.webp',W:1232,H:928,sc:1.55,start:[620,895,1],steps:[
   {k:'gazeup',say:'방울이 불을 켰소.'},
   {to:[480,880],by:'walk',f:-1,k:'groom'},
@@ -67,7 +67,7 @@ var SCENES={
   {k:'paper',say:'이건 내게 온 엽서요?',snd:'paper'},
   {k:'stamp',say:'도장 찍었소.',snd:'tink'},
   {to:[420,556],by:'walk',f:-1,k:'smug'},
-  {k:'loaf',snd:'purr'},
+  {k:'loaf'},
   {to:[1060,885],by:'hop',k:'blink'}]},
  photo:{bg:'bg/s11.webp',W:1232,H:928,sc:1.5,start:[860,840,-1],steps:[
   {k:'stare',f:-1,say:'저 상자가 나를 보오.'},
@@ -90,11 +90,11 @@ var SCENES={
   {k:'paper',snd:'paper'},
   {to:[520,880],by:'walk',f:-1,k:'chase'},
   {k:'dozey'},
-  {to:[720,890],by:'walk',k:'loaf',snd:'purr'}]},
+  {to:[720,890],by:'walk',k:'loaf'}]},
  market:{bg:'bg/s14.webp',W:1232,H:928,sc:1.55,start:[860,895,-1],steps:[
   {k:'sniff',f:-1,say:'마른 생선 냄새요.',snd:'sniff'},
   {k:'hunt'},
-  {k:'basket',say:'이 바구니는 내 것이오.',snd:'purr'},
+  {k:'basket',say:'이 바구니는 내 것이오.'},
   {to:[1060,870],by:'walk',k:'tailwrap'},
   {k:'ignore',say:'…아직 문 안 열었소.'},
   {to:[860,895],by:'walk',f:-1,k:'blink'}]},
@@ -103,7 +103,7 @@ var SCENES={
   {to:[200,885],by:'hop',k:'sitlook'},
   {to:[610,795],by:'hop',k:'crouch',say:'물고기는 없소.',snd:'drip'},
   {k:'fountain',snd:'drip',say:'물맛은 괜찮소.'},{k:'lickpaw',snd:'lick'},
-  {to:[1080,885],by:'hop',k:'loaf',snd:'purr'},
+  {to:[1080,885],by:'hop',k:'loaf'},
   {to:[330,648],by:'hop',f:-1,k:'blink'}]}
 };
 /* 몸짓: [컷, 시간ms] */

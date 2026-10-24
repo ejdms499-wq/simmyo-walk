@@ -23,13 +23,10 @@ function mew(t,o){o=o||{};var p=o.pitch||1,dur=o.dur||.55,v=o.vol||.5;
   var f2=ctx.createBiquadFilter();f2.type='peaking';f2.frequency.setValueAtTime(1300*p,t);f2.frequency.linearRampToValueAtTime(2500*p,t+dur*.35);f2.frequency.linearRampToValueAtTime(1000*p,t+dur);f2.gain.value=10;f2.Q.value=3;
   var g=ctx.createGain();env(g,t,.05,dur-.2,.15,v);
   osc.connect(lp);lp.connect(f2);f2.connect(g);var last=g;
-  if(o.horn){var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1400;bp.Q.value=1.4;g.connect(bp);last=bp;var dl=ctx.createDelay();dl.delayTime.value=.09;var fb=ctx.createGain();fb.gain.value=.35;bp.connect(dl);dl.connect(fb);fb.connect(dl);out(dl,.5)}
+  if(false&&o.horn){var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1400;bp.Q.value=1.4;g.connect(bp);last=bp;var dl=ctx.createDelay();dl.delayTime.value=.09;var fb=ctx.createGain();fb.gain.value=.35;bp.connect(dl);dl.connect(fb);fb.connect(dl);out(dl,.5)}
   out(last,1,o.pan);osc.start(t);vib.start(t);osc.stop(t+dur+.1);vib.stop(t+dur+.1)}
 /* 그르릉 */
-function purr(t,dur,v){var s=noise(t,dur);var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=260;var am=ctx.createGain();am.gain.value=0;
-  var lfo=ctx.createOscillator();lfo.frequency.value=24;var lg=ctx.createGain();lg.gain.value=.5;lfo.connect(lg);lg.connect(am.gain);
-  var g=ctx.createGain();env(g,t,.25,dur-.6,.35,v||.9);s.connect(lp);lp.connect(am);am.connect(g);out(g);
-  var o=ctx.createOscillator();o.frequency.value=48;var og=ctx.createGain();env(og,t,.25,dur-.6,.35,.12);o.connect(og);lfo.connect(og.gain);out(og);lfo.start(t);o.start(t);lfo.stop(t+dur+.1);o.stop(t+dur+.1)}
+function purr(){}
 function thump(t,f,v,d){var o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*.45,t+d);var g=ctx.createGain();env(g,t,.004,0,d,v);o.connect(g);out(g);o.start(t);o.stop(t+d+.05)}
 function hiss(t,d,f,q,v,type,f2){var s=noise(t,d);var b=ctx.createBiquadFilter();b.type=type||'bandpass';b.frequency.setValueAtTime(f,t);if(f2)b.frequency.exponentialRampToValueAtTime(f2,t+d);b.Q.value=q||1;var g=ctx.createGain();env(g,t,Math.min(.02,d/4),0,d,v);s.connect(b);b.connect(g);out(g);return g}
 function ping(t,fs,d,v){fs.forEach(function(f,i){var o=ctx.createOscillator();o.type='sine';o.frequency.value=f;var g=ctx.createGain();env(g,t,.003,0,d*(1-i*.18),v/(1+i*.8));o.connect(g);out(g);o.start(t);o.stop(t+d+.05)})}

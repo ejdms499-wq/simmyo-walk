@@ -218,7 +218,7 @@ h1 .sl{border-width:3px}
 <script src="../../simmyo-data-fix.js"></script>
 <script src="../side/new-places.js"></script>
 <script src="../side-art.js"></script>
-<script src="../sfx.js"></script>
+<script src="../sfx.js?v=5"></script>
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
@@ -560,7 +560,7 @@ async function runEnding(){
   await tween(500,function(u){ecatSet('jump_07',930+(1060-930)*u,dy,124,1,40*4*u*(1-u))});
   ecatSet('end_05',1060,dy,160,1);await wait(1100);
   ecatSet('end_06',1060,dy,120,1);await wait(1000);
-  ecatSet('end_07',1060,dy,118,1);esp('zZ',2400);snd('purr');await wait(2200);
+  ecatSet('end_07',1060,dy,118,1);esp('zZ',2400);await wait(2200);
   ecatSet('end_08',1060,dy,118,1);await wait(900);ecatSet('end_07',1060,dy,118,1);
   await wait(600);endDiv.classList.add('fade');await wait(800);
   bg.src='e3.webp';efx=.62;efit();ES=1.5;cap('다음 날 아침.');
