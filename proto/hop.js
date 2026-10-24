@@ -23,6 +23,7 @@ function big(x,y){var w=innerWidth,h=innerHeight,r=Math.max(Math.hypot(x,y),Math
 window.hopTo=function(url,x,y){
   if(x==null){x=innerWidth/2;y=innerHeight/2}
   try{sessionStorage.setItem(K,'1')}catch(e){}
+  window.snd&&snd('page');
   if(RM){location.href=url;return}
   run(x,y,big(x,y),0,560,function(){setTimeout(function(){location.href=url},140)})};
 document.addEventListener('click',function(e){

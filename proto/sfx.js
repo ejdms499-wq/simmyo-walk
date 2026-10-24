@@ -2,10 +2,10 @@
    snd('mew') 처럼 부름. 첫 터치/클릭 뒤에만 소리가 남(브라우저 규칙).
    나중에 진짜 녹음(CC0)을 쓰려면 FILES에 이름:'경로' 를 적으면 그 파일이 우선 재생됨. */
 (function(){
-var FILES={}; // 예: {mew:'../audio/mew.mp3'}
+var FILES={};FILES.mew='../audio/sfx/mew.mp3';FILES.mewhi='../audio/sfx/mewhi.mp3';FILES.mewlow='../audio/sfx/mewlow.mp3';FILES.mrrp='../audio/sfx/mrrp.mp3';FILES.yawn='../audio/sfx/yawn.mp3';FILES.hop='../audio/sfx/hop.mp3';FILES.land='../audio/sfx/land.mp3';FILES.paper='../audio/sfx/paper.mp3';FILES.tink='../audio/sfx/tink.mp3';FILES.clink='../audio/sfx/clink.mp3';FILES.chime='../audio/sfx/chime.mp3';FILES.bell='../audio/sfx/bell.mp3';FILES.splash='../audio/sfx/splash.mp3';FILES.drip='../audio/sfx/drip.mp3';FILES.crackle='../audio/sfx/crackle.mp3';FILES.horn='../audio/sfx/horn.mp3';FILES.pop='../audio/sfx/pop.mp3';FILES.sniff='../audio/sfx/sniff.mp3';FILES.whoosh='../audio/sfx/whoosh.mp3';FILES.crunch='../audio/sfx/crunch.mp3';FILES.ice='../audio/sfx/ice.mp3';FILES.sneeze='../audio/sfx/sneeze.mp3';FILES.lick='../audio/sfx/lick.mp3';FILES.page='../audio/sfx/page.mp3';
 var ctx=null,master=null,muted=false,buf={};
-try{muted=localStorage.getItem('simmyo_mute')==='1'}catch(e){}
-function init(){if(ctx)return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=muted?0:0.4;
+try{muted=localStorage.getItem('simmyo_mute2')==='1'}catch(e){}
+function init(){if(ctx)return;var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();master.gain.value=muted?0:0.6;
   var comp=ctx.createDynamicsCompressor();master.connect(comp);comp.connect(ctx.destination);
   Object.keys(FILES).forEach(function(k){fetch(FILES[k]).then(function(r){return r.arrayBuffer()}).then(function(a){return ctx.decodeAudioData(a)}).then(function(b){buf[k]=b}).catch(function(){})})}
 function unlock(){init();if(ctx&&ctx.state==='suspended')ctx.resume()}
@@ -60,12 +60,31 @@ var LIB={
   yawn:function(t){mew(t,{pitch:.7,dur:.9,vol:.25})}
 };
 /* 웅웅거리는 소리(그르릉·떨림·바람·김 등)와 움직일 때마다 나던 소리는 모두 끔. 꼭 필요한 순간의 짧은 소리만 남김 */
-var KEEP={mew:1,mewhi:1,mewlow:1,mrrp:1,bell:1,tink:1,chime:1,clink:1,splash:1,horn:1};
+/* 웅웅거리는 소리(그르릉·떨림·김)는 아예 없음. 효과음은 모두 같은 가야금·오르골 소리결로 미리 만든 파일만 씀 */
+var KEEP={};Object.keys(FILES).forEach(function(k){KEEP[k]=1});
+var GAP={hop:280,land:280,paper:350,mew:900,mewhi:900,mewlow:900,mrrp:700};
+var VOL={hop:.7,land:.7,sniff:.6,lick:.6};
 var lastPlay={};
-function snd(name,opt){try{if(muted||!ctx)return;if(!KEEP[name])return;var nowt=performance.now();if(lastPlay[name]&&nowt-lastPlay[name]<1500)return;lastPlay[name]=nowt;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
-  if(buf[name]){var s=ctx.createBufferSource();s.buffer=buf[name];out(s,.9);s.start(t);return}
-  var f=LIB[name];if(f)f(t,opt)}catch(e){}}
-function setMute(m){muted=m;if(m&&ctx)stopSong(.1);try{localStorage.setItem('simmyo_mute',m?'1':'0')}catch(e){}if(master)master.gain.value=m?0:.55;document.querySelectorAll('.sndbtn').forEach(function(b){b.textContent=m?'소리 끔':'소리 켬';b.setAttribute('aria-pressed',m?'false':'true')})}
+function snd(name,opt){try{if(muted||!ctx)return;if(!KEEP[name])return;var nowt=performance.now();if(lastPlay[name]&&nowt-lastPlay[name]<(GAP[name]||600))return;lastPlay[name]=nowt;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
+  if(buf[name]){var s=ctx.createBufferSource();s.buffer=buf[name];s.playbackRate.value=1+(Math.random()-.5)*.04;out(s,VOL[name]||.95);s.start(t);duck(.55,.9)}}catch(e){}}
+/* ── 배경 음악: 장면마다 한 곡, 바뀔 때 천천히 겹쳐 넘어감 ── */
+var TR={street:'../audio/street.mp3',night:'../audio/night.mp3',note:'../audio/note.mp3',paper:'../audio/paper.mp3'};
+var BV=.36,bgmBus=null,bgmCur=null,bgmWant=null,bgmBuf={},bgmLoading={};
+function bus(){if(!bgmBus){bgmBus=ctx.createGain();bgmBus.gain.value=1;bgmBus.connect(master)}return bgmBus}
+function duck(to,sec){if(!bgmBus||!ctx)return;var t=ctx.currentTime;bgmBus.gain.cancelScheduledValues(t);bgmBus.gain.setValueAtTime(bgmBus.gain.value,t);bgmBus.gain.linearRampToValueAtTime(to,t+.08);bgmBus.gain.linearRampToValueAtTime(1,t+.08+(sec||1))}
+function loadTrack(n,cb){if(bgmBuf[n])return cb(bgmBuf[n]);if(bgmLoading[n]){bgmLoading[n].push(cb);return}bgmLoading[n]=[cb];
+  fetch(TR[n]).then(function(r){return r.arrayBuffer()}).then(function(a){return ctx.decodeAudioData(a)}).then(function(b){bgmBuf[n]=b;var q=bgmLoading[n];bgmLoading[n]=null;q.forEach(function(f){f(b)})}).catch(function(){bgmLoading[n]=null})}
+function bgm(n){bgmWant=n;if(!ctx||muted)return;if(bgmCur&&bgmCur.n===n)return;
+  loadTrack(n,function(b){if(bgmWant!==n||(bgmCur&&bgmCur.n===n)||muted)return;var t=ctx.currentTime+.05;
+    if(bgmCur){var o=bgmCur;o.g.gain.cancelScheduledValues(t);o.g.gain.setValueAtTime(o.g.gain.value,t);o.g.gain.linearRampToValueAtTime(0,t+2.5);try{o.s.stop(t+2.6)}catch(e){}}
+    var s=ctx.createBufferSource();s.buffer=b;s.loop=true;var g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(BV,t+(bgmCur?2.5:3.5));s.connect(g);g.connect(bus());s.start(t,bgmCur?0:Math.random()*8);bgmCur={n:n,s:s,g:g}})}
+function bgmStop(sec){if(!bgmCur||!ctx)return;var o=bgmCur;bgmCur=null;var t=ctx.currentTime;o.g.gain.cancelScheduledValues(t);o.g.gain.setValueAtTime(o.g.gain.value,t);o.g.gain.linearRampToValueAtTime(0,t+(sec||1));try{o.s.stop(t+(sec||1)+.05)}catch(e){}}
+window.bgm=function(n){bgmWant=n;bgm(n)};window.bgmStop=bgmStop;
+var P0=location.pathname;bgmWant=/\/road\//.test(P0)?'street':/\/album\//.test(P0)?'paper':/\/(lens|side)\//.test(P0)?'note':null;
+var _un=unlock;unlock=function(){_un();if(ctx&&bgmWant&&!muted&&!bgmCur)bgm(bgmWant)};
+['pointerdown','touchstart','keydown','wheel'].forEach(function(ev){addEventListener(ev,function(){unlock()},{passive:true,capture:true})});
+document.addEventListener('visibilitychange',function(){if(!ctx)return;if(document.hidden)ctx.suspend();else if(!muted)ctx.resume()});
+function setMute(m){muted=m;if(m&&ctx){stopSong(.1);bgmStop(.4)}else if(ctx&&bgmWant)setTimeout(function(){bgm(bgmWant)},50);try{localStorage.setItem('simmyo_mute2',m?'1':'0')}catch(e){}if(master)master.gain.value=m?0:.6;document.querySelectorAll('.sndbtn').forEach(function(b){b.textContent=m?'소리 끔':'소리 켬';b.setAttribute('aria-pressed',m?'false':'true')})}
 /* 소리 버튼: class="sndbtn" 인 버튼을 찾아 연결 */
 function wire(){document.querySelectorAll('.sndbtn').forEach(function(b){if(b._w)return;b._w=1;b.addEventListener('click',function(e){e.stopPropagation();unlock();setMute(!muted);if(!muted)snd('mrrp')})});setMute(muted)}
 if(document.readyState!=='loading')wire();else document.addEventListener('DOMContentLoaded',wire);
@@ -74,7 +93,7 @@ if(document.readyState!=='loading')wire();else document.addEventListener('DOMCon
 var songBuf={},cur=null;
 function stopSong(fade){if(!cur)return;var c=cur;cur=null;try{var t=ctx.currentTime;c.g.gain.cancelScheduledValues(t);c.g.gain.setValueAtTime(c.g.gain.value,t);c.g.gain.linearRampToValueAtTime(0,t+(fade||.6));c.src.stop(t+(fade||.6)+.05);c.cr&&c.cr.stop(t+(fade||.6)+.05)}catch(e){}}
 function playSong(url,maxSec,offset){return new Promise(function(res){try{if(muted||!ctx){res(false);return}if(ctx.state==='suspended')ctx.resume();
-  var go=function(b){if(!b){res(false);return}stopSong(.2);var t=ctx.currentTime+.05,d=Math.min(maxSec||14,b.duration-(offset||0));
+  var go=function(b){if(!b){res(false);return}stopSong(.2);duck(.15,(maxSec||14));var t=ctx.currentTime+.05,d=Math.min(maxSec||14,b.duration-(offset||0));
     var src=ctx.createBufferSource();src.buffer=b;
     var hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=320;var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3400;
     var pk=ctx.createBiquadFilter();pk.type='peaking';pk.frequency.value=1500;pk.gain.value=7;pk.Q.value=.9;

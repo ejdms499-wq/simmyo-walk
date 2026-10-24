@@ -242,7 +242,7 @@ h1 .sl{border-width:3px}
 <script src="../side/new-places.js"></script>
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
-<script src="../sfx.js?v=5"></script>
+<script src="../sfx.js?v=6"></script>
 <script src="../share.js"></script>
 <script>
 (function(){
@@ -392,7 +392,7 @@ var GAGS=[
 var gagFound=[];try{gagFound=JSON.parse(localStorage.getItem('simmyo_gag')||'[]')}catch(e){}
 function gagCount(pop){gc.textContent='숨은 심묘 '+gagFound.length+'/8';if(pop){gc.classList.remove('pop');void gc.offsetWidth;gc.classList.add('pop')}}
 gagCount();
-var gagBusy=false,sayAt=null;
+var gagBusy=false,sayAt=null,lastBgm=null;function endNow2(){return !!window.__endBgm}
 GAGS.forEach(function(g){var b=document.createElement('button');b.className='twk';b.setAttribute('aria-label','반짝이는 곳 · 숨은 심묘');b.style.left=g.hx+'px';b.style.top=g.hy+'px';world.appendChild(b);g.btn=b;
   if(g.item){var it=el('img','item');it.src=g.item.src;it.alt='카스텔라 한 조각';it.style.width=g.item.w+'px';it.onload=function(){it.style.left=(g.item.x-g.item.w/2)+'px';it.style.top=(g.item.y-it.offsetHeight)+'px'};g.itemEl=it}
   b.addEventListener('click',function(e){e.stopPropagation();playGag(g)})});
@@ -530,6 +530,7 @@ function frame(now){
   var sn=near&&!near.corner?near:null;if(sn!==stopNow){stopNow=sn;showStop(sn)}
   sideNear(pos.x,pos.y);
   var gn=(script&&!anim&&!gagBusy)?script.p:null;if(gn!==lastGN){lastGN=gn;gagNear(gn)}
+  if(window.bgm&&!endNow2()){var bw=D<vd(3)+40?'street':'night';if(bw!==lastBgm){lastBgm=bw;bgm(bw)}}
   var pr=D/TOT*100;$('hudp').setAttribute('stroke-dasharray',pr.toFixed(1)+' 100');
   var hl=48,vl=32,dd=Math.min(1,D/DC)*hl+Math.max(0,(D-DC)/(TOT-DC))*vl;var hx=dd<hl?6+dd:54,hy=dd<hl?8:8+(dd-hl);$('hudd').setAttribute('cx',hx);$('hudd').setAttribute('cy',hy);
   if(performance.now()<toastUntil){}else{$('where').style.color='';$('where').textContent=D<DC-20?'종로 · 동쪽으로 ('+Math.round(D/DC*100)+'%)':(D<vd(8)-150?'모퉁이에서 뛰어내려 남쪽으로':D<vd(10)-150?'청계천 빨래터':D<vd(12)-150?'설렁탕집 · 밤':D<TOT-150?'다방 창가 · 비':'한강 · 자정');}
@@ -570,7 +571,7 @@ function tween(dur,fn){return new Promise(function(r){if(reduce){fn(1);r();retur
 function esp(t,ms){esay.textContent=t;esay.style.marginLeft='0px';esay.classList.add('on');requestAnimationFrame(function(){var r=esay.getBoundingClientRect(),sc=r.width/esay.offsetWidth||1,dx=0;if(r.left<8)dx=(8-r.left)/sc;if(r.right>innerWidth-8)dx=(innerWidth-8-r.right)/sc;esay.style.marginLeft=dx+'px'});setTimeout(function(){esay.classList.remove('on')},ms||1800)}
 function cap(t){var c=$('ecap');c.classList.remove('on');setTimeout(function(){c.innerHTML=t;c.classList.add('on')},300)}
 var ending=false;
-async function runEnding(){
+async function runEnding(){window.__endBgm=1;window.bgm&&bgm('note');
   if(ending)return;ending=true;started=false;speak(null);$('stop').classList.remove('on');
   var esk=document.createElement('button');esk.id='eskip';esk.textContent='건너뛰기 →';esk.onclick=function(){esk.remove();runFinal()};endDiv.appendChild(esk);
   endDiv.classList.add('on');var bg=$('ebg');bg.src='e2.webp';efx=.42;efit();etype.style.opacity=0;
@@ -607,7 +608,7 @@ try{if(localStorage.getItem('simmyo_alb'))$('albb').classList.add('seen')}catch(
 $('albb').addEventListener('click',function(){try{localStorage.setItem('simmyo_alb','1')}catch(e){};var r=this.getBoundingClientRect();hopTo('../album/index.html?at='+Math.round(D),r.left+r.width/2,r.top+r.height/2)});
 /* ── 마지막: 편집장의 지도 · 되찾은 호외 · 엽서 · 만든 것들 ── */
 var FPOS={1:[30,28],2:[43,28],3:[56,28],4:[69,28],5:[85,43],6:[85,57],7:[85,71],8:[85,86]},FCORNER=[85,28];
-function runFinal(){if(runFinal.d)return;runFinal.d=1;
+function runFinal(){if(runFinal.d)return;runFinal.d=1;window.__endBgm=1;window.bgm&&bgm('paper');
   var f=document.createElement('div');f.id='fin';
   var posts=PL.filter(function(p){return p.n}).map(function(p){return '<div'+(visited.indexOf(p.n)<0?' class="no"':'')+'>「'+p.q+'」<small>'+p.n+' · '+p.name+' — '+p.from+' 올림</small></div>'}).join('');
   f.innerHTML='<div class="in">'+
