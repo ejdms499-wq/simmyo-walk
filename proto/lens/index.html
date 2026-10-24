@@ -108,7 +108,7 @@ aside{display:grid;gap:18px;min-width:0}
     <main>
       <div class="place">
         <svg class="tail" viewBox="0 0 46 30" aria-hidden="true"><path d="M3 6H40V27" fill="none" stroke="#a3937a" stroke-width="4" stroke-linecap="round"/><path d="M3 6H40V27" fill="none" stroke="#211c17" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 200"/></svg>
-        <a href="../board/index.html" style="font:13px/1 var(--ui);color:var(--ink2)">← 수사 보드</a><span>1 / 8</span><strong>종로 전차</strong><span>· 경성 첫 전차 1899 · 사진은 1930년대</span>
+        <a href="../road/index.html?from=1" style="font:13px/1 var(--ui);color:var(--ink2)">← 산책길로</a><span>1 / 8</span><strong>종로 전차</strong><span>· 경성 첫 전차 1899 · 사진은 1930년대</span>
       </div>
       <div class="scene" id="scene">
         <img src="bw.jpg" alt="1930년대 종로 네거리 사진엽서. 전차와 행인들 사이로 까만 고양이가 전찻길을 건넌다">
@@ -168,7 +168,7 @@ aside{display:grid;gap:18px;min-width:0}
   <div class="next">
     <span>이 골목을 떠나면 「심묘 연재만화」 한 칸이 찍히고, 편집국 지도에 붉은 실이 한 마디 이어지오.</span>
     <span class="toast" id="toast" aria-live="polite"></span>
-    <button id="go">이 골목을 떠나기 · 수사 보드로 →</button>
+    <button id="go">이 골목을 떠나기 · 산책길로 →</button>
   </div>
 </div>
 
@@ -205,7 +205,7 @@ aside{display:grid;gap:18px;min-width:0}
   function flip(){post.classList.toggle('flip')}
   post.addEventListener('click',flip);
   post.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});
-  document.getElementById('go').addEventListener('click',function(){location.href='../board/index.html?done=1'});
+  document.getElementById('go').addEventListener('click',function(){location.href='../road/index.html?from=1'});
 })();
 </script>
 </html>
