@@ -78,14 +78,16 @@ var back='../road/index.html'+(at?'?at='+Math.round(at):'');$('backl').href=back
 if(!P){$('nm').textContent='이 곁골목은 아직 없소';return}
 document.title='심묘한 산책 · 곁골목 · '+P.name;
 $('nm').textContent=P.name;$('sub').textContent=P.where+' · '+P.yr;
-var real=!!P.ph;$('img').src=IMG+P.img+'.webp';$('img').alt=(P.alt||P.name)+(real?' (옛 자료)':' (재현 그림)');
+/* 예전 심묘 그림(지금 심묘와 생김새가 다름)은 새 그림이 올 때까지 실제 자료로 대신 */
+var NEW=window.SIDE_ART&&SIDE_ART[id];var useArc=!P.ph&&!NEW&&P.arc&&P.arc.length;var real=!!P.ph||useArc;
+$('img').src=NEW?R+NEW.src.replace('../../',''):(useArc?R+P.arc[0].img:IMG+P.img+'.webp');$('img').alt=(NEW?NEW.alt:(useArc?P.arc[0].cap:(P.alt||P.name)))+(real?' (옛 자료)':' (재현 그림)');
 $('tag').textContent=real?'사람들의 눈 · 실제 자료':'심묘가 본 곳 · 재현 그림';
 var says=[].concat(P.say||[]),si=0;$('say').textContent=says[0]||'';
 if(says.length>1)setInterval(function(){si=(si+1)%says.length;$('say').textContent=says[si]},4200);
-$('cap').textContent=real?(P.alt||'')+' — 실제 자료':'그림: '+(P.alt||'')+' — 재현 그림, 심묘는 지어낸 고양이';
+$('cap').textContent=NEW?'그림: '+NEW.alt+' — 재현 그림, 심묘는 지어낸 고양이':useArc?'「'+P.arc[0].cap+'」 · '+P.arc[0].src+' — 실제 자료':(P.alt||'')+' — 실제 자료';
 var s='';
 if(P.ear)s+='<div class="card" data-k="ear"><b>귀 · 이곳의 소리</b>'+esc(P.ear.t)+'</div>';
-if(P.nose)s+='<div class="card" data-k="nose">'+(P.nose.img?'<img src="'+IMG+P.nose.img+'.webp" alt="'+esc(P.nose.alt)+(P.nose.ph?' (옛 자료)':' (재현 그림)')+'">':'')+'<b>코 · 이곳의 냄새</b>'+esc(P.nose.t)+(P.nose.src?'<small>'+esc(P.nose.src)+'</small>':'')+'</div>';
+if(P.nose)s+='<div class="card" data-k="nose">'+(P.nose.img&&P.nose.ph?'<img src="'+IMG+P.nose.img+'.webp" alt="'+esc(P.nose.alt)+(P.nose.ph?' (옛 자료)':' (재현 그림)')+'">':'')+'<b>코 · 이곳의 냄새</b>'+esc(P.nose.t)+(P.nose.src?'<small>'+esc(P.nose.src)+'</small>':'')+'</div>';
 $('sense').innerHTML=s;
 [].forEach.call(document.querySelectorAll('.card[data-k]'),function(c){c.style.cursor='pointer';c.addEventListener('click',function(){window.snd&&snd(c.dataset.k==='ear'?'chime':'sniff')})});
 $('arc').innerHTML=(P.arc||[]).map(function(a){return '<figure><img src="'+R+a.img+'" alt="'+esc(a.cap)+'" loading="lazy"><figcaption>「'+esc(a.cap)+'」 · '+esc(a.src)+'</figcaption></figure>'}).join('')||'<p class="cap">이 곁골목의 옛 지면은 아직 찾는 중이오.</p>';

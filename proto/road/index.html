@@ -322,13 +322,14 @@ PL.forEach(function(p){if(!p.pc)return;var c=el('div','pc');c.style.left=p.pc[0]
 
 /* ── 곁골목: 산책길 옆으로 새는 골목(예전 「심묘가 보는 경성」 장소들) ── */
 var SIDES=[['expo',640,600,-4],['hwasin',1420,610,3],['jodk',2960,640,-3],['bingsu',3860,560,2],['sakura',5190,600,-3],['stadium',6560,600,3],['bonjeong',7270,2440,-2],['mitsu',7560,3436,-2]];
+function sideImg(p){var N=window.SIDE_ART&&SIDE_ART[p.id];if(N)return N.src;return p.ph||!(p.arc&&p.arc.length)?'../../assets/simmyo/s/'+p.img+'.webp':'../../'+p.arc[0].img}
 var SD={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){SD[p.id]=p});
 var sideV=[];try{sideV=JSON.parse(localStorage.getItem('simmyo_side')||'[]')}catch(e){}
 var sc2=document.createElement('div');sc2.id='sidecard';sc2.innerHTML='<img alt=""><div><div class="t"></div><q></q><button class="go">곁골목 들어가기 →</button><button class="x">닫기</button></div>';document.body.appendChild(sc2);
 SIDES.forEach(function(sd){var p=SD[sd[0]];if(!p)return;var b=document.createElement('button');b.className='side'+(sideV.indexOf(sd[0])>=0?' v':'');b.style.left=sd[1]+'px';b.style.top=sd[2]+'px';b.style.setProperty('--r',sd[3]+'deg');
   b.innerHTML='<small>곁골목 · '+p.yr+'</small>'+p.name;b.setAttribute('aria-label','곁골목 '+p.name);world.appendChild(b);
   b.addEventListener('click',function(e){e.stopPropagation();openSide(sd[0])})});
-function openSide(id){var p=SD[id];snd('paper');sc2.querySelector('img').src='../../assets/simmyo/s/'+p.img+'.webp';sc2.querySelector('img').alt=p.name;
+function openSide(id){var p=SD[id];snd('paper');sc2.querySelector('img').src=sideImg(p);sc2.querySelector('img').alt=p.name;
   sc2.querySelector('.t').innerHTML='<b>'+p.name+'</b>'+p.where+' · '+p.yr;sc2.querySelector('q').textContent='「'+[].concat(p.say||[''])[0]+'」';
   sc2.querySelector('.go').onclick=function(){location.href='../side/index.html?s='+id+'&at='+Math.round(D)};sc2.querySelector('.x').onclick=function(){sc2.classList.remove('on')};sc2.classList.add('on')}
 /* 연재만화 */
@@ -340,13 +341,13 @@ visited.forEach(function(n){stamp(n,false)});
 var gc=document.createElement('span');gc.id='gagc';$('strip').appendChild(gc);
 /* ── 숨은 심묘: 장소마다 반짝이는 곳을 누르면 ── */
 var GAGS=[
- {n:1,hx:2206,hy:598,type:'peek',clip:[2168,552,77,93],cx:2206,show:52,say:'차표 검사요.',snd:'mrrp',after:'proud',ph:[['../../assets/simmyo/s/sm_naeng.webp','냉면 배달 자전거를 따라가던 날'],['../../assets/simmyo/s/tram4.webp','전차 지붕 위, 구경꾼들 너머']]},
- {n:2,hx:3213,hy:600,type:'peek',clip:[3168,562,92,80],round:1,cx:3214,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1,ph:[['../../assets/simmyo/s/record4.webp','유성기 나팔 속에 들어앉은 날'],['../../assets/simmyo/s/record.webp','레코드 더미 위 단골 자리']]},
+ {n:1,hx:2206,hy:598,type:'peek',clip:[2168,552,77,93],cx:2206,show:52,say:'차표 검사요.',snd:'mrrp',after:'proud'},
+ {n:2,hx:3213,hy:600,type:'peek',clip:[3168,562,92,80],round:1,cx:3214,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1},
  {n:3,hx:4752,hy:610,type:'peek',clip:[4690,520,124,122],cx:4752,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll'},
- {n:4,hx:5870,hy:462,type:'peek',clip:[5790,380,160,96],cx:5870,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4',ph:[['../../assets/simmyo/s/dansung.webp','「아리랑」 줄 맨 앞에서'],['../../assets/simmyo/s/sm_hotteok.webp','극장 옆 호떡집 화덕 앞']]},
+ {n:4,hx:5870,hy:462,type:'peek',clip:[5790,380,160,96],cx:5870,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4'},
  {n:5,hx:7016,hy:2128,type:'peek',clip:[6950,2040,140,98],cx:7020,show:52,say:'빨래는 따뜻하오.',snd:'mrrp',after:'lick'},
- {n:6,hx:7123,hy:2648,type:'peek',clip:[7080,2560,90,96],cx:7123,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm',ph:[['../../assets/simmyo/s/sm_sul.webp','설렁탕 배달꾼을 따라 나선 길']]},
- {n:7,hx:7352,hy:3376,type:'paw',clip:[7290,3300,200,97],px:7372,item:{src:'m2/kastera.webp',x:7350,y:3393,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum',ph:[['../../assets/simmyo/s/sm_cake.webp','탁자 밑에서 발만 쏙'],['../../assets/simmyo/s/sm_soda.webp','소다수 앞, 아무 일도 없었다는 얼굴'],['../../assets/simmyo/s/nakrang4.webp','다방 등나무 의자 위']]},
+ {n:6,hx:7123,hy:2648,type:'peek',clip:[7080,2560,90,96],cx:7123,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm'},
+ {n:7,hx:7352,hy:3376,type:'paw',clip:[7290,3300,200,97],px:7372,item:{src:'m2/kastera.webp',x:7350,y:3393,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum'},
  {n:8,hx:6800,hy:4060,type:'perch',to:{x:6800,y:4074},say:'낚시꾼 자리요.',snd:'mrrp',after:'perch8'}
 ];
 var gagFound=[];try{gagFound=JSON.parse(localStorage.getItem('simmyo_gag')||'[]')}catch(e){}
@@ -568,8 +569,8 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;
    '<p>어젯밤 자정, 없어졌던 낱자 활자 「ㄱ」이 편집장 책상 위에 돌아와 있었다. 그 곁에는 까만 고양이가 둥글게 말려 자고 있었다. 한글 공부 부록은 오늘 아침 자모표에 빈칸 없이 나갔고, 호외의 ㄱ 자리도 모두 제 글자를 찾았다. 엽서를 보내 주신 경성 여러분께 고맙다는 말씀을 드린다. 현상금 멸치 한 줌은 고양이 본인이 받아 갔다.</p></section>'+
    '<section><div class="k">경성 사람들이 보낸 목격 엽서</div><h2>사람들이 본 심묘</h2><div class="fposts">'+posts+'</div>'+
    '<div class="fsleep" style="margin-top:18px"><img src="m2/end_07.webp" alt="신문지 위에서 자는 심묘"><span>심묘는 지금 자는 중이오.<br><small style="font:13px/1.4 var(--ui)">숨은 심묘 '+gagFound.length+'/8 찾음</small></span></div></section>'+
-   '<section><div class="k">숨은 심묘를 찾으면 한 장씩 · 제보로 그린 그림</div><h2>목격 그림</h2><div class="fgal">'+GAGS.filter(function(g){return g.ph}).map(function(g){var got=gagFound.indexOf(g.n)>=0;return g.ph.map(function(q){return '<figure class="'+(got?'':'no')+'"><img src="'+q[0]+'" alt="'+q[1]+'" loading="lazy"><figcaption>'+(got?q[1]:'아직 못 찾음 · '+g.n+'번 골목 어딘가')+'</figcaption></figure>'}).join('')}).join('')+'</div></section>'+
-   '<section><div class="k">산책길 옆으로 샌 골목</div><h2>곁골목</h2><div class="fgal">'+SIDES.filter(function(sd){return SD[sd[0]]}).map(function(sd){var q=SD[sd[0]],got=sideV.indexOf(sd[0])>=0;return '<figure class="'+(got?'':'no')+'" data-s="'+sd[0]+'"><img src="../../assets/simmyo/s/'+q.img+'.webp" alt="'+q.name+'" loading="lazy"><figcaption>'+q.name+' · '+q.yr+(got?'':' · 아직 안 가 봄')+'</figcaption></figure>'}).join('')+'</div></section>'+
+   (GAGS.some(function(g){return g.ph})?'':'<!--')+'<section><div class="k">숨은 심묘를 찾으면 한 장씩 · 제보로 그린 그림</div><h2>목격 그림</h2><div class="fgal">'+GAGS.filter(function(g){return g.ph}).map(function(g){var got=gagFound.indexOf(g.n)>=0;return g.ph.map(function(q){return '<figure class="'+(got?'':'no')+'"><img src="'+q[0]+'" alt="'+q[1]+'" loading="lazy"><figcaption>'+(got?q[1]:'아직 못 찾음 · '+g.n+'번 골목 어딘가')+'</figcaption></figure>'}).join('')}).join('')+'</div></section>'+(GAGS.some(function(g){return g.ph})?'':'-->')+
+   '<section><div class="k">산책길 옆으로 샌 골목</div><h2>곁골목</h2><div class="fgal">'+SIDES.filter(function(sd){return SD[sd[0]]}).map(function(sd){var q=SD[sd[0]],got=sideV.indexOf(sd[0])>=0;return '<figure class="'+(got?'':'no')+'" data-s="'+sd[0]+'"><img src="'+sideImg(q)+'" alt="'+q.name+'" loading="lazy"><figcaption>'+q.name+' · '+q.yr+(got?'':' · 아직 안 가 봄')+'</figcaption></figure>'}).join('')+'</div></section>'+
    '<section><div class="k">이 산책을 만든 것들</div><h2>무엇이 진짜이고, 무엇이 지어낸 것인가</h2><div class="fcred">'+
    '<div><h3>실제 자료</h3><ul><li>1927년 「경성부관내도」</li><li>종로를 달리는 전차, 당시 사진엽서</li><li>오케 레코드 「목포의 눈물」(1935) 음반 · 국민일보(2018. 5. 23) 수록</li><li>종로 야시 · 『동아일보』 1935</li><li>단성사(1937) · 『대경성도시대관』 / 「아리랑」 광고 · 『매일신보』 1926. 10. 1</li><li>「장교정 설넝탕」 · 『동아일보』 1924. 7. 13</li><li>다방 낙랑파라 실내(1934) · 『하라 이순석 작품집』 / 이상의 다방 삽화 · 『조선중앙일보』 1934. 8. 14</li><li>한강 얼음낚시·채빙 사진엽서 · 서울역사박물관</li><li>동아일보 브나로드 운동의 한글 교재 「한글공부」 · 국가기록원</li></ul><small>장소마다 「심묘의 눈」 쪽에 출처를 자세히 적어 두었소.</small></div>'+
    '<div><h3>재현 그림</h3><ul><li>골목 배경 · 미드저니로 그린 뒤 이어 붙임</li><li>심묘의 몸짓 컷 · 챗GPT로 그린 뒤 오려 냄</li><li>「심묘의 눈」 색 · 고양이가 보는 색을 흉내 낸 것</li><li>옛 사진 속 심묘 · 실제 자료 위에 합성</li><li>소리 · 브라우저에서 직접 만든 효과음</li></ul></div>'+
