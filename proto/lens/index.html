@@ -1,0 +1,194 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>심묘한 산책 · 종로 전차</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap">
+<style>
+/* 레이아웃: 펼친 호외 한 장 — 위 제호, 왼쪽 큰 사진 칸(흑백↔컬러), 오른쪽 좁은 칸(엽서·사실). 의도적으로 종이 한 가지 세계(단일 테마) */
+:root{
+  --paper:#ebe2cc; --paper2:#e2d7bd; --ink:#211c17; --ink2:#5b4f42; --rule:#a3937a;
+  --honey:#d99a2b; --seal:#a8402c; --card:#f3ecdb;
+  --display:"Nanum Myeongjo","Batang",serif; --body:"Nanum Myeongjo","Batang",serif;
+  --hand:"Nanum Pen Script","Gowun Dodum",cursive; --ui:"Gowun Dodum","Apple SD Gothic Neo",sans-serif;
+  color-scheme:light;
+}
+html,body{background:var(--paper)}
+body{color:var(--ink);font-family:var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;
+  background-image:radial-gradient(rgba(90,70,40,.06) 1px,transparent 1.2px);background-size:5px 5px}
+.wrap{max-width:1240px;margin:0 auto;display:grid;gap:18px}
+/* 제호 */
+.mast{display:grid;grid-template-columns:1fr auto;align-items:end;gap:16px;border-bottom:3px double var(--ink);padding-bottom:10px}
+.mast .k{display:inline-block;font:700 12px/1 var(--display);letter-spacing:.3em;color:var(--card);background:var(--ink);padding:5px 6px 5px 9px;margin-bottom:8px}
+.mast h1{margin:0;font:800 clamp(30px,5.4vw,64px)/1.05 var(--display);letter-spacing:-.01em;text-wrap:balance}
+.slot{display:inline-block;width:.86em;height:.86em;vertical-align:-.06em;margin-right:.04em;border:2px solid var(--ink);border-radius:2px;
+  background:repeating-linear-gradient(135deg,transparent 0 5px,rgba(33,28,23,.12) 5px 6px);position:relative}
+.slot::after{content:"";position:absolute;inset:3px;border:1px dashed rgba(33,28,23,.45)}
+.mast .sub{font:13px/1.6 var(--ui);color:var(--ink2);margin-top:6px}
+.mast .sub b{color:var(--seal);font-weight:400}
+.seal{font:700 12px/1.15 var(--display);color:var(--seal);border:2px solid var(--seal);padding:6px 6px;text-align:center;transform:rotate(-4deg);border-radius:3px;opacity:.85}
+/* 본문 칸 */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.place{display:flex;align-items:center;gap:12px;font:13px/1.4 var(--ui);color:var(--ink2);margin-bottom:8px;flex-wrap:wrap}
+.place strong{font:700 20px/1.2 var(--display);color:var(--ink)}
+.tail{width:46px;height:30px;flex:none}
+/* 장면 */
+.scene{position:relative;width:100%;aspect-ratio:1600/934;max-width:100%;border:1px solid var(--ink);box-shadow:0 1px 0 var(--rule),0 18px 30px -22px rgba(40,25,10,.55);overflow:hidden;background:#222;touch-action:manipulation}
+.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+.color{clip-path:ellipse(0% 0% at 37.5% 75%)}
+.cat{position:absolute;left:33.2%;top:69%;width:8.6%;height:15%;border:0;background:transparent;cursor:pointer;border-radius:40%;padding:0}
+.cat:focus-visible{outline:2px dashed var(--honey);outline-offset:4px}
+.hint{position:absolute;left:41.5%;top:66%;font:20px/1 var(--hand);color:var(--card);background:var(--ink);padding:6px 10px 5px;border-radius:3px;pointer-events:none;white-space:nowrap;
+  animation:nudge 2.4s ease-in-out infinite}
+.hint::before{content:"";position:absolute;left:-7px;top:50%;margin-top:-6px;border:6px solid transparent;border-right-color:var(--ink);border-left:0}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.tag{position:absolute;left:10px;bottom:10px;font:12px/1 var(--ui);background:rgba(243,236,219,.92);color:var(--ink);padding:6px 8px;border:1px solid var(--ink);letter-spacing:.04em}
+.tag.r{left:auto;right:10px}
+.spot{position:absolute;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;border:2px solid var(--ink);background:var(--card);font:700 15px/34px var(--display);color:var(--ink);cursor:pointer;opacity:0;transform:scale(.6);transition:opacity .4s,transform .4s;padding:0}
+.spot::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid var(--card);animation:ring 2s ease-out infinite}
+@keyframes ring{from{transform:scale(.8);opacity:1}to{transform:scale(1.35);opacity:0}}
+.open .spot{opacity:1;transform:none}
+.spot:focus-visible{outline:2px solid var(--honey);outline-offset:3px}
+.say{position:absolute;left:22%;top:44%;max-width:38%;font:clamp(17px,2.1vw,24px)/1.25 var(--hand);background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:18px;padding:10px 14px 8px;opacity:0;transform:translateY(6px);transition:.45s .9s}
+.say::after{content:"";position:absolute;left:44%;bottom:-12px;border:10px solid transparent;border-top-color:var(--ink);border-bottom:0}
+.open .say{opacity:1;transform:none}
+.note{position:absolute;right:12px;top:12px;max-width:min(320px,70%);background:var(--card);border:1px solid var(--ink);padding:12px 14px;font:14px/1.6 var(--ui);color:var(--ink)}
+.note small{display:block;color:var(--ink2);font-size:11.5px;margin-top:6px}
+.back{position:absolute;right:10px;bottom:10px;font:13px/1 var(--ui);background:var(--ink);color:var(--card);border:0;padding:9px 12px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}
+.open .back{opacity:1;pointer-events:auto}
+.open .hint,.open .tag.l{opacity:0}
+.cap{font:12.5px/1.6 var(--ui);color:var(--ink2);margin-top:8px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* 오른쪽 칸 */
+aside{display:grid;gap:18px;min-width:0}
+.k2{font:12px/1 var(--ui);letter-spacing:.2em;color:var(--ink2);border-bottom:1px solid var(--rule);padding-bottom:6px}
+.post{perspective:1200px;cursor:pointer}
+.post .in{position:relative;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d;min-height:250px}
+.post.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--ink2);padding:16px 18px;
+  background-image:linear-gradient(transparent 31px,rgba(91,79,66,.18) 32px);background-size:100% 32px;background-position:0 46px}
+.face.b{transform:rotateY(180deg);background-image:none;overflow:auto}
+.stamp{float:right;width:46px;height:56px;border:2px dashed var(--seal);display:grid;place-items:center;font:700 11px/1.1 var(--display);color:var(--seal);text-align:center;margin:0 0 6px 10px;transform:rotate(3deg)}
+.face p{margin:0;font:23px/32px var(--hand);color:#2a2a46}
+.face .from{display:block;text-align:right;margin-top:6px;font:20px/1.2 var(--hand);color:var(--ink2)}
+.face h3{margin:0 0 6px;font:700 15px/1.4 var(--display)}
+.face ul{margin:0 0 10px;padding-left:18px;font:13px/1.65 var(--ui)}
+.face small{font:11.5px/1.5 var(--ui);color:var(--ink2);display:block}
+.turn{font:12px/1 var(--ui);color:var(--ink2);margin-top:8px}
+.fact{font:14.5px/1.75 var(--body)}
+.fact p{margin:0 0 8px}
+.fact small{font:11.5px/1.5 var(--ui);color:var(--ink2)}
+.lbls{display:flex;gap:6px;flex-wrap:wrap}
+.lb{font:11.5px/1 var(--ui);border:1px solid var(--rule);padding:5px 7px;color:var(--ink2)}
+.next{display:flex;justify-content:space-between;align-items:center;border-top:3px double var(--ink);padding-top:12px;font:13px/1.4 var(--ui);color:var(--ink2);gap:12px;flex-wrap:wrap}
+.next button{font:700 15px/1 var(--display);background:transparent;border:1.5px solid var(--ink);color:var(--ink);padding:11px 16px;cursor:pointer}
+.next button:focus-visible,.post:focus-visible{outline:2px solid var(--honey);outline-offset:3px}
+.toast{font:13px/1.4 var(--ui);color:var(--seal)}
+@media (max-width:600px){.hint{font-size:15px;top:58%;padding:5px 8px 4px}.tag{font-size:10.5px;padding:4px 6px}.say{font-size:15px;max-width:58%;left:5%;top:26%;padding:7px 10px 5px}.note{font-size:12.5px;max-width:78%;padding:9px 10px}.spot{width:32px;height:32px;margin:-16px 0 0 -16px;line-height:28px;font-size:13px}.back{font-size:12px;padding:7px 9px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="k">京城野錄 號外</div>
+      <h1><span class="slot" aria-label="빈칸"></span>양이를 찾습니다</h1>
+      <div class="sub">까만 고양이 한 마리. 식자실에서 활자 <b>「ㄱ」</b>을 물고 감. 그래서 이 호외의 ㄱ 자리는 전부 빈칸이오. · 현상금 멸치 한 줌 · 경성야록 편집국</div>
+    </div>
+    <div class="seal">尋<br>猫</div>
+  </header>
+
+  <div class="grid">
+    <main>
+      <div class="place">
+        <svg class="tail" viewBox="0 0 46 30" aria-hidden="true"><path d="M3 6H40V27" fill="none" stroke="#a3937a" stroke-width="4" stroke-linecap="round"/><path d="M3 6H40V27" fill="none" stroke="#211c17" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 200"/></svg>
+        <span>1 / 8</span><strong>종로 전차</strong><span>· 경성 첫 전차 1899 · 사진은 1930년대</span>
+      </div>
+      <div class="scene" id="scene">
+        <img src="bw.jpg" alt="1930년대 종로 네거리 사진엽서. 전차와 행인들 사이로 까만 고양이가 전찻길을 건넌다">
+        <img class="color" id="color" src="color.jpg" alt="심묘의 눈으로 본 같은 거리. 기와집과 전차가 색으로 칠해져 있고 심묘가 길가에 앉아 있다">
+        <button class="cat" id="cat" aria-label="심묘의 눈으로 보기"></button>
+        <span class="hint" id="hint">심묘 눈을 누르시오</span>
+        <span class="tag l">사람들의 눈 · 실제 사진</span>
+        <button class="spot" id="ear" style="left:80%;top:78%" aria-label="귀 — 이곳의 소리">귀</button>
+        <button class="spot" id="nose" style="left:22%;top:62%" aria-label="코 — 이곳의 냄새">코</button>
+        <div class="say">쇠 바퀴가 우는 소리가 나오.<br>귀가 쫑긋하오.</div>
+        <div class="note" id="note" hidden></div>
+        <button class="back" id="back">사람들의 눈으로 ↩</button>
+      </div>
+      <div class="cap"><span>흑백: 종로를 달리는 전차, 당시 사진엽서 · 심묘는 합성</span><span>컬러: 심묘의 눈 · 재현 그림</span></div>
+    </main>
+
+    <aside>
+      <section>
+        <div class="k2">목격 엽서 · 사람들이 본 심묘</div>
+        <div class="post" id="post" tabindex="0" role="button" aria-label="엽서 뒤집기">
+          <div class="in">
+            <div class="face f">
+              <span class="stamp">京城<br>郵便</span>
+              <p>어제 해 질 녘 종로 네거리에서 까만 고양이가 전찻길을 건너는 걸 보앗소. 입에 쇳조각 같은 걸 물엇는데 전차가 와도 서두르지 안터이다.</p>
+              <span class="from">— 종로 인력거꾼 김씨 올림</span>
+            </div>
+            <div class="face b">
+              <h3>그곳 사람들 · 옷</h3>
+              <ul><li>구경꾼들 발에는 아직 짚신과 나막신이 많았습니다.</li><li>1920년대에 고무신 소비가 35배로 늘었고, 1922년 종로에 조선인 고무신 공장이 섰습니다.</li></ul>
+              <h3>그곳 사람들 · 밥</h3>
+              <ul><li>1920년대 냉면은 으뜸 외식이었고 자정 넘어서도 배달이 됐습니다.</li><li>배달부는 그릇을 층층이 쌓아 자전거를 몰았습니다.</li></ul>
+              <small>한국민족문화대백과사전 「고무신 제조업」 · 프레시안 『냉면열전』 서평(『동아일보』 1926.1.6 인용)</small>
+            </div>
+          </div>
+        </div>
+        <div class="turn">엽서를 누르면 뒷면 · 앞면 글은 지어낸 이야기</div>
+      </section>
+
+      <section class="fact">
+        <div class="k2">이곳의 사실</div>
+        <p>1899년 5월 4일 오후 3시, 서울에서 전차가 처음 시운전을 했습니다. 구경꾼이 너무 몰려 순검들이 겨우 막았습니다.</p>
+        <p>경성의 전차는 1916년 93대에서 1927년 126대로 늘었습니다.</p>
+        <small>『황성신문』 1899년 5월 5일 「전차시행」 · 국가기록원</small>
+      </section>
+
+      <div class="lbls"><span class="lb">실제 사진</span><span class="lb">재현 그림</span><span class="lb">지어낸 이야기</span></div>
+    </aside>
+  </div>
+
+  <div class="next">
+    <span>이 골목을 떠나면 「심묘 연재만화」 한 칸이 찍히고, 편집국 지도에 붉은 실이 한 마디 이어지오.</span>
+    <span class="toast" id="toast" aria-live="polite"></span>
+    <button id="go">다음 골목 · 음반가게 →</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sc=document.getElementById('scene'),col=document.getElementById('color'),cat=document.getElementById('cat'),back=document.getElementById('back'),note=document.getElementById('note');
+  var X=37.5,Y=75,open=false,raf=0;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function setClip(rx,ry){col.style.clipPath='ellipse('+rx.toFixed(2)+'% '+ry.toFixed(2)+'% at '+X+'% '+Y+'%)';}
+  function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+  function run(dir){
+    cancelAnimationFrame(raf);
+    if(reduce){setClip(dir?160:0,dir?160:0);return}
+    var t0=performance.now(),D=1500;
+    (function f(now){
+      var t=Math.min(1,(now-t0)/D); var p=dir?t:1-t;
+      // 1단계: 세로 틈(동공)이 열림 · 2단계: 동공이 둥글게 커지며 화면을 덮음
+      var a=Math.min(1,p/0.35), b=Math.max(0,(p-0.35)/0.65);
+      var rx=0.5+1.0*a+158*ease(b), ry=12*ease(a)+148*ease(b);
+      setClip(rx,ry);
+      if(t<1)raf=requestAnimationFrame(f);
+    })(t0);
+  }
+  function openEye(){ if(open)return; open=true; sc.classList.add('open'); run(true); }
+  function closeEye(){ if(!open)return; open=false; sc.classList.remove('open'); note.hidden=true; run(false); }
+  cat.addEventListener('click',openEye);
+  back.addEventListener('click',closeEye);
+  var NOTES={ear:'<b>귀</b> — 땡땡, 전차 종소리. 쇠 바퀴가 레일을 긁는 소리, 웅성거리는 구경꾼들.',
+             nose:'<b>코</b> — 전차 길을 따라 냉면 국물 냄새가 지나갑니다. 그 시절 경성에서는 냉면과 설렁탕 배달이 성했다고 합니다.<small>경북매일 황광해 맛칼럼(2019. 10. 8)</small>'};
+  ['ear','nose'].forEach(function(k){document.getElementById(k).addEventListener('click',function(e){e.stopPropagation();note.innerHTML=NOTES[k];note.hidden=false;});});
+  var post=document.getElementById('post');
+  function flip(){post.classList.toggle('flip')}
+  post.addEventListener('click',flip);
+  post.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});
+  document.getElementById('go').addEventListener('click',function(){document.getElementById('toast').textContent='시안에는 이 골목 하나만 있소. 나머지 일곱 곳은 같은 틀로 채웁니다.'});
+})();
+</script>
+</html>
