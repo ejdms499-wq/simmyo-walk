@@ -57,7 +57,7 @@ var qs=new URLSearchParams(location.search),id=qs.get('s'),at=+qs.get('at')||0;
 var P=(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).filter(function(p){return p.id===id})[0];
 function $(i){return document.getElementById(i)}
 function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-var back='../road/index.html'+(at?'?at='+Math.round(at):'');$('backl').href=back;$('go').onclick=function(){var r=this.getBoundingClientRect();hopTo(back,r.left+r.width/2,r.top+r.height/2)};
+var back=qs.get('from')==='album'?'../album/index.html':'../road/index.html'+(at?'?at='+Math.round(at):'');$('backl').href=back;if(qs.get('from')==='album'){$('backl').textContent='← 화첩';$('go').textContent='화첩으로 돌아가기 →'}$('go').onclick=function(){var r=this.getBoundingClientRect();hopTo(back,r.left+r.width/2,r.top+r.height/2)};
 if(!P){$('nm').textContent='이 곁골목은 아직 없소';return}
 document.title='심묘한 산책 · 곁골목 · '+P.name;
 $('nm').textContent=P.name;$('ys').innerHTML=String(P.yr).replace(/\s*~\s*/,'~<br>').replace(/^(\d{4})$/,'$1<br>년');

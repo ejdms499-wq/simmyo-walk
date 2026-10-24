@@ -82,10 +82,21 @@ h1 .sl{border-width:3px}
 #fly{position:fixed;z-index:32;width:132px;pointer-events:none;display:none;transform-origin:50% 100%}
 #toast{position:fixed;left:50%;top:42%;transform:translateX(-50%);z-index:20;font:14px/1.4 var(--ui);background:var(--ink);color:var(--card);padding:9px 14px;border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 #toast.on{opacity:1}
-.side{position:absolute;z-index:3;cursor:pointer;border:0;padding:7px 22px 6px 10px;background:#f3ecdb;color:#211c17;font:21px/1 var(--hand);white-space:nowrap;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);filter:drop-shadow(0 3px 3px rgba(40,20,5,.35));transform:rotate(var(--r,-3deg));transform-origin:0 50%}
-.side small{display:block;font:11px/1.2 var(--ui);color:#a8402c;margin-bottom:2px}
-.side::before{content:'';position:absolute;left:5px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:#7a5a3a}
-.side.v{background:#e5dcc4}.side.v small::after{content:' · 다녀옴'}
+.side{position:absolute;z-index:3;cursor:pointer;border:0;padding:0;background:none;width:34px;height:34px;margin:-17px 0 0 -17px}
+/* 평소: 벽에 찍힌 작은 발도장 하나 */
+.side .seal{position:absolute;inset:0;border-radius:50%;background:rgba(168,64,44,.82) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f3ecdb'%3E%3Cellipse cx='12' cy='15.6' rx='4.6' ry='3.8'/%3E%3Cellipse cx='6' cy='10.4' rx='1.8' ry='2.4'/%3E%3Cellipse cx='9.8' cy='6.8' rx='1.8' ry='2.5'/%3E%3Cellipse cx='14.2' cy='6.8' rx='1.8' ry='2.5'/%3E%3Cellipse cx='18' cy='10.4' rx='1.8' ry='2.4'/%3E%3C/svg%3E") center/66% no-repeat;
+  box-shadow:0 0 0 2px rgba(243,236,219,.75),0 2px 4px rgba(30,15,5,.35);transform:rotate(var(--r,-3deg)) scale(.82);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.side.v .seal{background-color:rgba(90,70,50,.7)}
+/* 심묘가 다가오면: 끈 달린 종이 꼬리표가 살짝 흔들리며 내려옴 */
+.side .tag{position:absolute;left:50%;bottom:calc(100% + 8px);transform-origin:50% -26px;transform:translateX(-50%) rotate(var(--r,-3deg)) translateY(-8px);opacity:0;pointer-events:none;
+  padding:7px 13px 6px;background:#f3ecdb;color:#211c17;font:22px/1 var(--hand);white-space:nowrap;border:1.5px solid #211c17;border-radius:3px;box-shadow:0 4px 8px rgba(40,20,5,.28);transition:opacity .3s,transform .5s cubic-bezier(.3,1.5,.5,1)}
+.side .tag::before{content:'';position:absolute;left:50%;top:-26px;height:26px;border-left:1.5px solid rgba(33,28,23,.7)}
+.side .tag small{display:block;font:11px/1.2 var(--ui);color:#a8402c;margin-bottom:3px;letter-spacing:.06em}
+.side.v .tag small::after{content:' · 다녀옴'}
+.side.near .seal{transform:rotate(0) scale(1.05)}
+.side.near .tag{opacity:1;pointer-events:auto;transform:translateX(-50%) rotate(var(--r,-3deg)) translateY(0);animation:sway 2.6s ease-in-out .5s infinite}
+@keyframes sway{0%,100%{transform:translateX(-50%) rotate(var(--r,-3deg))}50%{transform:translateX(-50%) rotate(calc(var(--r,-3deg) * -1))}}
+@media (prefers-reduced-motion:reduce){.side.near .tag{animation:none}}
 #sidecard{position:fixed;left:50%;bottom:22px;z-index:36;width:min(460px,calc(100vw - 28px));transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.3s;background:#f3ecdb;border:1.5px solid #211c17;box-shadow:0 12px 26px rgba(40,20,5,.4);padding:12px;display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center}
 @media (max-width:640px){#sidecard{bottom:64px}}
 #sidecard.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
@@ -104,6 +115,8 @@ h1 .sl{border-width:3px}
 #photo p{margin:8px 0 2px;font:24px/1.15 var(--hand);color:#2a2a46}
 #photo .nx{font:12px/1 var(--ui);color:#a8402c}
 
+#albb{position:fixed;left:108px;bottom:16px;z-index:60;font:12.5px/1 var(--ui);background:rgba(243,236,219,.92);color:#211c17;border:1px solid #211c17;border-radius:16px;padding:8px 12px 7px 12px;cursor:pointer}
+@media (max-width:640px){#albb{left:12px;bottom:14px}}
 .sndbtn{position:fixed;left:14px;bottom:16px;z-index:60;font:12.5px/1 var(--ui);background:rgba(243,236,219,.92);color:#211c17;border:1px solid #211c17;border-radius:16px;padding:8px 12px 7px 30px;cursor:pointer}
 .sndbtn::before{content:'';position:absolute;left:11px;top:50%;width:12px;height:12px;margin-top:-6px;background:#211c17;clip-path:polygon(0 30%,35% 30%,80% 0,80% 100%,35% 70%,0 70%)}
 .sndbtn[aria-pressed=false]{opacity:.7;text-decoration:line-through}
@@ -199,6 +212,7 @@ h1 .sl{border-width:3px}
 <div id="ctrl"><button id="bk" aria-label="뒤로 걷기">←</button><button id="fw" aria-label="앞으로 걷기">→</button></div>
 <div id="toast" role="status"></div>
 <button class="sndbtn" id="sndb" aria-pressed="true">소리 켬</button>
+<button id="albb" aria-label="심묘 화첩 보기">화첩</button>
 
 <div id="open">
   <div id="hoe" role="button" tabindex="0" aria-label="호외 · 누르면 산책 시작">
@@ -334,13 +348,15 @@ PL.forEach(function(p){return; /* 벽에 붙던 엽서는 멈춤 카드와 겹�
 
 
 /* ── 곁골목: 산책길 옆으로 새는 골목(예전 「심묘가 보는 경성」 장소들) ── */
-var SIDES=[['expo',700,560,-3],['hwasin',1420,560,3],['photo',2760,560,-2],['jodk',3900,560,3],['barber',4980,560,-3],['bingsu',5480,560,2],['books',6520,560,-2],['sakura',6940,1330,-3],['stadium',7040,1720,3],['bonjeong',7230,2470,-2],['post',7010,3070,2],['seoulst',7050,3290,-3],['mitsu',7290,3860,2],['market',7160,4040,-2],['well',250,560,2],['yeot',1060,560,-2],['herb',2420,560,3],['gomu',3160,560,-3],['smithy',4180,560,2],['noodle',4640,560,-2],['cotton',5230,560,3],['kimchi',5800,560,-3],['muk',6240,560,2],['dadeum',7090,1530,-2],['rick',7060,2900,3],['kite',7300,3650,-2]];
+var SIDES=[['expo',700,760,-3],['hwasin',1420,760,3],['photo',2760,760,-2],['jodk',3900,760,3],['barber',4980,760,-3],['bingsu',5480,760,2],['books',6520,760,-2],['sakura',6940,1330,-3],['stadium',7040,1720,3],['bonjeong',7230,2470,-2],['post',7010,3070,2],['seoulst',7050,3290,-3],['mitsu',7290,3860,2],['market',7160,4040,-2]];
 function sideImg(p){var N=window.SIDE_ART&&SIDE_ART[p.id];if(N)return '../../'+N.src;return p.ph||!(p.arc&&p.arc.length)?'../../assets/simmyo/s/'+p.img+'.webp':'../../'+p.arc[0].img}
 var SD={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){SD[p.id]=p});
 var sideV=[];try{sideV=JSON.parse(localStorage.getItem('simmyo_side')||'[]')}catch(e){}
 var sc2=document.createElement('div');sc2.id='sidecard';sc2.innerHTML='<img alt=""><div><div class="t"></div><q></q><button class="go">곁골목 들어가기 →</button><button class="x">닫기</button></div>';document.body.appendChild(sc2);
+var sideBtns=[];
+function sideNear(x,y){sideBtns.forEach(function(b){b.classList.toggle('near',Math.abs(b._x-x)<330&&Math.abs(b._y-y)<420)})}
 SIDES.forEach(function(sd){var p=SD[sd[0]];if(!p)return;var b=document.createElement('button');b.className='side'+(sideV.indexOf(sd[0])>=0?' v':'');b.style.left=sd[1]+'px';b.style.top=sd[2]+'px';b.style.setProperty('--r',sd[3]+'deg');
-  b.innerHTML='<small>곁골목 · '+p.yr+'</small>'+p.name;b.setAttribute('aria-label','곁골목 '+p.name);world.appendChild(b);
+  b.innerHTML='<span class="seal"></span><span class="tag"><small>곁골목 · '+p.yr+'</small>'+p.name+'</span>';b._x=sd[1];b._y=sd[2];sideBtns.push(b);b.setAttribute('aria-label','곁골목 '+p.name);world.appendChild(b);
   b.addEventListener('click',function(e){e.stopPropagation();openSide(sd[0])})});
 function openSide(id){var p=SD[id];snd('paper');sc2.querySelector('img').src=sideImg(p);sc2.querySelector('img').alt=p.name;
   sc2.querySelector('.t').innerHTML='<b>'+p.name+'</b>'+p.where+' · '+p.yr;sc2.querySelector('q').textContent='「'+[].concat(p.say||[''])[0]+'」';
@@ -502,6 +518,7 @@ function frame(now){
   if(say.classList.contains('on')){var bw=say.offsetWidth;var sx2=Math.max(c.x+bw/2+10,Math.min(say._x,c.x+VW-bw/2-10));say.style.left=sx2+'px'}
   PL.forEach(function(s){if(s.pcel)s.pcel.classList.toggle('near',s===near)});
   var sn=near&&!near.corner?near:null;if(sn!==stopNow){stopNow=sn;showStop(sn)}
+  sideNear(pos.x,pos.y);
   var gn=(script&&!anim&&!gagBusy)?script.p:null;if(gn!==lastGN){lastGN=gn;gagNear(gn)}
   var pr=D/TOT*100;$('hudp').setAttribute('stroke-dasharray',pr.toFixed(1)+' 100');
   var hl=48,vl=32,dd=Math.min(1,D/DC)*hl+Math.max(0,(D-DC)/(TOT-DC))*vl;var hx=dd<hl?6+dd:54,hy=dd<hl?8:8+(dd-hl);$('hudd').setAttribute('cx',hx);$('hudd').setAttribute('cy',hy);
@@ -576,6 +593,7 @@ async function runEnding(){
   cap('편집장은 목격 엽서를<br>지도 위에 하나씩 이어 보았다.');await wait(900);$('ebtn').classList.add('on');var _sk=document.getElementById('eskip');if(_sk)_sk.remove();
 }
 $('ebtn').addEventListener('click',runFinal);
+$('albb').addEventListener('click',function(){var r=this.getBoundingClientRect();hopTo('../album/index.html?at='+Math.round(D),r.left+r.width/2,r.top+r.height/2)});
 /* ── 마지막: 편집장의 지도 · 되찾은 호외 · 엽서 · 만든 것들 ── */
 var FPOS={1:[30,28],2:[43,28],3:[56,28],4:[69,28],5:[85,43],6:[85,57],7:[85,71],8:[85,86]},FCORNER=[85,28];
 function runFinal(){if(runFinal.d)return;runFinal.d=1;
