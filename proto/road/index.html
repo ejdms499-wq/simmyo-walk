@@ -218,6 +218,7 @@ h1 .sl{border-width:3px}
 <script src="../../simmyo-data.js"></script>
 <script src="../../simmyo-data-fix.js"></script>
 <script src="../side/new-places.js"></script>
+<script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
 <script src="../sfx.js?v=5"></script>
 <script>
@@ -333,7 +334,7 @@ PL.forEach(function(p){return; /* 벽에 붙던 엽서는 멈춤 카드와 겹�
 
 
 /* ── 곁골목: 산책길 옆으로 새는 골목(예전 「심묘가 보는 경성」 장소들) ── */
-var SIDES=[['expo',700,560,-3],['hwasin',1420,560,3],['photo',2760,560,-2],['jodk',3900,560,3],['barber',4980,560,-3],['bingsu',5480,560,2],['books',6520,560,-2],['sakura',6940,1330,-3],['stadium',7040,1720,3],['bonjeong',7230,2470,-2],['post',7010,3070,2],['seoulst',7050,3290,-3],['mitsu',7290,3860,2],['market',7160,4040,-2]];
+var SIDES=[['expo',700,560,-3],['hwasin',1420,560,3],['photo',2760,560,-2],['jodk',3900,560,3],['barber',4980,560,-3],['bingsu',5480,560,2],['books',6520,560,-2],['sakura',6940,1330,-3],['stadium',7040,1720,3],['bonjeong',7230,2470,-2],['post',7010,3070,2],['seoulst',7050,3290,-3],['mitsu',7290,3860,2],['market',7160,4040,-2],['well',250,560,2],['yeot',1060,560,-2],['herb',2420,560,3],['gomu',3160,560,-3],['smithy',4180,560,2],['noodle',4640,560,-2],['cotton',5230,560,3],['kimchi',5800,560,-3],['muk',6240,560,2],['dadeum',7090,1530,-2],['rick',7060,2900,3],['kite',7300,3650,-2]];
 function sideImg(p){var N=window.SIDE_ART&&SIDE_ART[p.id];if(N)return '../../'+N.src;return p.ph||!(p.arc&&p.arc.length)?'../../assets/simmyo/s/'+p.img+'.webp':'../../'+p.arc[0].img}
 var SD={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){SD[p.id]=p});
 var sideV=[];try{sideV=JSON.parse(localStorage.getItem('simmyo_side')||'[]')}catch(e){}

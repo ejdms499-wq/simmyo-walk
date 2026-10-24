@@ -104,9 +104,71 @@ var SCENES={
   {to:[395,775],by:'hop',k:'hunt',say:'물고기는 없소.',snd:'drip'},
   {k:'sniff',snd:'drip',say:'물 냄새는 괜찮소.'},{k:'lickpaw',snd:'lick'},
   {to:[640,875],by:'hop',k:'loaf'},
-  {to:[560,840],by:'walk',f:-1,k:'blink'}]}};
+  {to:[560,840],by:'walk',f:-1,k:'blink'}]},
+ well:{bg:'bg/s15.webp',W:1232,H:928,sc:2.2,start:[250,790,1],steps:[
+  {k:'blink',say:'새벽 우물은 조용하오.'},
+  {to:[650,775],by:'walk',k:'well1',say:'물동이 안에 하늘이 있소.'},
+  {k:'well2',snd:'lick',say:'…차오.'},{k:'well3',snd:'splash',say:'앗.'},{k:'well4'},
+  {to:[1000,800],by:'hop',k:'well5',say:'물장수는 아직 안 왔소.'},{k:'well6'},
+  {to:[250,790],by:'walk',k:'blink'}]},
+ herb:{bg:'bg/s16.webp',W:1232,H:928,sc:2.2,start:[300,835,1],steps:[
+  {k:'herb2',snd:'sniff',say:'감초 냄새요.'},{k:'herb3',snd:'sneeze',say:'에취.'},
+  {to:[560,835],by:'walk',k:'herb1',say:'이 서랍이 제일 깊소.'},
+  {k:'herb5',snd:'paper',say:'이 봉지는 내 것이오.'},
+  {to:[1060,508],by:'hop',k:'herb6',say:'여기서 다 보이오.'},{k:'herb4',say:'나도 달아 보시오.'},
+  {to:[300,835],by:'hop',f:-1,k:'blink'}]},
+ cotton:{bg:'bg/s17.webp',W:1232,H:928,sc:2.2,start:[920,805,-1],steps:[
+  {k:'cotton3',say:'솜이 날아다니오.'},
+  {to:[430,745],by:'hop',k:'cotton1',say:'…따뜻하오.'},{k:'cotton5'},
+  {k:'cotton2',say:'온몸이 솜이오.'},{k:'cotton4',say:'부르르.'},{k:'cotton6'},
+  {to:[920,805],by:'walk',f:1,k:'blink'}]},
+ noodle:{bg:'bg/s18.webp',W:1232,H:928,sc:2.2,start:[1000,830,-1],steps:[
+  {to:[520,815],by:'walk',k:'noodle1',say:'국수 발 사이가 시원하오.'},
+  {k:'noodle2',say:'…한 가닥만.'},{k:'noodle3'},{k:'noodle4',say:'밀가루를 뒤집어썼소.'},
+  {to:[960,820],by:'walk',k:'noodle6'},{k:'noodle5',say:'이 포대가 폭신하오.'},
+  {to:[1000,830],by:'walk',k:'blink'}]},
+ muk:{bg:'bg/s19.webp',W:1232,H:928,sc:2.2,start:[760,800,-1],steps:[
+  {k:'muk2',say:'눈이 오오.'},{k:'muk1'},
+  {to:[520,770],by:'walk',k:'muk3'},{k:'muk4',say:'발이 시리오.'},
+  {k:'muk5',say:'…메밀묵 사려, 소리가 들리오.'},{k:'muk6'},
+  {to:[760,800],by:'walk',f:1,k:'blink'}]},
+ yeot:{bg:'bg/s20.webp',W:1232,H:928,sc:2.2,start:[330,810,1],steps:[
+  {k:'yeot6',snd:'sniff',say:'엿 냄새요.'},{k:'yeot1',say:'…붙었소.'},{k:'yeot2'},
+  {k:'yeot5',snd:'clink',say:'가위 소리가 시끄럽소.'},
+  {to:[620,800],by:'walk',k:'yeot3',say:'이 신은 내가 바꿔 가오.'},{k:'yeot4'},
+  {to:[330,810],by:'walk',f:-1,k:'blink'}]},
+ gomu:{bg:'bg/s21.webp',W:1232,H:928,sc:2.2,start:[300,810,1],steps:[
+  {k:'gomu5',snd:'sniff',say:'새 고무 냄새요.'},
+  {to:[620,800],by:'walk',k:'gomu1',say:'딱 맞소.'},{k:'gomu2'},{k:'gomu3'},
+  {k:'gomu4',say:'이 두 짝은 내 것이오.'},
+  {to:[300,810],by:'walk',f:-1,k:'blink'}]},
+ smithy:{bg:'bg/s22.webp',W:1232,H:928,sc:2.2,start:[620,790,-1],steps:[
+  {k:'smithy1',say:'화덕 앞이 제일 좋소.'},{k:'smithy2'},
+  {k:'smithy3',snd:'clink',say:'땅!'},{k:'smithy4'},
+  {to:[760,800],by:'walk',f:1,k:'smithy6'},
+  {to:[620,790],by:'walk',f:-1,k:'blink'}]},
+ dadeum:{bg:'bg/s23.webp',W:1232,H:928,sc:2.2,start:[930,810,-1],steps:[
+  {k:'dadeum4',say:'달이 크오.'},{k:'dadeum1',say:'똑딱똑딱.'},{k:'dadeum3',say:'…시끄럽소.'},
+  {to:[790,556],by:'hop',k:'dadeum2'},{k:'dadeum5'},{k:'dadeum6'},
+  {to:[930,810],by:'hop',k:'blink'}]},
+ rick:{bg:'bg/s24.webp',W:1232,H:928,sc:2.2,start:[1060,830,-1],steps:[
+  {k:'rick1',say:'비가 오오.'},{k:'rick6'},{k:'rick2',say:'부르르.'},
+  {to:[1000,860],by:'hop',k:'rick3',say:'웅덩이에 내가 있소.'},
+  {k:'rick5',say:'손님 자리요. 출발하시오.'},
+  {to:[1060,830],by:'walk',k:'blink'}]},
+ kite:{bg:'bg/s25.webp',W:1232,H:928,sc:2.2,start:[900,840,-1],steps:[
+  {k:'kite1',say:'연이 높소.'},{k:'kite2',say:'바람이 세오.'},{k:'kite3'},
+  {k:'kite6'},{k:'kite4',say:'…감겼소.'},{k:'kite5'},
+  {k:'blink'}]},
+ kimchi:{bg:'bg/s26.webp',W:1232,H:928,sc:2.2,start:[330,830,1],steps:[
+  {k:'kimchi1',say:'고춧가루요.'},{k:'kimchi2',snd:'sneeze'},
+  {k:'kimchi3',say:'배추 이불이오.'},
+  {to:[560,840],by:'walk',k:'kimchi4',say:'이 항아리는 비었소.'},{k:'kimchi5'},{k:'kimchi6'},
+  {to:[330,830],by:'walk',f:-1,k:'blink'}]}
+};
 /* 몸짓: [컷, 시간ms] */
 var SEQ={
+ well1:[['n_well1',2000]],well2:[['n_well2',2000]],well3:[['n_well3',2000]],well4:[['n_well4',2000]],well5:[['n_well5',2000]],well6:[['n_well6',2200]],herb1:[['n_herb1',2000]],herb2:[['n_herb2',2000]],herb3:[['n_herb3',2000]],herb4:[['n_herb4',2000]],herb5:[['n_herb5',2000]],herb6:[['n_herb6',2200]],cotton1:[['n_cotton1',2000]],cotton2:[['n_cotton2',2000]],cotton3:[['n_cotton3',2000]],cotton4:[['n_cotton4',2000]],cotton5:[['n_cotton5',2000]],cotton6:[['n_cotton6',2200]],noodle1:[['n_noodle1',2000]],noodle2:[['n_noodle2',2000]],noodle3:[['n_noodle3',2000]],noodle4:[['n_noodle4',2000]],noodle5:[['n_noodle5',2000]],noodle6:[['n_noodle6',2200]],muk1:[['n_muk1',2000]],muk2:[['n_muk2',2000]],muk3:[['n_muk3',2000]],muk4:[['n_muk4',2000]],muk5:[['n_muk5',2000]],muk6:[['n_muk6',2200]],yeot1:[['n_yeot1',2000]],yeot2:[['n_yeot2',2000]],yeot3:[['n_yeot3',2000]],yeot4:[['n_yeot4',2000]],yeot5:[['n_yeot5',2000]],yeot6:[['n_yeot6',2200]],gomu1:[['n_gomu1',2000]],gomu2:[['n_gomu2',2000]],gomu3:[['n_gomu3',2000]],gomu4:[['n_gomu4',2000]],gomu5:[['n_gomu5',2000]],gomu6:[['n_gomu6',2200]],smithy1:[['n_smithy1',2000]],smithy2:[['n_smithy2',2000]],smithy3:[['n_smithy3',2000]],smithy4:[['n_smithy4',2000]],smithy5:[['n_smithy5',2000]],smithy6:[['n_smithy6',2200]],dadeum1:[['n_dadeum1',2000]],dadeum2:[['n_dadeum2',2000]],dadeum3:[['n_dadeum3',2000]],dadeum4:[['n_dadeum4',2000]],dadeum5:[['n_dadeum5',2000]],dadeum6:[['n_dadeum6',2200]],rick1:[['n_rick1',2000]],rick2:[['n_rick2',2000]],rick3:[['n_rick3',2000]],rick4:[['n_rick4',2000]],rick5:[['n_rick5',2000]],rick6:[['n_rick6',2200]],kite1:[['n_kite1',2000]],kite2:[['n_kite2',2000]],kite3:[['n_kite3',2000]],kite4:[['n_kite4',2000]],kite5:[['n_kite5',2000]],kite6:[['n_kite6',2200]],kimchi1:[['n_kimchi1',2000]],kimchi2:[['n_kimchi2',2000]],kimchi3:[['n_kimchi3',2000]],kimchi4:[['n_kimchi4',2000]],kimchi5:[['n_kimchi5',2000]],kimchi6:[['n_kimchi6',2200]],
  chairspin:[['g2_D9',1300],['g2_C4',1400]],tailwrap:[['g2_A8',2000]],paper:[['g2_D4',1500]],stamp:[['g2_E5',1700]],basket:[['g2_D7',2400]],ignore:[['g2_C6',2000]],
  brainfreeze:[['g2_F1',1700]],button:[['g2_F2',1500]],micnose:[['g2_F3',1800]],petalcatch:[['g2_F4',1900]],finish:[['g2_F5',1100]],lampjump:[['g2_B1',400],['g2_F6',900],['g2_B5',500]],
  fountain:[['g2_F7',2000]],toytrain:[['g2_F8',2200]],stretch:[['g2_A1',1300],['g2_A2',1200]],bigyawn:[['g2_A3',1200]],facewash:[['g2_A4',700],['g2_A5',700],['g2_A4',600]],

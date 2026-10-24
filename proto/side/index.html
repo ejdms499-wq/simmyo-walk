@@ -46,6 +46,7 @@
 <script src="../../simmyo-data.js"></script>
 <script src="../../simmyo-data-fix.js"></script>
 <script src="new-places.js"></script>
+<script src="new-places2.js"></script>
 <script src="../side-art.js"></script>
 <script src="../sfx.js?v=5"></script>
 <script src="scene.js"></script>
@@ -72,7 +73,7 @@ var s='';
 if(P.ear)s+='<button data-k="ear"><i>귀</i><span>'+esc(P.ear.t)+'</span></button>';
 if(P.nose)s+='<button data-k="nose"><i>코</i><span>'+esc(P.nose.t)+(P.nose.src?'<small>'+esc(P.nose.src)+'</small>':'')+'</span></button>';
 $('sense').innerHTML=s;
-var EAR={expo:'whoosh',hwasin:'tink',jodk:'horn',bingsu:'ice',sakura:'chime',stadium:'whoosh',bonjeong:'chime',mitsu:'drip',seoulst:'bell',post:'tink',photo:'pop',barber:'paper',books:'paper',market:'crunch'};
+var EAR={expo:'whoosh',hwasin:'tink',jodk:'horn',bingsu:'ice',sakura:'chime',stadium:'whoosh',bonjeong:'chime',mitsu:'drip',seoulst:'bell',post:'tink',photo:'pop',barber:'paper',books:'paper',market:'crunch',well:'splash',herb:'paper',cotton:'paper',noodle:'paper',muk:'chime',yeot:'clink',gomu:'tink',smithy:'clink',dadeum:'tink',rick:'drip',kite:'whoosh',kimchi:'crunch'};
 [].forEach.call(document.querySelectorAll('.sense button'),function(c){c.addEventListener('click',function(){window.snd&&snd(c.dataset.k==='ear'?(EAR[id]||'chime'):'sniff')})});
 var arcs=(P.arc||[]).slice();if(P.nose&&P.nose.img&&P.nose.ph)arcs.push({img:'assets/simmyo/s/'+P.nose.img+'.webp',cap:P.nose.alt,src:'실제 자료'});
 if(arcs.length)$('arc').innerHTML=arcs.map(function(a){return '<figure><img src="'+R+a.img+'" alt="'+esc(a.cap)+'" loading="lazy"><figcaption>「'+esc(a.cap)+'」 · '+esc(a.src)+'</figcaption></figure>'}).join('');else $('arcw').remove();
