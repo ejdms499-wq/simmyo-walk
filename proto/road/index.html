@@ -89,6 +89,26 @@ html,body{word-break:keep-all;overflow-wrap:break-word;margin:0;height:100%;over
 h1 .sl{border-width:3px}
 #ohint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:31;font:16px/1 var(--ui);color:#f3ead6;background:rgba(33,28,23,.9);padding:11px 16px;border-radius:22px;white-space:nowrap;display:flex;gap:8px;align-items:center;transition:opacity .4s}
 #ohint.off{opacity:0}
+/* 폰: 호외를 세로로 짜서 글자를 키움 */
+html.ph #hoe{width:430px;height:auto;padding:18px 20px 62px}
+html.ph #hoe .mh b{font-size:36px}html.ph #hoe .mh span{font-size:14px}
+html.ph #hoe h1{font-size:43px;margin:12px 0 10px}
+html.ph #hoe .row{display:block}
+html.ph #hoe figure{float:left;margin:4px 14px 6px 0!important}
+html.ph #hoe .ph,html.ph #hoe .ph img{width:150px}
+html.ph #hoe figcaption{font-size:12px;width:150px}
+html.ph #hoe p{font-size:17px;line-height:1.72;text-align:left}
+html.ph #hoe .feat{clear:both;margin-top:14px;padding-top:10px}
+html.ph #hoe .feat h2{font-size:21px}
+html.ph #hoe .feat ol{grid-template-columns:1fr;gap:6px}
+html.ph #hoe .feat li{min-height:0;font-size:16.5px;display:flex;gap:10px;align-items:baseline;padding:7px 10px}
+html.ph #hoe .feat li b{display:inline;margin:0;font-size:18px}
+html.ph #hoe .foot{left:20px;right:20px;bottom:18px;font-size:15px}
+html.ph #ohint{font-size:17px;padding:13px 18px}
+body:has(#open:not(.go)) #ctrl,body:has(#open:not(.go)) #strip{visibility:hidden}
+html.ph .side .tag{font-size:31px;padding:8px 14px 7px}html.ph .side .tag small{font-size:15.5px}
+html.ph .side{width:48px;height:48px;margin:-24px 0 0 -24px}
+html.ph .ystamp{right:6px;top:-14px}
 #fly{position:fixed;z-index:32;width:132px;pointer-events:none;display:none;transform-origin:50% 100%}
 #toast{position:fixed;left:50%;top:42%;transform:translateX(-50%);z-index:20;font:14px/1.4 var(--ui);background:var(--ink);color:var(--card);padding:9px 14px;border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 #toast.on{opacity:1}
@@ -171,7 +191,7 @@ html.ph .cell{flex:1;width:auto;height:auto;aspect-ratio:5/6;max-width:34px}
 html.ph #gagc{display:none}
 html.ph #stop{top:calc(var(--pt) + var(--ph) + 62px);left:8px;right:8px;width:auto;transform:translateY(8px);grid-template-columns:72px 1fr;padding:9px 10px;gap:10px;box-shadow:0 6px 14px rgba(40,20,5,.25)}
 html.ph #stop.on{transform:none}
-html.ph #stop.np{grid-template-columns:1fr}html.ph #stop img{width:72px;height:58px}html.ph #stop q{font-size:18px;margin:3px 0 6px}html.ph #stop .t b{font-size:15px}html.ph #stop button{padding:9px 11px;font-size:13.5px}
+html.ph #stop.np{grid-template-columns:1fr}html.ph #stop img{width:72px;height:58px}html.ph #stop q{font-size:20px;margin:3px 0 6px}html.ph #stop .t b{font-size:15px}html.ph #stop button{padding:9px 11px;font-size:13.5px}
 html.ph #hint{top:calc(var(--pt) + var(--ph) + 76px);font-size:13.5px}
 html.ph #ctrl{display:flex;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));gap:8px}
 html.ph #ctrl button{flex:1;width:auto;height:52px;border-radius:10px;border-width:2px;font:800 17px/1 var(--disp);touch-action:none;user-select:none;-webkit-user-select:none}
@@ -225,11 +245,11 @@ html.ph #eskip{top:10px;right:auto;left:10px}html.ph #ebtn{bottom:calc(5% + env(
 .fcred{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;font:13.5px/1.7 var(--ui);color:var(--ink)}
 .fcred h3{font:700 15px/1.3 var(--disp);margin:0 0 6px;padding-bottom:4px;border-bottom:1.5px solid var(--ink)}
 .fcred ul{margin:0;padding-left:16px}.fcred small{color:var(--ink2)}
-.fgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.fgal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(170px,100%),1fr));gap:12px}
 .fgal figure{margin:0;background:var(--card);border:1px solid #8d7d63;padding:6px;cursor:default}
 .fgal figure[data-s]{cursor:pointer}
 .fgal figure{position:relative}
-.fgal img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.fgal img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#e9dcc0;display:block}
 .fgal figcaption{font:17px/1.1 var(--hand);color:#2a2a46;margin-top:5px}
 .ilg{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))!important;gap:18px!important}.ilg img{aspect-ratio:3/2!important}.ilg a{display:block}
 .fgal .no img{filter:grayscale(1) blur(3px) brightness(1.15);opacity:.5}
@@ -267,12 +287,12 @@ html.ph #eskip{top:10px;right:auto;left:10px}html.ph #ebtn{bottom:calc(5% + env(
 <div id="ohint"><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><path d="M2 3H22V16" fill="none" stroke="#d99a2b" stroke-width="3" stroke-linecap="round"/></svg>호외를 누르시오</div>
 <img id="fly" src="m2/wk_01.webp" alt="">
 
-<script src="../../simmyo-data.js"></script>
+<script src="../../simmyo-data.js"></script><script src="../modern.js"></script>
 <script src="../../simmyo-data-fix.js"></script>
 <script src="../side/new-places.js"></script>
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
-<script src="../sfx.js?v=7"></script>
+<script src="../night.js"></script><script src="../sfx.js?v=7"></script>
 <script src="../share.js?v=3"></script>
 <script>
 (function(){
@@ -305,7 +325,7 @@ function at(d){var q=seg(d),s=q.s,u=q.u;var x=s.a.x+(s.b.x-s.a.x)*u,y=s.a.y+(s.b
 var PL=[
  {n:1,name:'종로 전차',url:'../lens/index.html?p=1',x:2230,q:'차표도 없이 지붕에 타고 갑디다.',from:'종로 인력거꾼 김씨',ph:'p1.jpg',pc:[2480,470,-4],keep:1,
   steps:[{s:'wind',say:'바람이 좋소.'},{s:'wire'},{s:'bell',say:'…땡땡.'},{s:'rope2',say:'줄이 있으면 당기오.'},{s:'ticket2',say:'차표 여기 있소.'},{s:'tflat',say:'차표는 없소.'},{s:'ttail'},{s:'tram'},{s:'tyawn'},{s:'roll'}],x0:2230,y0:600},
- {n:2,name:'종로 음반가게',url:'../lens/index.html?p=2',x:4000,q:'레코드가 돌 때마다 같이 고개를 돌리더라.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
+ {n:2,name:'종로 음반가게',url:'../lens/index.html?p=2',x:4000,q:'레코드가 돌 때마다 같이 고개를 돌리더이다.',from:'유성기 가게 점원',ph:'p2.jpg',pc:[2710,520,3],
   steps:[{s:'follow',x:4160,y:746,f:-1,say:'빙글빙글 도오.'},{s:'earl',x:4160,y:746,f:-1,say:'이 소리, 마음에 드오.'},{s:'beat',x:4160,y:746,f:-1},{s:'spin',x:4000,y:GY,f:-1,say:'빙글빙글.'},{s:'follow',x:4160,y:746,f:-1},{s:'over',x:4160,y:746,f:-1,say:'…끝났소.'},{s:'recsit',x:4000,y:GY,f:-1,say:'이건 내 방석이오.'},{s:'rectap',x:4000,y:GY,f:-1}]},
  {n:3,name:'종로 야시',url:'../lens/index.html?p=3',x:4800,q:'군밤 한 톨 물고 간 게 그 고양이오.',from:'야시 군밤장수',ph:'p3.jpg',pc:[4880,470,-3],
   steps:[{s:'sniff',x:4790,y:GY,say:'군밤 냄새요.'},{s:'hot',x:4790,y:GY,say:'앗.'},{s:'cwalk',x:4870,y:GY},{s:'proll',x:4820,y:GY,say:'둥근 건 다 내 것이오.'},{s:'glow',x:4820,y:GY},{s:'chroll',x:4820,y:GY,say:'군밤도 둥글소.'},{s:'hat',x:4820,y:GY,say:'여기 숨었소.'}]},
@@ -317,9 +337,9 @@ var PL=[
   steps:[{s:'look5',x:6765,y:3010,say:'누구요.'},{s:'splash',x:6765,y:3010},{s:'stir',x:6765,y:3010},{s:'lick',x:6765,y:3010},{s:'stamp',x:6765,y:3010,say:'도장 찍었소.'},{s:'shakeoff',x:6765,y:3010,say:'물은 차오.'},{s:'proud',x:6741,y:2866}]},
  {n:6,name:'설렁탕집',url:'../lens/index.html?p=6',d:vd(10),q:'배달통 위에서 내려오질 않소.',from:'설렁탕집 배달꾼',ph:null,pc:[6453,2560,-2],
   steps:[{s:'steam',x:6450,y:4232,f:-1,say:'국물 냄새가 나오.'},{s:'peek6',x:6450,y:4232,f:-1},{s:'steam2',x:6450,y:4232,f:-1,say:'킁킁.'},{s:'hot6',x:6450,y:4232,f:-1,say:'뜨겁소.'},{s:'bowls',x:6190,y:3945,say:'그릇 위가 제일 따뜻하오.'},{s:'warm',x:6190,y:3945},{s:'belly',x:6470,y:4232},{s:'sleep6',x:6470,y:4232}]},
- {n:7,name:'다방 창가',url:'../lens/index.html?p=7',d:vd(12),q:'시인보다 오래 창밖을 보더라.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
+ {n:7,name:'다방 창가',url:'../lens/index.html?p=7',d:vd(12),q:'시인보다 오래 창밖을 보더이다.',from:'다방 급사',ph:'p7.jpg',pc:[6453,3150,3],
   steps:[{s:'paws',x:6680,y:5177,f:-1,say:'안이 더 재미있소.'},{s:'drops',x:6725,y:5177,say:'비가 오오.'},{s:'tap7',x:6725,y:5177},{s:'cup',x:6725,y:5177,say:'쓰오.'},{s:'cuppush',x:6725,y:5177,say:'…툭.'},{s:'lonely',x:6725,y:5177},{s:'sleep7',x:6725,y:5177}]},
- {n:8,name:'한강',url:'../lens/index.html?p=8',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더라.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
+ {n:8,name:'한강',url:'../lens/index.html?p=8',d:TOT,q:'얼음 구멍 앞에서 내내 기다리더이다.',from:'한강 얼음낚시꾼',ph:'p8.jpg',pc:[6600,3960,-3],
   steps:[{s:'slip2',x:6720,y:6566,say:'미끄럽소.'},{s:'slip',x:6720,y:6566},{s:'cold',x:6730,y:6564,say:'발이 시리오.'},{s:'peer',x:6740,y:6560,say:'기다리는 중이오.'},{s:'catch',x:6740,y:6560,say:'올라왔소. 멸치는 아니오.'},{s:'fish2',x:6740,y:6560},{s:'shiver',x:6740,y:6560},{s:'moon',x:6740,y:6560}]}
 ];
 PL.forEach(function(p){if(p.d==null)p.d=p.x-200});
@@ -410,14 +430,14 @@ visited.forEach(function(n){stamp(n,false)});
 var gc=document.createElement('span');gc.id='gagc';$('strip').appendChild(gc);
 /* ── 숨은 심묘: 장소마다 반짝이는 곳을 누르면 ── */
 var GAGS=[
- {n:1,hx:2030,hy:680,type:'peek',clip:[2004,640,52,62],cx:2030,show:46,say:'차표 검사요.',snd:'mrrp',after:'proud',ph:[['w/w07.webp','전차 지붕 위, 바람 맞으며'],['w/w01.webp','냉면 배달 자전거 옆에서']]},
- {n:2,hx:4063,hy:690,type:'peek',clip:[4030,656,66,64],round:1,cx:4063,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1,ph:[['w/w05.webp','유성기 나팔 속에서 빼꼼']]},
- {n:3,hx:4755,hy:770,type:'peek',clip:[4700,705,110,95],cx:4755,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll',ph:[['w/w10.webp','군밤 한 톨 머리에 얹고']]},
- {n:4,hx:6280,hy:610,type:'peek',clip:[6200,560,160,80],cx:6280,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4',ph:[['w/w09.webp','「아리랑」 줄 맨 앞 자리'],['w/w02.webp','극장 옆 호떡집, 한 장만 기다리는 중']]},
+ {n:1,hx:2030,hy:680,type:'peek',clip:[2004,640,52,62],cx:2030,show:46,say:'차표 검사요.',snd:'mrrp',after:'proud',ph:[['w/w07.webp?v=4','전차 지붕 위, 바람 맞으며'],['w/w01.webp?v=4','냉면 배달 자전거 옆에서']]},
+ {n:2,hx:4063,hy:690,type:'peek',clip:[4030,656,66,64],round:1,cx:4063,show:50,say:'♪ …나팔 속이 울리오.',snd:'horn',after:'earl',song:1,ph:[['w/w05.webp?v=4','유성기 나팔 아래서 노래 구경']]},
+ {n:3,hx:4755,hy:770,type:'peek',clip:[4700,705,110,95],cx:4755,show:56,hat:'pers',say:'감 아니오. 고양이오.',snd:'mrrp',after:'proll',ph:[['w/w10.webp?v=4','군밤 한 톨 머리에 얹고']]},
+ {n:4,hx:6280,hy:610,type:'peek',clip:[6200,560,160,80],cx:6280,show:50,say:'여기가 제일 잘 보이오.',snd:'mrrp',after:'proud4',ph:[['w/w09.webp?v=4','「아리랑」 줄 맨 앞 자리'],['w/w02.webp?v=4','극장 옆 호떡집, 한 장만 기다리는 중']]},
  {n:5,hx:7173,hy:2680,type:'peek',clip:[7118,2620,110,80],cx:7173,show:52,say:'빨래는 따뜻하오.',snd:'mrrp',after:'lick'},
- {n:6,hx:6370,hy:4060,type:'peek',clip:[6325,3990,90,76],cx:6370,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm',ph:[['w/w06.webp','배달 자전거 옆 놋그릇 속']]},
- {n:7,hx:6950,hy:5160,type:'paw',clip:[6870,5082,200,97],px:6970,item:{src:'m2/kastera.webp',x:6950,y:5175,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum',ph:[['w/w03.webp','탁자 밑에서 발만 쏙'],['w/w04.webp','소다수 앞, 아무 일도 없었다는 얼굴'],['w/w08.webp','등나무 의자 위 낮잠']]},
- {n:8,hx:6356,hy:6400,type:'perch',to:{x:6356,y:6413},say:'낚시꾼 자리요.',snd:'mrrp',after:'perch8',ph:[['w/w11.webp','얼음 구멍 옆, 물고기 한 마리']]}
+ {n:6,hx:6370,hy:4060,type:'peek',clip:[6325,3990,90,76],cx:6370,show:46,say:'그릇 속도 따뜻하오.',snd:'clink',after:'warm',ph:[['w/w06.webp?v=4','배달 자전거 옆 놋그릇 속']]},
+ {n:7,hx:6950,hy:5160,type:'paw',clip:[6870,5082,200,97],px:6970,item:{src:'m2/kastera.webp',x:6950,y:5175,w:42},say:'…아무 일도 없었소.',snd:'mewlow',after:'yum',ph:[['w/w03.webp?v=4','탁자 밑에서 발만 쏙'],['w/w04.webp?v=4','소다수 앞, 아무 일도 없었다는 얼굴'],['w/w08.webp?v=4','등나무 의자 위 낮잠']]},
+ {n:8,hx:6356,hy:6400,type:'perch',to:{x:6356,y:6413},say:'낚시꾼 자리요.',snd:'mrrp',after:'perch8',ph:[['w/w11.webp?v=4','얼음 구멍 옆, 물고기 한 마리']]}
 ];
 var gagFound=[];try{gagFound=JSON.parse(localStorage.getItem('simmyo_gag')||'[]')}catch(e){}
 function gagCount(pop){gc.textContent='숨은 심묘 '+gagFound.length+'/8';if(pop){gc.classList.remove('pop');void gc.offsetWidth;gc.classList.add('pop')}}
@@ -624,9 +644,9 @@ async function runEnding(){window.__endBgm=1;window.bgm&&bgm('note');
   ecatSet('sitg_11',560,gy,122,-1);await wait(1400);
   ecatSet('trot_08',560,gy,126,1);esp('창에 불이 켜져 있소.',1600);snd('mrrp');await wait(1800);
   endDiv.classList.add('fade');await wait(700);
-  bg.src='e1.webp';efx=.6;efit();ES=1.3;cap('편집장 책상.');
+  bg.src='e1.webp?v=4';efx=.6;efit();ES=1.3;cap('편집장 책상.');
   ecatSet('jump_01',1560,EH+60,110,-1);endDiv.classList.remove('fade');await wait(500);
-  var dy=EH*.86;
+  var dy=EH*.84;
   await tween(900,function(u){var x=1560+(1150-1560)*u,y=(EH+60)+(dy-(EH+60))*u;var k=u<.15?'jump_03':u<.5?'jump_04':u<.8?'jump_06':'jump_07';ecatSet(k,x,y,u<.5?105:130,-1,180*4*u*(1-u))});
   ecatSet('jump_08',1150,dy,135,-1);await wait(500);
   await tween(1500,function(u){var x=1150-(1150-930)*u;ecatSet('wk_0'+(1+Math.floor(u*1500/110)%8),x,dy,150,-1)});
@@ -647,7 +667,7 @@ async function runEnding(){window.__endBgm=1;window.bgm&&bgm('note');
   cap('ㄱ은 자모표 제자리로 돌아갔고,<br>한글 공부 부록은 빈칸 없이 나갔다.');await wait(2600);
   cap('편집장은 목격 엽서를<br>지도 위에 하나씩 이어 보았다.');await wait(900);$('ebtn').classList.add('on');var _sk=document.getElementById('eskip');if(_sk)_sk.remove();
 }
-$('ebtn').addEventListener('click',runFinal);window.__simEnd=runEnding;
+$('ebtn').addEventListener('click',runFinal);window.__simEnd=runEnding;window.__simFin=runFinal;
 /* 신문 연재: 띠 이름표를 누르면 연재, 찍힌 칸을 누르면 그 골목의 회 */
 function openAlb(ep,el){try{localStorage.setItem('simmyo_alb','1')}catch(e){};$('stl').classList.add('seen');var r=(el||$('stl')).getBoundingClientRect();hopTo('../album/index.html?'+(ep?'ep='+ep+'&':'')+'at='+Math.round(D),r.left+r.width/2,r.top+r.height/2)}
 try{if(localStorage.getItem('simmyo_alb'))$('stl').classList.add('seen')}catch(e){}
@@ -655,7 +675,7 @@ $('stl').addEventListener('click',function(e){e.stopPropagation();var last=visit
 [1,2,3,4,5,6,7,8].forEach(function(n){var c=$('cell'+n);c.setAttribute('role','button');c.setAttribute('aria-label',n+'번 골목 연재');c.addEventListener('click',function(e){e.stopPropagation();if(visited.indexOf(n)>=0)openAlb(n+3,c);else{snd('paper');toast(n+'번 골목을 지나면 연재 한 회가 실리오')}})});
 /* ── 마지막: 편집장의 지도 · 되찾은 호외 · 엽서 · 만든 것들 ── */
 var FPOS={1:[30,28],2:[43,28],3:[56,28],4:[69,28],5:[85,43],6:[85,57],7:[85,71],8:[85,86]},FCORNER=[85,28];
-function runFinal(){if(runFinal.d)return;runFinal.d=1;window.__endBgm=1;window.bgm&&bgm('paper');
+function runFinal(){if(runFinal.d)return;runFinal.d=1;try{localStorage.setItem('simmyo_done','1')}catch(e){}window.__endBgm=1;window.bgm&&bgm('paper');
   var f=document.createElement('div');f.id='fin';
   var posts=PL.filter(function(p){return p.n}).map(function(p){return '<div'+(visited.indexOf(p.n)<0?' class="no"':'')+'>「'+p.q+'」<small>'+p.n+' · '+p.name+' — '+p.from+' 올림</small></div>'}).join('');
   f.innerHTML='<div class="in">'+
@@ -667,7 +687,6 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;window.__endBgm=1;window.b
    '<section><div class="k">경성 사람들이 보낸 목격 엽서</div><h2>사람들이 본 심묘</h2><div class="fposts">'+posts+'</div>'+
    '<div class="fsleep" style="margin-top:18px"><img src="w/press.webp" alt="신문사 지하 윤전실, 신문지 더미 옆에서 자는 심묘" style="width:min(420px,70%);border:1px solid #8d7d63"><span>심묘는 지금 자는 중이오.<br><small style="font:13px/1.4 var(--ui)">숨은 심묘 '+gagFound.length+'/8 찾음</small></span></div></section>'+
    (GAGS.some(function(g){return g.ph})?'':'<!--')+'<section><div class="k">숨은 심묘를 찾으면 한 장씩 · 제보로 그린 그림</div><h2>목격 그림</h2>'+(function(){var got=GAGS.filter(function(g){return g.ph&&gagFound.indexOf(g.n)>=0});var left=GAGS.filter(function(g){return g.ph}).length-got.length;return (got.length?'<div class="fgal">'+got.map(function(g){return g.ph.map(function(q){return '<figure><button class="shrbtn mini" data-share-src="'+q[0]+'" data-share-title="목격 그림" data-share-caption="'+q[1]+'">공유</button><img src="'+q[0]+'" alt="'+q[1]+'" loading="lazy"><figcaption>'+q[1]+'</figcaption></figure>'}).join('')}).join('')+'</div>':'')+'<p class="k" style="margin-top:10px">'+(left?'아직 못 찾은 숨은 심묘가 '+left+'곳 남았소. 골목마다 반짝이는 데를 눌러 보시오.':'목격 그림을 다 모았소.')+'</p>'})()+'</section>'+(GAGS.some(function(g){return g.ph})?'':'-->')+
-   '<section><div class="k">재현 그림 · 지어낸 이야기</div><h2>심묘의 하루</h2><div class="fgal ilg">'+[['a_jar','장독대 뚜껑 위 낮잠'],['a_rain','처마 밑에서 빗방울 하나 노려보기'],['a_rail','첫 전차 기다리는 새벽'],['a_fire','아궁이 앞 볏짚 위'],['a_laundry','빨랫줄 아래 숨바꼭질'],['a_moon','달밤 용마루 끝'],['w1','전차 지붕 위 무임승차'],['w3','야시 군밤장수 옆'],['w4','극장 줄 맨 앞'],['w5','청계천 빨래터'],['w6','설렁탕 배달통 위'],['w7','다방 창가의 시인 옆']].map(function(q){return '<figure><button class="shrbtn mini" data-share-src="../il/'+q[0]+'.webp" data-share-title="심묘의 하루" data-share-caption="'+q[1]+'">공유</button><a href="../il/'+q[0]+'.webp" target="_blank"><img src="../il/'+q[0]+'_s.webp" alt="'+q[1]+'" loading="lazy"></a><figcaption>'+q[1]+'</figcaption></figure>'}).join('')+'</div></section>'+
    '<section><div class="k">산책길 옆으로 샌 골목</div><h2>곁골목</h2>'+(function(){var all=SIDES.filter(function(sd){return SD[sd[0]]}),got=all.filter(function(sd){return sideV.indexOf(sd[0])>=0}),no=all.filter(function(sd){return sideV.indexOf(sd[0])<0});return (got.length?'<div class="fgal">'+got.map(function(sd){var q=SD[sd[0]];return '<figure data-s="'+sd[0]+'"><button class="shrbtn mini" data-share-src="'+sideImg(q)+'" data-share-title="'+q.name+'" data-share-caption="'+[].concat(q.say||[''])[0]+'">공유</button><img src="'+sideImg(q)+'" alt="'+q.name+'" loading="lazy"><figcaption>'+q.name+' · '+q.yr+'</figcaption></figure>'}).join('')+'</div>':'')+(no.length?'<p class="k" style="margin-top:10px">아직 안 가 본 곁골목: '+no.map(function(sd){return '<a data-hop href="../side/index.html?s='+sd[0]+'&at='+Math.round(TOT)+'">'+SD[sd[0]].name+'</a>'}).join(' · ')+'</p>':'')})()+'</section>'+
    '<section><div class="k">이 산책을 만든 것들</div><h2>무엇이 진짜이고, 무엇이 지어낸 것인가</h2><div class="fcred">'+
    '<div><h3>실제 자료</h3><ul><li>1927년 「경성부관내도」</li><li>종로를 달리는 전차, 당시 사진엽서</li><li>오케 레코드 「목포의 눈물」(1935) 음반 · 국민일보(2018. 5. 23) 수록</li><li>종로 야시 · 『동아일보』 1935</li><li>단성사(1937) · 『대경성도시대관』 / 「아리랑」 광고 · 『매일신보』 1926. 10. 1</li><li>「장교정 설넝탕」 · 『동아일보』 1924. 7. 13</li><li>다방 낙랑파라 실내(1934) · 『하라 이순석 작품집』 / 이상의 다방 삽화 · 『조선중앙일보』 1934. 8. 14</li><li>한강 얼음낚시·채빙 사진엽서 · 서울역사박물관</li><li>동아일보 브나로드 운동의 한글 교재 「한글공부」 · 국가기록원</li></ul><small>장소마다 「심묘의 눈」 쪽에 출처를 자세히 적어 두었소.</small></div>'+
@@ -677,7 +696,7 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;window.__endBgm=1;window.b
    '<div class="fbtns"><button class="pri" id="fagain">처음부터 다시 걷기</button><button id="fback">산책길로 돌아가기</button></div></div>';
   document.body.appendChild(f);
   /* 호외 ㄱ 자리: 처음엔 비워 두고, 보이면 하나씩 채움 */
-  var fh=f.querySelector('#fhoe');[].forEach.call(fh.querySelectorAll('h1,p'),function(el){el.innerHTML=el.textContent.replace(/[가-힣]/g,function(ch){return Math.floor((ch.charCodeAt(0)-0xAC00)/588)===0?'<span class="sl e">'+ch+'</span>':ch})});
+  var fh=f.querySelector('#fhoe');[].forEach.call(fh.querySelectorAll('h1,p'),function(el){el.innerHTML=el.textContent.replace(/[가-힣ㄱ]/g,function(ch){return ch==='ㄱ'||Math.floor((ch.charCodeAt(0)-0xAC00)/588)===0?'<span class="sl e">'+ch+'</span>':ch})});
   var filled=false;function fillHoe(){if(filled)return;filled=true;var sl=[].slice.call(fh.querySelectorAll('.sl.e'));sl.forEach(function(e,i){setTimeout(function(){e.classList.remove('e');e.classList.add('f');if(i%3===0)snd('tink')},250+i*130)})}
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){fillHoe();io.disconnect()}})},{root:f,threshold:.2});io.observe(fh)}else fillHoe();f.addEventListener('scroll',function(){if(f.scrollTop>innerHeight*.35)fillHoe()},{passive:true});
   f.querySelector('#fagain').onclick=function(){try{localStorage.removeItem('simmyo_road');sessionStorage.removeItem('simmyo_pro')}catch(e){}location.href='index.html'};
@@ -699,10 +718,10 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;window.__endBgm=1;window.b
 
 /* ㄱ 빈칸 */
 document.querySelectorAll('.gap').forEach(function(el){var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),ns=[],n;while(n=w.nextNode())ns.push(n);
-  ns.forEach(function(t){if(!/[가-힣]/.test(t.nodeValue))return;var sp=document.createElement('span');sp.innerHTML=t.nodeValue.replace(/[가-힣]/g,function(ch){return Math.floor((ch.charCodeAt(0)-0xAC00)/588)===0?'<span class="sl">'+ch+'</span>':ch});t.parentNode.replaceChild(sp,t)})});
+  ns.forEach(function(t){if(!/[가-힣]/.test(t.nodeValue))return;var sp=document.createElement('span');sp.innerHTML=t.nodeValue.replace(/[가-힣ㄱ]/g,function(ch){return ch==='ㄱ'||Math.floor((ch.charCodeAt(0)-0xAC00)/588)===0?'<span class="sl">'+ch+'</span>':ch});t.parentNode.replaceChild(sp,t)})});
 /* 오프닝: 호외 → 수배 사진 속 심묘가 눈을 깜빡이고, 사진 밖으로 걸어 나와 길로 */
 var hoe=$('hoe'),op=$('open');
-function fitHoe(s){var k=Math.min(innerWidth/640,innerHeight/860);hoe.style.transform='translate(-50%,-50%) scale('+k+')'+(s||'')}
+function fitHoe(s){var k=document.documentElement.classList.contains('ph')?Math.min((innerWidth-14)/hoe.offsetWidth,(innerHeight-96)/Math.max(1,hoe.offsetHeight)):Math.min(innerWidth/640,innerHeight/860);hoe.style.transform='translate(-50%,-50%) scale('+k+')'+(s||'')}
 fitHoe();addEventListener('resize',function(){if(!started)fitHoe()});
 
 /* ── 프롤로그: 식자실, ㄱ이 사라진 순간 ── */

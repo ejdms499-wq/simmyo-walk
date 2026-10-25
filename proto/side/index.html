@@ -1,7 +1,7 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>심묘한 산책 · 곁골목</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Pen+Script&family=Gowun+Dodum&display=swap">
-<link rel="stylesheet" href="../sub.css">
+<link rel="stylesheet" href="../sub.css?v=4">
 <style>
 /* 곁골목: 심묘가 노는 장면 */
 .fig{position:relative}
@@ -43,12 +43,12 @@
   </div>
   <footer class="leave"><span>곁골목을 나서면 들어온 자리로 돌아가오.</span><button id="go">산책길로 돌아가기 →</button></footer>
 </div>
-<script src="../../simmyo-data.js"></script>
+<script src="../../simmyo-data.js"></script><script src="../modern.js"></script>
 <script src="../../simmyo-data-fix.js"></script>
 <script src="new-places.js"></script>
 <script src="new-places2.js"></script>
 <script src="../side-art.js"></script>
-<script src="../sfx.js?v=7"></script>
+<script src="../night.js"></script><script src="../sfx.js?v=7"></script>
 <script src="../share.js?v=3"></script>
 <script src="scene.js?v=c4"></script>
 <script>
@@ -67,7 +67,7 @@ var NEW=window.SIDE_ART&&SIDE_ART[id];var useArc=!P.ph&&!NEW&&P.arc&&P.arc.lengt
 var LIVE=!!(window.startScene&&window.SCENE_IDS&&SCENE_IDS.indexOf(id)>=0);if(!LIVE)$('img').src=NEW?R+NEW.src.replace('../../',''):(useArc?R+P.arc[0].img:IMG+P.img+'.webp');$('img').alt=(NEW?NEW.alt:(useArc?P.arc[0].cap:(P.alt||P.name)))+(real?' (옛 자료)':' (재현 그림)');
 $('tag').textContent=P.where;if(NEW){var sb=$('sshr');sb.hidden=false;sb.setAttribute('data-share-src',R+NEW.src.replace('../../',''));sb.setAttribute('data-share-title',P.name);sb.setAttribute('data-share-caption',modern([].concat(P.say||[''])[0]))}
 var host=$('scn'),live=window.startScene&&startScene(id,host);if(live){var mh=innerHeight-(innerWidth<600?140:150),stg=host.querySelector('.stg'),ar=stg.offsetWidth/Math.max(1,stg.offsetHeight);if(innerWidth>=600){var sw=Math.max(320,mh*ar);host.style.maxWidth=sw+'px';if(stg.offsetHeight<=stg.offsetWidth)document.querySelector('.page').style.maxWidth=Math.min(1180,Math.max(960,sw+40))+'px'}$('fig').classList.add('live');if(host.querySelector('.stg').offsetHeight>host.querySelector('.stg').offsetWidth)$('fig').classList.add('tall');window.dispatchEvent(new Event('resize'))}
-function modern(t){[['끈소','끊소'],['만소','많소'],['겟소','겠소'],['잇소','있소'],['잇고','있고'],['갓소','같소'],['엇소','었소'],['앗소','았소'],['업소','없소'],['업더','없더'],['아즉','아직'],['우에','위에'],['압','앞'],['안즌','앉은'],['몰랏','몰랐'],['엿소','였소']].forEach(function(r){t=t.split(r[0]).join(r[1])});return t}
+function modern(t){[['압헤','앞에'],['까지 갓소','까지 갔소'],['끈소','끊소'],['만소','많소'],['겟소','겠소'],['잇소','있소'],['잇고','있고'],['갓소','같소'],['엇소','었소'],['앗소','았소'],['업소','없소'],['업더','없더'],['아즉','아직'],['우에','위에'],['압','앞'],['안즌','앉은'],['몰랏','몰랐'],['엿소','였소']].forEach(function(r){t=t.split(r[0]).join(r[1])});return t}
 var says=[].concat(P.say||[]);var line=P.night||says[1]||says[0]||'';$('say').textContent=line?'「'+modern(line)+'」':'';
 $('cap').innerHTML=live?'<b>재현 그림</b> · 심묘를 누르면 대꾸하오':NEW?'<b>재현 그림</b> · '+esc(NEW.alt):useArc?'<b>실제 자료</b> · 「'+esc(P.arc[0].cap)+'」 '+esc(P.arc[0].src):'<b>실제 자료</b> · '+esc(P.alt||'');
 var s='';

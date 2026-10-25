@@ -176,3 +176,16 @@ ol.facts li:nth-child(2n+1)::before{transform:rotate(6deg)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rvon .rv{opacity:1;transform:none}}
 .cs:has(.catsay:empty){display:none}
+/* 폰 가독성: 작은 회색 글씨를 키우고 진하게 */
+@media (max-width:600px){
+  :root{--ink3:#6f604d}
+  .cap{font-size:13.5px;color:var(--ink2)}
+  .src{font-size:13px;color:var(--ink2);padding-left:0}
+  .sense small,.arc figcaption,.ppl small,.note small{font-size:13px}
+  .ppl div{font-size:16px}.ppl b{font-size:14px}
+  .bar .kick{font-size:11.5px}
+  .h{font-size:13px;margin:32px 0 14px}
+  .leave{font-size:14.5px}
+  ol.facts li{font-size:17px;line-height:1.8}
+  .sense span{font-size:16.5px}
+}
