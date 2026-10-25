@@ -12,19 +12,19 @@ window.SIDE_ART={
  rick:{src:'proto/side/art/s24.webp',alt:'비 오는 날 인력거 의자에 앉은 심묘'},
  kite:{src:'proto/side/art/s25.webp',alt:'정월 언덕에서 연을 올려다보는 심묘'},
  kimchi:{src:'proto/side/art/s26.webp',alt:'김장 날 빈 항아리 안에서 얼굴만 내민 심묘'},
- expo:{src:'proto/side/art/s01.webp',alt:'조선박람회 「어린이의 나라」 문 앞에서 탑을 올려다보는 심묘'},
- hwasin:{src:'proto/side/art/s02.webp',alt:'백화점 승강기 안에서 천장을 올려다보는 심묘'},
- jodk:{src:'proto/side/art/s03.webp',alt:'방송국 마이크를 빤히 보는 심묘'},
- bingsu:{src:'proto/side/art/s04.webp',alt:'빙수집 계산대 위에서 빙수를 핥는 심묘'},
- sakura:{src:'proto/side/art/s05.webp',alt:'밤 벚꽃 아래서 꽃잎을 툭 치는 심묘'},
- stadium:{src:'proto/side/art/s06.webp',alt:'운동장 트랙을 힘껏 달리는 심묘'},
- bonjeong:{src:'proto/side/art/s07.webp',alt:'방울등 거리에서 등을 올려다보는 심묘'},
- mitsu:{src:'proto/side/art/s08.webp',alt:'백화점 옥상 난간에 앉아 경성을 내려다보는 심묘'}
+ expo:{src:'proto/side/art/s01.webp?v=4',alt:'조선박람회 「어린이의 나라」 문 앞에서 탑을 올려다보는 심묘'},
+ hwasin:{src:'proto/side/art/s02.webp?v=4',alt:'백화점 승강기 안에서 천장을 올려다보는 심묘'},
+ jodk:{src:'proto/side/art/s03.webp?v=4',alt:'방송국 마이크를 빤히 보는 심묘'},
+ bingsu:{src:'proto/side/art/s04.webp?v=4',alt:'빙수집 계산대에서 빙수를 떠먹는 심묘'},
+ sakura:{src:'proto/side/art/s05.webp?v=4',alt:'밤 벚꽃 아래서 꽃잎을 툭 치는 심묘'},
+ stadium:{src:'proto/side/art/s06.webp?v=4',alt:'운동장 트랙을 힘껏 내닫는 심묘'},
+ bonjeong:{src:'proto/side/art/s07.webp?v=4',alt:'방울등 거리에서 등을 올려다보는 심묘'},
+ mitsu:{src:'proto/side/art/s08.webp?v=4',alt:'백화점 옥상에서 해 질 녘 경성을 바라보는 심묘'}
 };
 Object.assign(window.SIDE_ART,{
- seoulst:{src:'proto/side/art/s09.webp',alt:'경성역 대합실 둥근 천장 아래 심묘'},
- post:{src:'proto/side/art/s10.webp',alt:'우체국 창구 위의 심묘'},
- photo:{src:'proto/side/art/s11.webp',alt:'사진관 의자 위의 심묘'},
- barber:{src:'proto/side/art/s12.webp',alt:'이발소 의자 위의 심묘'},
- books:{src:'proto/side/art/s13.webp',alt:'헌책방 책 더미 옆의 심묘'},
- market:{src:'proto/side/art/s14.webp',alt:'시장 골목 바구니 속 심묘'}});
+ seoulst:{src:'proto/side/art/s09.webp?v=4',alt:'경성역 대합실 둥근 천장 아래 심묘'},
+ post:{src:'proto/side/art/s10.webp?v=4',alt:'우체국 창구 위의 심묘'},
+ photo:{src:'proto/side/art/s11.webp?v=4',alt:'사진관 의자 위의 심묘'},
+ barber:{src:'proto/side/art/s12.webp?v=4',alt:'이발소 의자 위의 심묘'},
+ books:{src:'proto/side/art/s13.webp?v=4',alt:'헌책방 책 더미 사이 신문지 위에 엎드린 심묘'},
+ market:{src:'proto/side/art/s14.webp?v=4',alt:'시장 골목 바구니 속 심묘'}});

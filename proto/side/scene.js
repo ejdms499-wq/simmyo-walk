@@ -3,108 +3,108 @@
    걸음 종류: hop(폴짝) · walk(걷기) · run(뛰기) */
 (function(){
 var SCENES={
- bingsu:{bg:'bg/s04.webp',W:1232,H:928,sc:1.85,start:[1000,760,-1],steps:[
+ bingsu:{bg:'bg/s04.webp',W:1232,H:928,sc:2.3,start:[850,892,-1],steps:[
   {k:'sniff',say:'얼음 냄새요.',snd:'sniff'},
   {k:'lickice',f:1,say:'…차오.',snd:'lick'},
   {k:'brainfreeze',say:'머리가 띵하오.',snd:'ice'},{k:'facewash'},
   {k:'tap'},
-  {to:[760,850],by:'hop',k:'loaf',say:'여기 시원하오.'},
+  {to:[1080,895],by:'hop',k:'loaf',say:'여기 시원하오.'},
   {k:'blink'},
-  {to:[1000,760],by:'hop',f:-1,k:'sitlook'}]},
- expo:{bg:'bg/s01.webp',W:1232,H:928,sc:1.25,start:[880,812,-1],steps:[
+  {to:[850,892],by:'hop',f:-1,k:'sitlook'}]},
+ expo:{bg:'bg/s01.webp',W:1232,H:928,sc:2.4,start:[640,895,1],steps:[
   {k:'lookup',say:'탑 꼭대기가 양파 같소.'},
   {k:'toytrain',say:'맨 뒤 칸이오.',snd:'whoosh'},{k:'wind',say:'꼬마기차 바람이오.',snd:'whoosh'},
-  {to:[640,800],by:'walk',k:'gaze',f:-1},
+  {to:[420,880],by:'walk',k:'gaze',f:-1},
   {k:'proud',snd:'mrrp',say:'입장권은 없소.'},{k:'hunt'},
-  {to:[300,795],by:'run',k:'yawn'},
-  {to:[880,812],by:'run',f:-1,k:'blink'}]},
- hwasin:{bg:'bg/s02.webp',W:928,H:1232,sc:1.9,start:[470,1170,1],steps:[
+  {to:[880,900],by:'run',k:'yawn'},
+  {to:[640,895],by:'run',f:-1,k:'blink'}]},
+ hwasin:{bg:'bg/s02.webp',W:1232,H:928,sc:2.8,start:[620,915,1],steps:[
   {k:'ceil',say:'작은 방이 올라가오.'},
   {k:'button',say:'이 단추를 누르면…',snd:'tink'},{k:'startle',say:'!',snd:'land'},{k:'puff'},
   {k:'scratch',say:'흠.'},
-  {to:[320,1150],by:'walk',f:-1,k:'groom'},
+  {to:[470,915],by:'walk',f:-1,k:'groom'},
   {k:'knead'},{k:'stretch'},{k:'dozey'},
-  {to:[600,1155],by:'walk',k:'licklip',say:'몇 층이오?'}]},
- jodk:{bg:'bg/s03.webp',W:1232,H:928,sc:1.65,start:[540,865,-1],steps:[
+  {to:[760,915],by:'walk',k:'licklip',say:'몇 층이오?'}]},
+ jodk:{bg:'bg/s03.webp',W:1232,H:928,sc:2.5,start:[820,872,-1],steps:[
   {k:'stare',f:-1,say:'이 쇠 꽃이 말을 하오?'},
   {k:'micnose',say:'쇠 냄새요.',snd:'sniff'},{k:'sneeze',snd:'sneeze'},
   {k:'sitlook',say:'야옹. 경성 들리오?',snd:'horn'},
-  {to:[640,548],by:'hop',k:'tilt'},{k:'newsp',say:'오늘 소식이오.',snd:'paper'},
+  {to:[1050,870],by:'walk',k:'tilt'},{k:'newsp',say:'오늘 소식이오.',snd:'paper'},
   {k:'loaf',say:'방송은 잘 들었소.'},
-  {to:[540,865],by:'hop',f:-1,k:'blink'}]},
- sakura:{bg:'bg/s05.webp',W:1232,H:928,sc:1.55,start:[880,815,1],steps:[
+  {to:[820,872],by:'walk',f:-1,k:'blink'}]},
+ sakura:{bg:'bg/s05.webp',W:1232,H:928,sc:2.5,start:[760,905,1],steps:[
   {k:'swat',say:'꽃잎이 도망가오.',snd:'pop'},
   {k:'lookup'},
   {k:'petalcatch',say:'잡았소.'},{k:'petal',say:'…하나 더 오오.'},
   {k:'roll'},{k:'belly'},
-  {to:[1060,800],by:'walk',k:'blink'},
+  {to:[880,885],by:'walk',k:'blink'},
   {k:'gazeup',say:'밤인데 밝소.'},
-  {to:[880,815],by:'walk',f:-1,k:'sitlook'}]},
- stadium:{bg:'bg/s06.webp',W:1232,H:928,sc:1.75,start:[160,860,1],steps:[
+  {to:[760,905],by:'walk',f:-1,k:'sitlook'}]},
+ stadium:{bg:'bg/s06.webp',W:1232,H:928,sc:2.4,start:[250,860,1],steps:[
   {k:'sitlook',say:'다들 왜 뛰는지 모르겠소.'},
-  {to:[950,875],by:'run',k:'yawn',say:'…일등이오.'},
+  {to:[950,850],by:'run',k:'yawn',say:'…일등이오.'},
   {k:'proud',snd:'mrrp'},
   {k:'finish',say:'결승선이오.'},{k:'smug'},
-  {to:[420,868],by:'run',f:-1,k:'scratch'},
+  {to:[500,870],by:'run',f:-1,k:'scratch'},
   {k:'loaf'}]},
- bonjeong:{bg:'bg/s07.webp',W:1232,H:928,sc:1.55,start:[620,895,1],steps:[
+ bonjeong:{bg:'bg/s07.webp',W:1232,H:928,sc:2.5,start:[620,895,1],steps:[
   {k:'gazeup',say:'방울이 불을 켰소.'},
   {to:[480,880],by:'walk',f:-1,k:'groom'},
   {k:'lampjump',say:'방울을 잡겠소.',snd:'hop'},{k:'sulk',say:'…높소.'},{k:'lookback'},
-  {to:[770,882],by:'walk',k:'ceil',say:'밤이 길겠소.'},
+  {to:[770,885],by:'walk',k:'ceil',say:'밤이 길겠소.'},
   {k:'scratch'},{k:'bigyawn'},
   {to:[620,895],by:'walk',f:-1,k:'blink'}]},
- seoulst:{bg:'bg/s09.webp',W:1232,H:928,sc:1.7,start:[620,868,1],steps:[
+ seoulst:{bg:'bg/s09.webp',W:1232,H:928,sc:2.2,start:[620,905,1],steps:[
   {k:'ceil',say:'천장이 둥글게 열렸소.'},
-  {to:[470,800],by:'walk',f:-1,k:'stretch'},
+  {to:[480,885],by:'walk',f:-1,k:'stretch'},
   {k:'pause',say:'기차 소리요.',snd:'bell'},
-  {to:[760,840],by:'run',k:'smug',say:'…기차는 안 타오.'},
+  {to:[760,895],by:'run',k:'smug',say:'…기차는 안 타오.'},
   {k:'dozey'},
-  {to:[620,868],by:'walk',f:-1,k:'blink'}]},
- post:{bg:'bg/s10.webp',W:1232,H:928,sc:1.5,start:[1060,885,-1],steps:[
+  {to:[620,905],by:'walk',f:-1,k:'blink'}]},
+ post:{bg:'bg/s10.webp',W:1232,H:928,sc:2.1,start:[960,575,-1],steps:[
   {k:'lookup',say:'엽서가 다 여기로 오오.'},
-  {to:[640,556],by:'hop',f:-1,k:'tailwrap'},
+  {to:[760,580],by:'walk',f:-1,k:'tailwrap'},
   {k:'paper',say:'이건 내게 온 엽서요?',snd:'paper'},
   {k:'stamp',say:'도장 찍었소.',snd:'tink'},
-  {to:[420,556],by:'walk',f:-1,k:'smug'},
+  {to:[630,584],by:'walk',f:-1,k:'smug'},
   {k:'loaf'},
-  {to:[1060,885],by:'hop',k:'blink'}]},
- photo:{bg:'bg/s11.webp',W:1232,H:928,sc:1.5,start:[860,840,-1],steps:[
+  {to:[960,575],by:'walk',k:'blink'}]},
+ photo:{bg:'bg/s11.webp',W:1232,H:928,sc:2.0,start:[640,905,-1],steps:[
   {k:'stare',f:-1,say:'저 상자가 나를 보오.'},
-  {to:[622,592],by:'hop',f:-1,k:'smug',say:'…찍으시오.'},
+  {to:[890,735],by:'hop',f:-1,k:'smug',say:'…찍으시오.'},
   {k:'pause'},
   {k:'startle',say:'!',snd:'pop'},
   {k:'sulk',say:'눈이 부시오.'},
-  {to:[860,840],by:'hop',k:'facewash'}]},
- barber:{bg:'bg/s12.webp',W:1232,H:928,sc:1.5,start:[980,885,-1],steps:[
+  {to:[640,905],by:'hop',f:-1,k:'facewash'}]},
+ barber:{bg:'bg/s12.webp',W:1232,H:928,sc:1.9,start:[880,900,-1],steps:[
   {k:'lookup',f:-1,say:'저 의자는 돌아가오?'},
-  {to:[745,648],by:'hop',f:-1,k:'chairspin'},
+  {to:[560,548],by:'hop',f:-1,k:'chairspin'},
   {k:'facewash',say:'단발은 안 하오.'},
   {k:'smug'},
-  {to:[420,885],by:'hop',f:-1,k:'sniff',snd:'sniff',say:'머릿기름 냄새요.'},
+  {to:[300,895],by:'hop',f:-1,k:'sniff',snd:'sniff',say:'머릿기름 냄새요.'},
   {k:'sneeze',snd:'sneeze'},
-  {to:[980,885],by:'walk',k:'blink'}]},
- books:{bg:'bg/s13.webp',W:1232,H:928,sc:1.55,start:[560,880,1],steps:[
+  {to:[880,900],by:'walk',k:'blink'}]},
+ books:{bg:'bg/s13.webp',W:1232,H:928,sc:2.1,start:[640,915,1],steps:[
   {k:'lookup',say:'책이 천장까지 쌓였소.'},
-  {to:[745,600],by:'hop',k:'newsp',say:'팔리지 않는 책 위가 내 자리요.',snd:'paper'},
+  {to:[180,642],by:'hop',f:-1,k:'newsp',say:'팔리지 않는 책 위가 내 자리요.',snd:'paper'},
   {k:'paper',snd:'paper'},
-  {to:[330,870],by:'hop',f:-1,k:'chase'},
+  {to:[640,915],by:'hop',f:1,k:'chase'},
   {k:'dozey'},
-  {to:[560,880],by:'walk',k:'loaf'}]},
- market:{bg:'bg/s14.webp',W:1232,H:928,sc:1.55,start:[860,895,-1],steps:[
+  {to:[690,905],by:'walk',k:'loaf'}]},
+ market:{bg:'bg/s14.webp',W:1232,H:928,sc:2.2,start:[400,900,-1],steps:[
   {k:'sniff',f:-1,say:'마른 생선 냄새요.',snd:'sniff'},
   {k:'hunt'},
   {k:'basket',say:'이 바구니는 내 것이오.'},
-  {to:[1060,870],by:'walk',k:'tailwrap'},
+  {to:[200,905],by:'walk',k:'tailwrap'},
   {k:'ignore',say:'…아직 문 안 열었소.'},
-  {to:[860,895],by:'walk',f:-1,k:'blink'}]},
- mitsu:{bg:'bg/s08.webp',W:1232,H:928,sc:1.45,start:[560,840,-1],steps:[
+  {to:[400,900],by:'walk',f:1,k:'blink'}]},
+ mitsu:{bg:'bg/s08.webp',W:1232,H:928,sc:2.3,start:[330,905,1],steps:[
   {k:'stare',say:'경성이 다 보이오.'},
-  {to:[200,885],by:'hop',f:-1,k:'sitlook'},
-  {to:[395,775],by:'hop',k:'hunt',say:'물고기는 없소.',snd:'drip'},
-  {k:'sniff',snd:'drip',say:'물 냄새는 괜찮소.'},{k:'lickpaw',snd:'lick'},
-  {to:[640,875],by:'hop',k:'loaf'},
-  {to:[560,840],by:'walk',f:-1,k:'blink'}]},
+  {to:[150,910],by:'hop',f:-1,k:'sitlook'},
+  {to:[450,895],by:'hop',k:'hunt',say:'비둘기는 없소.',snd:'whoosh'},
+  {k:'sniff',snd:'sniff',say:'바람 냄새가 좋소.'},{k:'lickpaw',snd:'lick'},
+  {to:[560,915],by:'hop',k:'loaf'},
+  {to:[330,905],by:'walk',f:-1,k:'blink'}]},
  well:{bg:'bg/s15.webp',W:1232,H:928,sc:2.2,start:[250,790,1],steps:[
   {k:'blink',say:'새벽 우물은 조용하오.'},
   {to:[650,775],by:'walk',k:'well1',say:'물동이 안에 하늘이 있소.'},
@@ -184,8 +184,8 @@ var SEQ={
  dash:[['g_s5',900]],lookback:[['sitg_11',1600]],crouch:[['g_s8',2000]],lickpaw:[['s6_04',1400]]
 };
 var typ=null,SZ=null,cv,cat,sh,say,stage,cfg,raf=0,cur={x:0,y:0,f:1,k:'sitg_01',lift:0},busy=false,timer=0,si=0,react=false,REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function isOld(){return !!(cfg&&/bg\/s(0\d|1[0-4])\./.test(cfg.bg))}
-function src(k){var old=isOld()&&k.indexOf('n_')!==0;return '../road/'+(old?'m2w/':'m2/')+k+'.webp'+(old?'':'?v=c1')}
+function isOld(){return false}
+function src(k){var old=isOld()&&k.indexOf('n_')!==0;return '../road/'+(old?'m2w/':'m2/')+k+'.webp'+(old?'':'?v=c3')}
 var YOFF={"wk_01": 3.1, "wk_02": 2.3, "wk_03": 2.4, "wk_04": -0.3, "wk_05": 3.3, "wk_06": 2.7, "wk_07": 2.8, "wk_08": -1.1, "tr_01": -0.9, "tr_02": -0.2, "tr_03": -6.6, "tr_04": 1.3, "tr_05": -1.1, "tr_06": -7.7, "fw_01": 2.2, "fw_02": 2.8, "fw_03": -1.7, "fw_04": 1.9, "fw_05": 1.7, "fw_06": 1.5, "fw_07": 1.3, "fw_08": -3.5, "fw_09": -3.6, "fw_10": -2.2, "fw_11": -0.0, "fw_12": -0.2};
 var MOUTH=/^(wk_|tr_|jump_|trot_|fw_|walkg_|react_0[345])/,MOUTH2=/^(wk_|tr_0|jump_|trot_0[1-7]|walkg_)/,dropX=null,dropY=null;
 function pose(k,x,y,f,lift){var z=SZ[k];if(!z)return;var mo=(isOld()?MOUTH:MOUTH2).test(k);if(typ){if(mo){typ.style.opacity=0;dropX=null}else{if(dropX===null){dropX=x+f*52*cfg.sc;dropY=y}typ.style.left=(dropX-13*cfg.sc)+'px';typ.style.top=(dropY-26*cfg.sc)+'px';typ.style.width=(26*cfg.sc)+'px';typ.style.opacity=1}}lift=(lift||0)-(isOld()?(YOFF[k]||0):0)*cfg.sc*.56;var s=cfg.sc*.56*(k.indexOf('g_')===0?.86:1),w=z[0]*s,h=z[1]*s,ax=(f>0?z[2]:z[0]-z[2])*s;
@@ -213,9 +213,9 @@ window.SCENE_IDS=Object.keys(SCENES);
 window.startScene=function(id,host){cfg=SCENES[id];if(!cfg)return false;
   host.innerHTML='<div class="stg"><img class="bgi" alt=""><img class="typ" src="../road/m2/type.webp" alt="" style="position:absolute;opacity:0;transition:opacity .2s"><div class="csh"></div><img class="cat" alt="심묘 — 누르면 반응함"><div class="csay"></div></div>';
   stage=host.querySelector('.stg');typ=host.querySelector('.typ');cat=host.querySelector('.cat');sh=host.querySelector('.csh');say=host.querySelector('.csay');
-  stage.style.width=cfg.W+'px';stage.style.height=cfg.H+'px';host.querySelector('.bgi').src=cfg.bg;
+  stage.style.width=cfg.W+'px';stage.style.height=cfg.H+'px';host.querySelector('.bgi').src=cfg.bg+'?v=4';
   fit();addEventListener('resize',fit);cat.addEventListener('click',function(e){e.stopPropagation();poke()});
-  fetch(isOld()?'../road/m2w/sizes.json':'../road/m2/sizes.json?v=c1').then(function(r){return r.json()}).then(function(j){SZ=j;
+  fetch(isOld()?'../road/m2w/sizes.json':'../road/m2/sizes.json?v=c3').then(function(r){return r.json()}).then(function(j){SZ=j;
     /* 걷기·뛰기 컷 기준점 통일(떨림 방지) */
     [['wk_',8],['tr_',6]].forEach(function(g){var s=0,ks=[];for(var i=1;i<=g[1];i++){var k=g[0]+'0'+i;if(SZ[k]){ks.push(k);s+=SZ[k][2]/SZ[k][0]}}ks.forEach(function(k){SZ[k][2]=SZ[k][0]*s/ks.length})});
     var all={};Object.keys(SEQ).forEach(function(n){SEQ[n].forEach(function(q){all[q[0]]=1})});['jump_01','jump_03','jump_04','jump_06','jump_07','jump_08','react_01','react_02','react_06','react_07'].forEach(function(k){all[k]=1});for(var i=1;i<=8;i++)all['wk_0'+i]=1;for(i=1;i<=6;i++)all['tr_0'+i]=1;

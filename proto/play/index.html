@@ -69,7 +69,7 @@ html.port .ctl button{padding:18px 10px;font-size:19px}
 <script>
 (function(){
 var qs=new URLSearchParams(location.search),N=+qs.get('p')||1;if(N<1||N>8)N=1;
-var M2='../road/m2/',V='?v=c2';
+var M2='../road/m2/',V='?v=c3';
 var PORT=innerWidth<=700&&innerHeight>innerWidth*1.1;document.documentElement.classList.toggle('port',PORT);
 var cv=document.getElementById('cv'),c=cv.getContext('2d'),W=PORT?600:960,H=PORT?880:600;cv.style.aspectRatio=W+'/'+H;
 function $(i){return document.getElementById(i)}
@@ -260,7 +260,7 @@ G[8]={name:'한강',title:'얼음 구멍',kick:'산책길 8번째 골목 · 한�
     else if(g.st==='bite'){if(g.tt<=0){g.st='wait';g.tt=rnd(1,2.5);g.nib=0;pop('놓쳤소',this.hx,330,SEAL)}}
     else if(g.st==='scared'){if(g.tt<=0){g.st='wait';g.tt=rnd(1,2.2);g.nib=0}}
     if(g.fish){g.fish.vy+=1200*dt;g.fish.y+=g.fish.vy*dt;g.fish.x+=g.fish.vx*dt;g.fish.r+=dt*5;if(g.fish.y>this.hy+20&&g.fish.vy>0){g.fish=null}}},
-  down:function(g){if(g.st==='bite'){var gold=Math.random()<.15,v=gold?3:1;g.add(v);g.fish={x:this.hx,y:this.hy,vx:-140,vy:-640,r:0,gold:gold};S('splash',{force:true});T(gold?1318.5:987.8,.5,.22);pop(gold?'잉어다! +3':'붕어 +1',this.hx,300);g.rk='react_08';g.react=1.1;g.st='wait';g.tt=rnd(1.1,2.6);g.nib=0}
+  down:function(g){if(g.st==='bite'){var gold=Math.random()<.15,v=gold?3:1;g.add(v);g.fish={x:this.hx,y:this.hy,vx:-140,vy:-640,r:0,gold:gold};S('splash',{force:true});T(gold?1318.5:987.8,.5,.22);pop(gold?'잉어다! +3':'붕어 +1',this.hx,300);g.rk='s8_06';g.react=1.3;g.st='wait';g.tt=rnd(1.1,2.6);g.nib=0}
     else if(g.st!=='scared'){g.st='scared';g.tt=1.4;pop('달아났소',this.hx,330,SEAL);g.rk='react_02';g.react=.8}},
   key:function(g,k,on){if(on&&(k===' '||k==='Enter'))this.down(g)},
   draw:function(g){bg('bg/han.webp',.12,0,.4);var x=this.hx,y=this.hy;c.fillStyle='#1d2a30';c.beginPath();c.ellipse(x,y,120,38,0,0,7);c.fill();ink(4);c.stroke();c.fillStyle='rgba(120,170,190,.35)';c.beginPath();c.ellipse(x,y+4,104,28,0,0,7);c.fill();
