@@ -24,6 +24,9 @@ a{color:inherit}
 .eps{display:flex;gap:8px;justify-content:center;margin:16px 0 4px;flex-wrap:wrap}
 .eps button{font:700 14px/1 var(--display);padding:9px 14px 8px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink)}
 .eps button[aria-current=true]{background:var(--ink);color:var(--np)}
+.eps .eg{flex-basis:100%;text-align:center;font:12px/1 var(--ui);letter-spacing:.2em;color:var(--seal);margin-top:6px}
+.eps button{font-size:13px;padding:8px 11px 7px}
+.col .who a{color:var(--seal)}
 /* 지면: 왼쪽 단(글) + 오른쪽 연재만화 */
 .sheet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);gap:28px;margin-top:16px}
 .col{border-right:1px solid var(--ink);padding-right:22px}
@@ -75,7 +78,7 @@ a{color:inherit}
 </style></head><body><script src="../hop.js"></script>
 <div class="paper">
   <div class="top"><a data-hop id="backl" href="../road/index.html">← 산책길로</a><span>京城野錄 · 附錄 連載漫畵</span><button class="sndbtn" aria-pressed="true" style="font:12px/1 var(--ui);background:none;border:1px solid var(--ink);border-radius:14px;padding:6px 10px;cursor:pointer">소리</button></div>
-  <div class="mast"><div class="bx">連載漫畵<b id="epno">第一回</b></div><div class="t">심 묘</div><div class="bx">경성 사람들의<br>하루<b id="epwhen">아침</b></div></div>
+  <div class="mast"><div class="bx">連載漫畵<b id="epno">第一回</b></div><div class="t">심 묘</div><div class="bx"><span id="epbx">경성 사람들의<br>하루</span><b id="epwhen">아침</b></div></div>
   <div class="sub"><span>수배 고양이 「심묘」가 경성 골목에 끼어든 이야기 · 지어낸 이야기</span><span>그림: 경성야록 삽화부</span></div>
   <nav class="eps" id="eps" aria-label="회차 고르기"></nav>
   <div class="sheet">
@@ -88,7 +91,7 @@ a{color:inherit}
 <script src="../../simmyo-data.js"></script>
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
-<script src="../sfx.js?v=6"></script>
+<script src="../sfx.js?v=7"></script>
 <script src="../share.js?v=2"></script>
 <script>
 (function(){
@@ -102,6 +105,30 @@ var EP=[
  {no:'第三回',when:'밤',title:'비 오고 눈 오는 밤',lead:'해가 지자 비가 왔고, 비가 그치자 눈이 왔다. 인력거꾼도, 다듬이질하던 며느리도, 메밀묵 장수도 그 밤에 같은 고양이를 보았다고 적어 보냈다.',
   body:'정월 보름에는 언덕 아래 기와지붕에 걸린 연 하나의 실 끝이 고양이 발에 감겨 있었다 한다. 편집국은 이 제보들을 모아 연재를 마치며, 고양이를 보시거든 멸치 한 줌을 내주시라 당부한다.',
   p:[['rick','비 오는 길목. 인력거 손님 자리에 먼저 탄 손님.'],['dadeum','똑딱똑딱 다듬이 장단. 꼬리가 박자를 맞춘다.'],['muk','「메밀묵 사려」 소리가 멀어질 때까지 눈을 맞고 섰다.'],['kite','정월 보름. 끊어진 연실 끝에 누가 매달렸나.']]}
+ ,{no:'第四回',when:'이른 봄 아침',walk:1,place:'종로 전차',title:'지붕 손님',lead:'종로 네거리에 전차 종이 땡땡 울렸다. 그날 아침 전차 지붕에 까만 손님이 하나 더 탔다는 제보가 편집국에 들어왔다.',
+  body:'전차 삯은 한 구역을 지날 때마다 5전이었다. 차장은 지붕 손님에게 삯을 받으려 했으나, 손님은 입에 문 쇳조각 하나만 보여 줄 뿐이었다 한다.',
+  p:[['ep/tram1.webp','아침 여덟 시, 종로 네거리.','저 상자, 또 왔소.'],['ep/tram2.webp','삯은 한 구역 5전. 손님은 지붕으로 탔다.','나는 지붕 손님이오.'],['ep/tram3.webp','차장이 올려다보았으나 까만 것은 바람만 맞았다.','바람이 좋소.'],['ep/tram4.webp','종점까지 한 번도 내리지 않았다는 제보.','zZ']]}
+ ,{no:'第五回',when:'가을 오후',walk:2,place:'종로 음반가게',title:'나팔 속 노래',lead:'1935년 가을, 「목포의 눈물」이 종로 거리를 돌았다. 음반가게 나팔 앞에 까만 손님 하나가 자리를 잡았다는 이야기다.',
+  body:'유성기 가게 점원은 레코드가 돌 때마다 고양이가 같이 고개를 돌렸다고 적어 보냈다. 노래가 끝나자 뚱한 얼굴로 나가 버렸다 한다.',
+  p:[['ep/rec1.webp','종로 음반가게 앞. 가게 안에서 노랫소리가 샜다.','노래 나오는 구멍이 있소.'],['ep/rec2.webp','오케 레코드 새 음반, 「목포의 눈물」.','이 소리, 마음에 드오.'],['ep/rec3.webp','판이 돌 때마다 고개도 같이 돌았다.','빙글빙글 도오.'],['ep/rec4.webp','노래가 끝나자 손님은 뚱한 얼굴로 나갔다.','…끝났소.']]}
+ ,{no:'第六回',when:'초가을 밤',walk:3,place:'종로 야시',title:'군밤 한 톨',lead:'밤이 되자 종로 남쪽 길에 야시가 섰다. 「골라잡아 세 가지 15전!」 외치는 소리 아래로 까만 것이 지나갔다.',
+  body:'군밤장수는 고양이가 군밤 한 톨을 물고 갔다고 했다. 뜨거운지 한 번 털더니, 그래도 물고 가더라는 것이다.',
+  p:[['ep/yasi1.webp','밤 종로 남쪽 길. 야시에 불이 켜졌다.','사람 발이 숲처럼 많소.'],['ep/yasi2.webp','「골라잡아 세 가지 15전!」','군밤 냄새요.'],['ep/yasi3.webp','군밤 한 톨, 생각보다 뜨거웠다.','앗.'],['ep/yasi4.webp','털고도 물고 갔다는 군밤장수의 제보.','둥근 것은 다 내 것이오.']]}
+ ,{no:'第七回',when:'시월',walk:4,place:'단성사 앞',title:'맨 앞자리',lead:'1926년 시월, 나운규의 「아리랑」을 보려는 줄이 종로 YMCA 앞까지 늘어섰다. 그 줄 맨 앞에 까만 것이 앉아 있었다.',
+  body:'표 파는 아이는 고양이에게 표를 달라 했더니 쳐다만 보더라고 했다. 영화가 끝날 때까지 자리를 지켰다는 말도 있다.',
+  p:[['ep/dan1.webp','시월, 단성사 앞.','다들 무얼 기다리오?'],['ep/dan2.webp','「아리랑」 줄이 종로 YMCA 앞까지 늘어섰다.','줄은 사람이 서는 것이오.'],['ep/dan3.webp','표 파는 아이가 표를 달라 했으나…','표는 이것이오.'],['ep/dan4.webp','끝날 때까지 맨 앞에서 졸았다는 제보.','…아직이오?']]}
+ ,{no:'第八回',when:'초여름',walk:5,place:'청계천 빨래터',title:'발자국 넷',lead:'초여름 청계천에 빨래방망이 소리가 탁탁 울렸다. 넓적한 빨랫돌 사이로 까만 것이 건너갔다.',
+  body:'그날 널어 둔 흰 빨래에 작은 발자국 네 개가 찍혀 있었다 한다. 빨래하던 아낙은 다시 빨면 그만이라 웃고 말았다.',
+  p:[['ep/cheong1.webp','초여름 청계천. 방망이 소리가 탁탁.','물은 차오.'],['ep/cheong2.webp','돌 하나 건너다 그만…','…!'],['ep/cheong3.webp','흰 빨래 위에 작은 발자국 넷.','빨래는 따뜻하오.'],['ep/cheong4.webp','아낙은 그 빨래를 한 번 더 빨지 않았다.','zZ']]}
+ ,{no:'第九回',when:'칠월',walk:6,place:'설렁탕집',title:'배달통 위',lead:'큰 솥에서 김이 오르고 쇠뼈 고는 냄새가 골목을 채웠다. 설렁탕 한 그릇이 10전 남짓 하던 때의 일이다.',
+  body:'배달꾼은 고양이가 배달통 위에서 내려오질 않는다고 했다. 뚝배기 더미가 따뜻한 걸 아는 모양이라는 것이다.',
+  p:[['ep/seol1.webp','설렁탕집 앞. 큰 솥에서 김이 났다.','뼈 냄새가 코를 붙잡소.'],['ep/seol2.webp','한 그릇에 10전 남짓.','킁킁.'],['ep/seol3.webp','「배달통 위에서 내려오질 않소.」','그릇 위가 제일 따뜻하오.'],['ep/seol4.webp','자전거 종이 울려도 꿈쩍 않았다.','zZ']]}
+ ,{no:'第十回',when:'비 오는 밤',walk:7,place:'다방 창가',title:'창가의 손님',lead:'1930년대 중반 경성은 찻집이 넘쳐 나던 때였다. 비 오는 밤, 유성기 소리 새어 나오는 다방 창가에 까만 손님이 앉았다.',
+  body:'다방 급사는 그 고양이가 시인보다 오래 창밖을 보았다고 했다. 찻잔 냄새를 맡더니 코를 찡그리더라는 것이다.',
+  p:[['ep/dabang1.webp','비 오는 밤, 다방 창가.','비는 싫소.'],['ep/dabang2.webp','커피 한 잔에 10전 남짓.','차 한 잔으로 오후를 다 쓰오?'],['ep/dabang3.webp','찻잔이 탁자 끝으로 조금씩…','…툭.'],['ep/dabang4.webp','시인보다 오래 창밖을 보았다는 급사의 제보.','zZ']]}
+ ,{no:'第十一回',when:'한겨울',walk:8,place:'한강',title:'얼음 구멍',lead:'한겨울 한강은 철교 아래까지 꽁꽁 얼었다. 사람들은 언 강에 구멍을 뚫고 낚시를 했다.',
+  body:'얼음낚시꾼은 고양이가 구멍 앞에서 내내 기다리더라고 했다. 낚시꾼들은 첫 고기를 늘 얼음 위에 하나 놓고 갔는데, 다음 날 아침이면 없었다 한다.',
+  p:[['ep/han1.webp','한겨울 한강. 철교 아래까지 얼었다.','얼음은 차오.'],['ep/han2.webp','낚시꾼이 뚫어 놓은 구멍 하나.','아래 고기가 있소.'],['ep/han3.webp','기다렸다. 한참을 기다렸다.','나는 기다리는 걸 잘하오.'],['ep/han4.webp','첫 고기는 얼음 위에 놓고 간다지.','멸치는 아니오.']]}
 ];
 var NUM=['一','二','三','四'];
 var P={};(window.SIMMYO_DATA&&SIMMYO_DATA.P||[]).forEach(function(p){P[p.id]=p});
@@ -109,25 +136,26 @@ function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return
 function $(i){return document.getElementById(i)}
 var qs=new URLSearchParams(location.search),ep=Math.max(0,Math.min(EP.length-1,(+qs.get('ep')||1)-1)),flat=[];
 EP.forEach(function(e,ei){e.p.forEach(function(q,pi){flat.push({ep:ei,pi:pi,id:q[0],nar:q[1]})})});
-$('eps').innerHTML=EP.map(function(e,i){return '<button data-i="'+i+'">'+e.no+' · '+e.when+'</button>'}).join('');
+$('eps').innerHTML='<span class="eg">산책길 편</span>'+EP.map(function(e,i){return e.walk?'<button data-i="'+i+'">'+e.no+' · '+e.place+'</button>':''}).join('')+'<span class="eg">곁골목 편</span>'+EP.map(function(e,i){return e.walk?'':'<button data-i="'+i+'">'+e.no+' · '+e.when+'</button>'}).join('');
 function art(id){var a=window.SIDE_ART&&SIDE_ART[id];return a?'../../'+a.src:''}
 function render(){var e=EP[ep];$('epno').textContent=e.no;$('epwhen').textContent=e.when;
-  [].forEach.call($('eps').children,function(b,i){b.setAttribute('aria-current',i===ep)});
+  [].forEach.call($('eps').querySelectorAll('button'),function(b){b.setAttribute('aria-current',+b.dataset.i===ep)});$('epbx').innerHTML=e.walk?'산책길<br>'+e.walk+'번째 골목':'경성 사람들의<br>하루';
   $('col').innerHTML='<div class="k">連載漫畵 「심묘」 '+e.no+'</div><h2>'+esc(e.title)+'</h2><p>'+esc(e.lead)+'</p><p>'+esc(e.body)+'</p>'+
-    '<div class="who"><b>이번 회 나온 곳</b> · '+e.p.map(function(q){return esc((P[q[0]]||{}).name||q[0])}).join(' · ')+'</div>'+
+    '<div class="who"><b>이번 회 나온 곳</b> · '+(e.walk?esc(e.place)+' (산책길 '+e.walk+'번째 골목) · <a data-hop href="../lens/index.html?p='+e.walk+'">이 골목 사실 자료 보기 →</a> · <a data-hop href="../play/index.html?p='+e.walk+'">심묘와 한 판 →</a>':e.p.map(function(q){return esc((P[q[0]]||{}).name||q[0])}).join(' · '))+'</div>'+
     '<div class="ad"><div class="h">尋 猫 · 고양이를 찾습니다</div><div class="s">눈이 꿀빛이고 표정이 없음 · 불러도 오지 않음<br>현상금 멸치 한 줌 · 경성야록 편집국</div></div>';
-  $('strip').innerHTML='<div class="head"><b>심묘 '+e.no+'</b><span>네 칸 · '+e.when+'</span></div>'+e.p.map(function(q,i){var p=P[q[0]]||{};var say=(p.say||[''])[0];
-    return '<figure class="pn" tabindex="0" data-i="'+(ep*4+i)+'"><img src="'+art(q[0])+'" alt="'+esc((window.SIDE_ART[q[0]]||{}).alt||p.name)+'" loading="lazy"><span class="no">'+NUM[i]+'</span><span class="nar">'+esc(q[1])+'</span>'+(say?'<span class="bal">'+esc(say)+'</span>':'')+'</figure>'}).join('')+
+  $('strip').innerHTML='<div class="head"><b>심묘 '+e.no+'</b><span>네 칸 · '+e.when+'</span></div>'+e.p.map(function(q,i){var p=P[q[0]]||{};var say=e.walk?q[2]:(p.say||[''])[0];
+    return '<figure class="pn" tabindex="0" data-i="'+(ep*4+i)+'"><img src="'+(e.walk?q[0]:art(q[0]))+'" alt="'+esc(e.walk?e.place+' — '+q[1]:((window.SIDE_ART[q[0]]||{}).alt||p.name))+'" loading="lazy"><span class="no">'+NUM[i]+'</span><span class="nar">'+esc(q[1])+'</span>'+(say?'<span class="bal">'+esc(say)+'</span>':'')+'</figure>'}).join('')+
     '<div class="cont"><span>'+(ep<EP.length-1?'다음 회에 계속':'끝')+'</span></div>';
   [].forEach.call(document.querySelectorAll('.pn'),function(el){el.onclick=function(){show(+el.dataset.i)};el.onkeydown=function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();show(+el.dataset.i)}}});
   try{history.replaceState(null,'','?ep='+(ep+1))}catch(e){}}
-[].forEach.call($('eps').children,function(b){b.onclick=function(){ep=+b.dataset.i;render();window.snd&&snd('paper');scrollTo({top:0,behavior:'smooth'})}});
+[].forEach.call($('eps').querySelectorAll('button'),function(b){b.onclick=function(){ep=+b.dataset.i;render();window.snd&&snd('paper');scrollTo({top:0,behavior:'smooth'})}});
 var big=$('big'),cur=0;
-function show(i){cur=(i+flat.length)%flat.length;var f=flat[cur],p=P[f.id]||{};big.querySelector('img').src=art(f.id);big.querySelector('img').alt=(window.SIDE_ART[f.id]||{}).alt||'';big.querySelector('b').textContent=EP[f.ep].no+' '+NUM[f.pi]+' · '+(p.name||'');big.querySelector('q').textContent=(p.say||[''])[0];big.classList.add('on');window.snd&&snd('paper')}
+function fsrc(f){return EP[f.ep].walk?f.id:art(f.id)}function fsay(f){var e=EP[f.ep];return e.walk?e.p[f.pi][2]:((P[f.id]||{}).say||[''])[0]}function fname(f){var e=EP[f.ep];return e.walk?e.place:((P[f.id]||{}).name||'')}
+function show(i){cur=(i+flat.length)%flat.length;var f=flat[cur],e=EP[f.ep];big.querySelector('img').src=fsrc(f);big.querySelector('img').alt=e.walk?e.place+' — '+f.nar:((window.SIDE_ART[f.id]||{}).alt||'');big.querySelector('b').textContent=e.no+' '+NUM[f.pi]+' · '+fname(f)+(e.walk?' — '+f.nar:'');big.querySelector('q').textContent=fsay(f);big.classList.add('on');window.snd&&snd('paper')}
 big.querySelector('.x').onclick=function(){big.classList.remove('on')};big.onclick=function(e){if(e.target===big)big.classList.remove('on')};
 big.querySelector('.pv').onclick=function(){show(cur-1)};big.querySelector('.nx').onclick=function(){show(cur+1)};
-big.querySelector('.shr').onclick=function(){var f=flat[cur],p=P[f.id]||{};SimmyoShare.open({src:art(f.id),title:p.name,caption:(p.say||[''])[0]})};
-big.querySelector('.go').onclick=function(){var r=this.getBoundingClientRect();hopTo('../side/index.html?s='+flat[cur].id+'&from=album',r.left+r.width/2,r.top+r.height/2)};
+big.querySelector('.shr').onclick=function(){var f=flat[cur];SimmyoShare.open({src:fsrc(f),title:'연재만화 「심묘」 '+EP[f.ep].no+' · '+fname(f),caption:fsay(f)})};
+big.querySelector('.go').onclick=function(){var r=this.getBoundingClientRect(),f=flat[cur],e=EP[f.ep];hopTo(e.walk?'../lens/index.html?p='+e.walk:'../side/index.html?s='+f.id+'&from=album',r.left+r.width/2,r.top+r.height/2)};
 addEventListener('keydown',function(e){if(!big.classList.contains('on'))return;if(e.key==='Escape')big.classList.remove('on');if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});
 var at=qs.get('at');var back='../road/index.html'+(at?'?at='+at:'');$('backl').href=back;
 $('go').onclick=function(){var r=this.getBoundingClientRect();hopTo(back,r.left+r.width/2,r.top+r.height/2)};

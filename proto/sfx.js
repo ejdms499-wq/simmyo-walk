@@ -65,7 +65,7 @@ var KEEP={};Object.keys(FILES).forEach(function(k){KEEP[k]=1});
 var GAP={hop:280,land:280,paper:350,mew:900,mewhi:900,mewlow:900,mrrp:700};
 var VOL={hop:.7,land:.7,sniff:.6,lick:.6};
 var lastPlay={};
-function snd(name,opt){try{if(muted||!ctx)return;if(!KEEP[name])return;var nowt=performance.now();if(lastPlay[name]&&nowt-lastPlay[name]<(GAP[name]||600))return;lastPlay[name]=nowt;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
+function snd(name,opt){try{if(muted||!ctx)return;if(!KEEP[name])return;var nowt=performance.now();if(!(opt&&opt.force)&&lastPlay[name]&&nowt-lastPlay[name]<(GAP[name]||600))return;lastPlay[name]=nowt;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.01;
   if(buf[name]){var s=ctx.createBufferSource();s.buffer=buf[name];s.playbackRate.value=1+(Math.random()-.5)*.04;out(s,VOL[name]||.95);s.start(t);duck(.55,.9)}}catch(e){}}
 /* ── 배경 음악: 장면마다 한 곡, 바뀔 때 천천히 겹쳐 넘어감 ── */
 var TR={street:'../audio/street.mp3',night:'../audio/night.mp3',note:'../audio/note.mp3',paper:'../audio/paper.mp3'};
@@ -80,7 +80,7 @@ function bgm(n){bgmWant=n;if(!ctx||muted)return;if(bgmCur&&bgmCur.n===n)return;
     var s=ctx.createBufferSource();s.buffer=b;s.loop=true;var g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(BV,t+(bgmCur?2.5:3.5));s.connect(g);g.connect(bus());s.start(t,bgmCur?0:Math.random()*8);bgmCur={n:n,s:s,g:g}})}
 function bgmStop(sec){if(!bgmCur||!ctx)return;var o=bgmCur;bgmCur=null;var t=ctx.currentTime;o.g.gain.cancelScheduledValues(t);o.g.gain.setValueAtTime(o.g.gain.value,t);o.g.gain.linearRampToValueAtTime(0,t+(sec||1));try{o.s.stop(t+(sec||1)+.05)}catch(e){}}
 window.bgm=function(n){bgmWant=n;bgm(n)};window.bgmStop=bgmStop;
-var P0=location.pathname;bgmWant=/\/road\//.test(P0)?'street':/\/album\//.test(P0)?'paper':/\/(lens|side)\//.test(P0)?'note':null;
+var P0=location.pathname;bgmWant=/\/road\//.test(P0)?'street':/\/album\//.test(P0)?'paper':/\/(lens|side|play)\//.test(P0)?'note':null;
 var _un=unlock;unlock=function(){_un();if(ctx&&bgmWant&&!muted&&!bgmCur)bgm(bgmWant)};
 ['pointerdown','touchstart','keydown','wheel'].forEach(function(ev){addEventListener(ev,function(){unlock()},{passive:true,capture:true})});
 document.addEventListener('visibilitychange',function(){if(!ctx)return;if(document.hidden)ctx.suspend();else if(!muted)ctx.resume()});
@@ -105,6 +105,17 @@ function playSong(url,maxSec,offset){return new Promise(function(res){try{if(mut
   fetch(url).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(a){return ctx.decodeAudioData(a)}).then(function(b){songBuf[url]=b;go(b)}).catch(function(){songBuf[url]=null;res(false)})}catch(e){res(false)}})}
 window.playSong=playSong;window.stopSong=stopSong;
 window.snd=snd;window.sndWire=wire;
+/* 놀이용 짧은 소리: 뜯는 음(tone)과 나무 딱 소리(wood). 낮은 웅웅 소리 없음 */
+function tone(f,d,vol){try{if(muted)return;init();if(!ctx)return;if(ctx.state==='suspended')ctx.resume();d=d||.6;var t=ctx.currentTime+.005;
+  var o=ctx.createOscillator();o.type='triangle';o.frequency.value=f;var o2=ctx.createOscillator();o2.type='sine';o2.frequency.value=f*2.01;
+  var g=ctx.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.28,t+.006);g.gain.exponentialRampToValueAtTime(.0005,t+d);
+  var g2=ctx.createGain();g2.gain.value=.22;var lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3000;var hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=200;
+  o.connect(g);o2.connect(g2);g2.connect(g);g.connect(lp);lp.connect(hp);hp.connect(master);o.start(t);o2.start(t);o.stop(t+d+.05);o2.stop(t+d+.05);duck(.6,.4)}catch(e){}}
+function wood(vol,f){try{if(muted)return;init();if(!ctx)return;if(ctx.state==='suspended')ctx.resume();var t=ctx.currentTime+.005;
+  var n=noise(t,.08);var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f||1700;bp.Q.value=3;var g=ctx.createGain();g.gain.setValueAtTime(vol||.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.06);n.connect(bp);bp.connect(g);g.connect(master);
+  var o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime((f||1700)*.55,t);var g2=ctx.createGain();g2.gain.setValueAtTime((vol||.6)*.5,t);g2.gain.exponentialRampToValueAtTime(.001,t+.05);o.connect(g2);g2.connect(master);o.start(t);o.stop(t+.07)}catch(e){}}
+window.tone=tone;window.wood=wood;
+
 })();
 /* 나팔 노래: 저작권이 끝난 옛 노래 mp3를 저장소 audio 폴더에 horn.mp3로 넣고 아래를 '../../audio/horn.mp3' 로 바꾸면 나옴 */
 window.HORN='';

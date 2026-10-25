@@ -15,6 +15,27 @@
 .hint.r::before{left:auto;right:-7px;border-right:0;border-left:6px solid var(--ink);border-left-color:var(--ink)}
 .spot{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:2px solid var(--ink);background:var(--card);font:700 15px/36px var(--display);color:var(--ink);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s;padding:0;box-shadow:0 0 0 4px rgba(244,237,220,.35)}
 .open .spot{opacity:1;pointer-events:auto}
+.epc{display:grid;grid-template-columns:44% 1fr;gap:12px;align-items:center;text-decoration:none;color:var(--ink);border:2px solid var(--ink);background:#f2e7cc;padding:8px}
+.epc img{width:100%;aspect-ratio:1232/880;object-fit:cover;display:block;border:1.5px solid var(--ink)}
+.epc b{display:block;font:800 18px/1.2 var(--display)}.epc .et span{display:block;font:14px/1.4 var(--display);margin:3px 0 6px}.epc i{font:12.5px var(--ui);font-style:normal;color:var(--seal)}
+.epc:hover{background:#fff6dc}
+
+.hid{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px dashed var(--ink);background:rgba(247,214,122,.55);cursor:pointer;opacity:0;pointer-events:none;transition:opacity .4s,transform .2s;padding:0;z-index:3;font:700 14px/26px var(--display);color:var(--ink)}
+.hid::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(247,214,122,.9);animation:hidp 1.8s ease-out infinite}
+.hid.got{background:var(--seal);border:2px solid var(--ink);color:#f4eddc}.hid.got::after{display:none}
+.hid:hover{transform:scale(1.15)}
+@keyframes hidp{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+.open .hid{opacity:1;pointer-events:auto}
+#hidc{position:absolute;right:2%;top:3%;z-index:4;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:5px 12px 4px;font:13px/1.2 var(--ui);color:var(--ink);opacity:0;transition:opacity .4s;pointer-events:none}
+.open #hidc{opacity:1}
+#hidc.all{background:var(--seal);color:#f4eddc}
+.hstamp{position:absolute;left:50%;top:46%;z-index:6;width:150px;height:150px;margin:-75px 0 0 -75px;border:5px solid #b23a2a;border-radius:50%;color:#b23a2a;display:grid;place-items:center;text-align:center;font:800 22px/1.2 var(--display);background:rgba(244,237,220,.86);transform:scale(2.4) rotate(-14deg);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.hstamp.on{transform:scale(1) rotate(-14deg);opacity:1}
+.page>.note .hn{display:block;font:700 12px/1.4 var(--ui);color:var(--seal);letter-spacing:.06em;margin-bottom:4px}
+.page>.note .cl{display:block;margin-top:8px;font:clamp(17px,2vw,21px)/1.3 var(--hand);color:var(--ink)}
+.page>.note .cl i{font:11px var(--ui);color:var(--ink2);font-style:normal;margin-left:6px}
+@media (max-width:600px){.hid{width:28px;height:28px;margin:-14px 0 0 -14px}#hidc{font-size:11.5px;padding:4px 9px 3px}.hstamp{width:110px;height:110px;margin:-55px 0 0 -55px;font-size:16px}}
+
 .say{position:absolute;left:3%;bottom:5%;max-width:46%;font:clamp(17px,2.1vw,25px)/1.22 var(--hand);background:var(--card);color:var(--ink);border:2px solid var(--ink);border-radius:18px;padding:10px 14px 8px;opacity:0;transition:opacity .45s .9s;pointer-events:none}
 .say::before{content:attr(data-k);display:block;font:11.5px/1.4 var(--ui);color:var(--ink2);margin-bottom:2px}
 .open .say{opacity:1}
@@ -66,6 +87,7 @@
       <button class="spot" id="nose" aria-label="코 — 이곳의 냄새">코</button>
       <div class="say" id="say"></div>
       <button id="back">사람들의 눈으로</button>
+      <span id="hidc"></span><div class="hstamp" id="hstamp">숨은 이야기<br>다 찾았소</div>
     </div>
   </figure>
   <div class="modes" role="group" aria-label="보는 눈 고르기"><button id="m0" aria-pressed="true">사람들의 눈 · 실제 자료</button><button id="m1" aria-pressed="false">심묘의 눈 · 재현 그림</button></div>
@@ -82,6 +104,8 @@
       <div id="arcw"><h2 class="h">당시 지면</h2><div class="arc" id="arc"></div></div>
     </article>
     <aside class="side">
+      <section id="plw"><h2 class="h">심묘와 한 판<span class="badge b-fic">놀이</span></h2><a class="epc" id="plc" data-hop href="#"><img id="plimg" alt="" loading="lazy"><span class="et"><b id="pln"></b><span id="plt"></span><i>30초 놀이 하러 가기 →</i></span></a></section>
+      <section id="epw"><h2 class="h">신문 연재 「심묘」<span class="badge b-fic">지어낸 이야기</span></h2><a class="epc" id="epc" data-hop href="#"><img id="epimg" alt="" loading="lazy"><span class="et"><b id="epno2"></b><span id="ept"></span><i>네 칸 만화 보기 →</i></span></a></section>
       <section id="witw" hidden>
         <h2 class="h">목격 그림<span class="badge b-fic">지어낸 이야기</span></h2>
         <figure class="wit"><button class="shrbtn mini" id="witshr">공유</button><img id="witimg" alt="" loading="lazy"><figcaption id="witcap"></figcaption></figure>
@@ -104,7 +128,7 @@
     <button id="go">이 골목을 나서기 →</button>
   </footer>
 </div>
-<script src="../sfx.js?v=6"></script>
+<script src="../sfx.js?v=7"></script>
 <script src="../share.js?v=2"></script>
 <script>
 (function(){
@@ -219,6 +243,60 @@ async function openEye(){if(open||busy)return;open=true;busy=true;setMode(1);hin
 function setMode(o){$('m0').setAttribute('aria-pressed',o?'false':'true');$('m1').setAttribute('aria-pressed',o?'true':'false')}
 function closeEye(){if(!open||busy)return;setMode(0);window.stopSong&&stopSong(.5);window.snd&&snd('whoosh');open=false;sc.classList.remove('open');note.hidden=true;run(false);setTimeout(function(){hint.style.opacity=''},1600)}
 cat.addEventListener('click',openEye);back.addEventListener('click',closeEye);$('m1').addEventListener('click',openEye);$('m0').addEventListener('click',closeEye);
+/* 숨은 이야기: 심묘의 눈(재현 그림) 속 물건마다 실제 사실 한 장 + 심묘 한마디(지어낸 말) */
+var HID={
+1:[[44,49,'전차','1899년 5월, 서울에 전차가 처음 달렸습니다. 구경꾼이 구름처럼 몰려 전차는 순식간에 서울의 큰 구경거리가 되었습니다.','저 상자는 말도 없이 혼자 굴러가오.','국가기록원 「전차」 · 『황성신문』 1899. 5. 5'],
+   [61,25,'운전석 창','1930년대 무렵 전차 삯은 동대문·서대문·남대문을 경계로, 한 구역을 지날 때마다 5전씩이었습니다.','나는 지붕에 타니 삯이 없소.','서울신문(2011. 8. 22) 「회수권·안내양… 서민의 발」'],
+   [80,16,'전봇대','1900년 4월, 종로에 전기 가로등 3개가 처음 켜져 밤거리를 대낮처럼 밝혔다고 합니다.','밤에도 내 그림자가 보이오. 수상하오.','서울신문(2013. 9. 13) 노주석 「서울택리지 — 종로」'],
+   [78,77,'전찻길','보신각 종소리에 맞춰 성문을 여닫던 제도는 1908년에 없어졌습니다. 1899년부터 전차가 성문 안팎을 드나들어 문을 닫을 수 없게 되었기 때문입니다.','문이 안 닫히니 나도 아무 때나 드나드오.','서울신문(2013. 9. 13) 노주석 「서울택리지 — 종로」']],
+2:[[83,22,'유성기 나팔','「목포의 눈물」은 1935년에 나온 노래입니다. 조선일보 향토 노래 공모에 뽑힌 문일석의 가사에 손목인이 곡을 붙였습니다.','노래 나오는 구멍이오. 들어가 볼 만하오.','한국민족문화대백과사전 「목포의 눈물」'],
+   [89,44,'레코드 더미','이난영이 부른 「목포의 눈물」은 그해 9월 오케 레코드 새 음반으로 나왔습니다.','둥근 판이 이렇게 많으니 다 내 방석이오.','한국민족문화대백과사전 · 국민일보(2018. 5. 23)'],
+   [24,30,'책장','그 무렵 종로에는 조선축음기상회, 금희악기점, 선일악기점처럼 레코드와 축음기를 파는 조선인 가게들이 있었습니다.','책은 안 읽소. 위에 눕기만 하오.','『대경성도시대관』(조선신문사, 1937)'],
+   [74,72,'유성기 받침','1932년 콜럼비아 레코드가 낸 「레코드 부부」가 기록으로 확인되는 첫 「난센스」(웃음) 음반입니다. 그해에만 난센스 음반이 21편 나왔다고 합니다.','사람들이 판을 듣고 웃으면 나는 귀를 접소.','매일신문(2013. 12. 19) 「난센스 음반」']],
+3:[[9,80,'좌판 더미','야시 장사꾼들은 「골라잡아 세 가지 15전」을 외쳤습니다.','둥근 것은 다 내 것이오.','최규진 「종로의 여름밤 — 야시 또는 여시」(서울사랑)'],
+   [52,38,'달','1916년 종로에도 야시(밤 시장)가 열렸습니다. 첫날 5만 명 남짓이 몰렸다고 전합니다.','사람 발이 숲처럼 많았소.','최규진 「종로의 여름밤」 · 『개벽』 1926'],
+   [63,41,'등불','야시는 1940년 뒤 등화관제 훈련 때문에 사라졌습니다.','불이 꺼지면 까만 나만 안 보이오.','최규진 「종로의 여름밤」(서울사랑)'],
+   [50,76,'가운데 빈 길','야시는 종로 남쪽 길에서만 열렸습니다. 북쪽 길에는 전차 선로가 바짝 붙어 있었기 때문입니다.','전차 쪽은 시끄러워 안 가오.','최규진 「종로의 여름밤」(서울사랑)'],
+   [66,87,'굴러온 감','야시에서는 깨지지만 않은 사기그릇, 팔다 남은 반찬, 처음 보는 상표의 비누 따위를 사고팔았다고 합니다.','이건 굴러왔소. 그러니 내 것이오.','『삼천리』 1935년 10월호']],
+4:[[52,24,'극장 문','단성사는 1907년 6월 종로에 문을 연 극장입니다. 1918년 박승필이 맡아 영화를 늘 트는 활동사진관이 되었습니다.','문 안이 어두운데 사람들이 웃소.','국가기록원 「단성사」'],
+   [70,61,'줄 밧줄','1926년 10월 1일 나운규의 「아리랑」이 개봉하자, 줄이 종로 YMCA 앞까지 늘어섰다고 합니다.','줄은 사람이 서는 것이오. 나는 맨 앞에 앉소.','『매일신보』 1926. 10. 1 · 뉴시스(2019. 10. 24)'],
+   [30,14,'벽보','1919년 10월 27일, 조선 사람이 만든 첫 활동사진 「의리적 구토」가 이곳에서 상영됐습니다. 그날이 지금의 「영화의 날」입니다.','종이 속 사람은 안 움직이오. 안에서만 움직이오.','국가기록원 「단성사」 · 뉴시스(2019. 10. 24)'],
+   [42,9,'등','1935년 10월, 이곳에서 조선 첫 발성영화 「춘향전」이 개봉했습니다. 보고 들으려는 관객으로 인산인해를 이뤘다고 합니다.','그림이 말을 하오? 수상하오.','서울신문(2019. 4. 23) 「말하는 활동사진 시대」']],
+5:[[61,69,'놋대야','넓적한 돌 위에 빨래를 올려 방망이로 두드렸습니다. 맑은 물이 흐를 때 청계천은 아낙네들의 빨래터였습니다.','이 안은 비었소. 들어가 볼 만하오.','서울시설공단 「아낙들의 쉼터 청계천」'],
+   [40,23,'빨랫줄','청계천은 빨래터이자 아이들의 물놀이터이기도 했습니다.','흰 빨래에 발자국 찍기 좋소.','서울시설공단 「아낙들의 쉼터 청계천」'],
+   [28,88,'개울물','청계천은 원래 「개천」이라 불렸습니다. 1914년 하천 이름을 정리할 때 바뀐 것으로 보이며, 1916년쯤부터 신문에 「청계천」이 쓰였습니다.','물은 차오. 발만 담그오.','서울시설공단 「일제강점기 청계천」'],
+   [77,46,'돌 축대','일제는 이 개천을 「탁계천(더러운 물이 흐르는 시내)」이라 비웃었고, 1926년부터 덮어 버리려는 계획을 여러 번 내놓았습니다. 돈이 모자라 대부분 구상에 그쳤습니다.','덮으면 내 빨래터가 없어지오.','서울시설공단 「일제강점기 청계천」']],
+6:[[23,60,'큰 솥','1920년대 경성에는 설렁탕집이 100곳 가까이 있었다고 합니다.','김 나는 데는 다 내 자리요.','지역N문화 「근대 설렁탕의 가격과 배달」'],
+   [60,40,'뚝배기 더미','설렁탕 한 그릇 값은 10~15전 사이를 오르내렸다고 합니다.','그릇이 산만큼 쌓였소. 올라가 보겠소.','『동아일보』 1930. 11. 12 · 1935. 12. 4'],
+   [17,15,'간판','1924년 7월 동아일보는 장교정(지금의 장교동) 설렁탕을 경성 제일의 맛으로 소개했습니다.','글씨는 못 읽소. 냄새로 아오.','『동아일보』 1924. 7. 13 「장교정 설넝탕」'],
+   [18,72,'작은 그릇','1924년 현진건의 소설 「운수 좋은 날」에서 인력거꾼 김 첨지는 앓는 아내에게 설렁탕을 사 들고 집에 갑니다.','이 그릇은 비었소. 핥아도 되오?','현진건 「운수 좋은 날」(1924) · 미쉐린 가이드(2020)'],
+   [90,62,'배달 그릇','설렁탕은 자전거로 배달도 했습니다. 그릇을 찾으러 올 때 값을 받았다고 합니다.','배달 자전거만 보면 따라 뛰오.','지역N문화 「근대 설렁탕의 가격과 배달」']],
+7:[[45,82,'찻잔','1930년대 다방 커피 한 잔은 10전 남짓으로, 설렁탕 한 그릇 값과 비슷했다고 합니다.','커피는 안 마시오. 잔만 지키오.','『삼천리』 다방 기사 · 『동아일보』 1935. 12. 4'],
+   [60,24,'가로등','1933년 시인 이상은 종로에서 부인과 함께 다방 「제비」를 열었습니다. 그 무렵 영화인·화가·음악가·문인들이 연 다방이 우후죽순 생겨났습니다.','시인보다 내가 더 오래 창밖을 보오.','한국민족문화대백과사전 「다방」'],
+   [92,56,'창밖 비','명동의 「에리사」처럼 음악 감상만 하는 다방도 있었고, 「휘가로」는 매주 음악회를 열어 이름났습니다.','빗소리도 음악이오.','한국민족문화대백과사전 「다방」'],
+   [14,42,'화분','1941년 태평양전쟁으로 설탕과 커피 수입이 막히자 다방은 기울기 시작해, 전쟁 끝 무렵에는 거의 문을 닫았습니다.','잎사귀 뒤가 내 자리요.','한국민족문화대백과사전 「다방」']],
+8:[[25,22,'한강철교','1900년 7월 5일 개통한 한강철교는 강남과 강북을 이은 첫 한강 다리입니다.','저 위로는 기차만 가오. 나는 아래로 가오.','서울신문(1994. 2. 13) 「서울6백년만상 — 한강철교」'],
+   [21,54,'다리 기둥','겨울이면 한강철교 아래에서 톱으로 두꺼운 얼음을 잘라 수레에 실어 날랐습니다. 이 「천연빙」 일은 강물이 더러워지자 1955년부터 금지되었습니다.','쩡 하는 소리가 나면 귀를 접소.','서울역사박물관 「겨울철 한강 채빙 광경」 · 뉴스토마토(박성현)'],
+   [56,78,'얼음 구멍','언 강에 구멍을 뚫고 낚시하는 사람들도 많았습니다.','기다리면 무언가 올라오오.','서울역사박물관 「한강의 얼음낚시」 사진엽서'],
+   [70,70,'작은 배','1917년 노량진과 용산 사이에 사람이 걸어 건너는 한강인도교가 놓였습니다.','다리가 둘이나 있으니 나는 얼음으로 건너오.','서울신문(1994. 2. 13) 「서울6백년만상 — 한강철교」']]
+};
+
+var hidGot={};try{hidGot=JSON.parse(localStorage.getItem('simmyo_hid')||'{}')}catch(e){}
+var HL=HID[n]||[],hg=hidGot[n]||[];
+function hidCount(){var c=$('hidc');c.textContent='숨은 이야기 '+hg.length+' / '+HL.length+(hg.length<HL.length?' · 반짝이는 곳을 누르시오':' · 발도장 쾅');c.classList.toggle('all',hg.length>=HL.length)}
+HL.forEach(function(h,i){var b=document.createElement('button');b.className='hid'+(hg.indexOf(i)>=0?' got':'');b.style.left=h[0]+'%';b.style.top=h[1]+'%';b.setAttribute('aria-label','숨은 이야기 — '+h[2]);b.textContent=hg.indexOf(i)>=0?'✓':'';
+  b.addEventListener('click',function(ev){ev.stopPropagation();var first=hg.indexOf(i)<0;
+    note.innerHTML='<span class="hn">숨은 이야기 · '+h[2]+'</span>'+h[3]+'<span class="cl">「'+h[4]+'」<i>심묘 · 지어낸 말</i></span><small>'+h[5]+'</small>';note.hidden=false;
+    if(first){hg.push(i);hidGot[n]=hg;try{localStorage.setItem('simmyo_hid',JSON.stringify(hidGot))}catch(e){}b.classList.add('got');b.textContent='✓';window.snd&&snd('tink');hidCount();
+      if(hg.length===HL.length){setTimeout(function(){var st=$('hstamp');st.classList.add('on');window.snd&&snd('chime');setTimeout(function(){st.classList.remove('on')},2200)},500)}}
+    else window.snd&&snd('paper');
+    if(innerWidth<700)note.scrollIntoView({behavior:'smooth',block:'nearest'})});
+  sc.appendChild(b)});
+hidCount();
+var PLN={1:['「지붕 손님」','나뭇가지는 엎드리고 통풍구는 뛰어넘기','tram'],2:['「나팔 속 노래」','레코드 소리 순서대로 따라 누르기','rec'],3:['「군밤 한 톨」','떨어지는 군밤 받기, 숯불은 피하기','yasi'],4:['「맨 앞자리」','줄 맨 앞에 끼어드는 손님 돌려보내기','dan'],5:['「방망이 장단」','빨래방망이 장단에 맞춰 탁!','cheong'],6:['「뚝배기 쌓기」','배달통 위에 뚝배기 높이 쌓기','seol'],7:['「…툭.」','급사가 안 볼 때 찻잔 밀기','dabang'],8:['「얼음 구멍」','찌가 쑥 잠길 때 낚아채기','han']};
+if(PLN[n]){$('plc').href='../play/index.html?p='+n;$('plimg').src='../play/bg/'+PLN[n][2]+'.webp';$('plimg').alt='';$('pln').textContent=PLN[n][0];$('plt').textContent=PLN[n][1]}
+var EPN={1:['第四回','지붕 손님','tram'],2:['第五回','나팔 속 노래','rec'],3:['第六回','군밤 한 톨','yasi'],4:['第七回','맨 앞자리','dan'],5:['第八回','발자국 넷','cheong'],6:['第九回','배달통 위','seol'],7:['第十回','창가의 손님','dabang'],8:['第十一回','얼음 구멍','han']};
+if(EPN[n]){$('epc').href='../album/index.html?ep='+(n+3);$('epimg').src='../album/ep/'+EPN[n][2]+'1.webp';$('epimg').alt=P.name+' 연재만화 첫 칸';$('epno2').textContent=EPN[n][0];$('ept').textContent='「'+EPN[n][1]+'」'}
 var NOTES={ear:'<b>귀</b> — '+P.ear[2],nose:P.nose?'<b>코</b> — '+P.nose[2]+(P.nose[3]?'<small>'+P.nose[3]+'</small>':''):''};
 var EARS={1:'bell',2:'crackle',3:'bell',4:'crackle',5:'splash',6:'steam',7:'drip',8:'ice'};
 ['ear','nose'].forEach(function(k){var e=$(k);if(e)e.addEventListener('click',function(ev){ev.stopPropagation();if(k==='ear'&&n===2&&window.playSong){(window.HORN?playSong(window.HORN,16):Promise.resolve(false)).then(function(ok){if(!ok)snd('crackle')})}else window.snd&&snd(k==='ear'?EARS[n]:'sniff');note.innerHTML=NOTES[k];note.hidden=false})});
