@@ -25,6 +25,15 @@ a{color:inherit}
 .eps button{font:700 14px/1 var(--display);padding:9px 14px 8px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;color:var(--ink)}
 .eps button[aria-current=true]{background:var(--ink);color:var(--np)}
 .eps .eg{flex-basis:100%;text-align:center;font:12px/1 var(--ui);letter-spacing:.2em;color:var(--seal);margin-top:6px}
+@media (max-width:820px){
+  /* 폰: 회차는 신문철처럼 옆으로 넘기는 한 줄 · 위에 붙어 다님 */
+  .eps{position:sticky;top:0;z-index:5;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x proximity;gap:6px;margin:10px calc(-1 * clamp(14px,3vw,34px)) 4px;padding:8px clamp(14px,3vw,34px);background:var(--np);border-bottom:1px solid var(--ink);-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .eps::-webkit-scrollbar{display:none}
+  .eps .eg{flex-basis:auto;flex:none;margin:0 2px 0 6px;writing-mode:vertical-rl;font-size:10px;letter-spacing:.1em;align-self:center}
+  .eps .eg:first-child{margin-left:0}
+  .eps button{flex:none;scroll-snap-align:start;white-space:nowrap}
+  .mast .t{font-size:46px}.sub{font-size:11px}
+}
 .eps button{font-size:13px;padding:8px 11px 7px}
 .col .who a{color:var(--seal)}
 /* 지면: 왼쪽 단(글) + 오른쪽 연재만화 */
@@ -92,7 +101,7 @@ a{color:inherit}
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
 <script src="../sfx.js?v=7"></script>
-<script src="../share.js?v=2"></script>
+<script src="../share.js?v=3"></script>
 <script>
 (function(){
 var EP=[
@@ -139,7 +148,7 @@ EP.forEach(function(e,ei){e.p.forEach(function(q,pi){flat.push({ep:ei,pi:pi,id:q
 $('eps').innerHTML='<span class="eg">산책길 편</span>'+EP.map(function(e,i){return e.walk?'<button data-i="'+i+'">'+e.no+' · '+e.place+'</button>':''}).join('')+'<span class="eg">곁골목 편</span>'+EP.map(function(e,i){return e.walk?'':'<button data-i="'+i+'">'+e.no+' · '+e.when+'</button>'}).join('');
 function art(id){var a=window.SIDE_ART&&SIDE_ART[id];return a?'../../'+a.src:''}
 function render(){var e=EP[ep];$('epno').textContent=e.no;$('epwhen').textContent=e.when;
-  [].forEach.call($('eps').querySelectorAll('button'),function(b){b.setAttribute('aria-current',+b.dataset.i===ep)});$('epbx').innerHTML=e.walk?'산책길<br>'+e.walk+'번째 골목':'경성 사람들의<br>하루';
+  [].forEach.call($('eps').querySelectorAll('button'),function(b){b.setAttribute('aria-current',+b.dataset.i===ep);if(+b.dataset.i===ep&&b.scrollIntoView&&innerWidth<=820){var nv=$('eps');nv.scrollTo({left:b.offsetLeft-nv.clientWidth/2+b.offsetWidth/2,behavior:'smooth'})}});$('epbx').innerHTML=e.walk?'산책길<br>'+e.walk+'번째 골목':'경성 사람들의<br>하루';
   $('col').innerHTML='<div class="k">連載漫畵 「심묘」 '+e.no+'</div><h2>'+esc(e.title)+'</h2><p>'+esc(e.lead)+'</p><p>'+esc(e.body)+'</p>'+
     '<div class="who"><b>이번 회 나온 곳</b> · '+(e.walk?esc(e.place)+' (산책길 '+e.walk+'번째 골목) · <a data-hop href="../lens/index.html?p='+e.walk+'">이 골목 사실 자료 보기 →</a> · <a data-hop href="../play/index.html?p='+e.walk+'">심묘와 한 판 →</a>':e.p.map(function(q){return esc((P[q[0]]||{}).name||q[0])}).join(' · '))+'</div>'+
     '<div class="ad"><div class="h">尋 猫 · 고양이를 찾습니다</div><div class="s">눈이 꿀빛이고 표정이 없음 · 불러도 오지 않음<br>현상금 멸치 한 줌 · 경성야록 편집국</div></div>';
