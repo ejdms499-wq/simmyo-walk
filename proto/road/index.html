@@ -89,6 +89,8 @@ html,body{word-break:keep-all;overflow-wrap:break-word;margin:0;height:100%;over
 h1 .sl{border-width:3px}
 #ohint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:31;font:16px/1 var(--ui);color:#f3ead6;background:rgba(33,28,23,.9);padding:11px 16px;border-radius:22px;white-space:nowrap;display:flex;gap:8px;align-items:center;transition:opacity .4s}
 #ohint.off{opacity:0}
+#hoe .ykst{position:absolute;right:96px;top:-14px;z-index:2;border:2.5px solid #a8402c;color:#a8402c;font:800 15px/1.2 var(--disp);text-align:center;padding:6px 8px;transform:rotate(8deg);opacity:.85;letter-spacing:.06em;background:rgba(243,236,219,.5)}
+html.ph #hoe .ykst{top:-12px;right:82px;font-size:13px}
 /* 폰: 호외를 세로로 짜서 글자를 키움 */
 html.ph #hoe{width:430px;height:auto;padding:18px 20px 62px}
 html.ph #hoe .mh b{font-size:36px}html.ph #hoe .mh span{font-size:14px}
@@ -500,6 +502,8 @@ function cam(d,p){var t=Math.max(0,Math.min(1,(d-DC)/380));t=t*t*(3-2*t);
 /* ── 상태 ── */
 var D=0,T=0,last=0,moving=-1e9,face=1,acc=0,spd=0,gait=0;
 var qs=new URLSearchParams(location.search),from=+qs.get('from')||0;
+/* 경성야록 광고면(심인 광고)에서 넘어온 손님: 호외에 「광고면에서」 도장 + 안내 한 줄 */
+if(qs.get('from')==='yarok'){(function(){var h=$('hoe');if(h){var st=document.createElement('span');st.className='ykst';st.innerHTML='京城野錄<br>廣告面에서';h.appendChild(st)}var oh=$('ohint');if(oh&&oh.lastChild&&oh.lastChild.nodeType===3)oh.lastChild.nodeValue='광고면의 그 고양이요 · 호외를 누르시오'})()}
 var atD=+qs.get('at')||0;
 if(from){var fp=PL.filter(function(p){return p.n===from})[0];if(fp){D=T=fp.n===8?fp.d-70:Math.min(TOT,fp.d+170)}history.replaceState(null,'',location.pathname)}
 else if(atD){D=T=Math.max(0,Math.min(atD,TOT));history.replaceState(null,'',location.pathname)}

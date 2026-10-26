@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<!-- 경성야록 스핀오프 · 심묘한 산책 — 심묘가 보는 경성
+     광고면 수배 고양이 심묘를 따라 1899~1937 경성 여덟 곳을 걷는다. 그림은 모두 재현(미드저니 · ChatGPT), 장소 · 연도 · 지면 · 출처는 사실.
+     폰 · 컴퓨터 한 장으로. 진행은 localStorage 'simmyo-v1'. 시연용: ?demo=1 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="only light">
+<meta name="theme-color" content="#f2e6cb">
+<title>심묘한 산책 — 심묘가 보는 경성</title>
+<meta name="description" content="글을 모르는 수배 고양이 심묘의 눈높이로 걷는 1899~1937 경성 여덟 곳.">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/simmyo/g/fav-64.png">
+<link rel="apple-touch-icon" href="assets/simmyo/g/fav-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="심묘한 산책 — 심묘가 보는 경성">
+<meta property="og:description" content="글을 모르는 수배 고양이 심묘의 눈높이로 걷는 1899~1937 경성 여덟 곳. ">
+<meta property="og:image" content="https://ejdms499-wq.github.io/simmyo-walk/assets/simmyo/g/og.jpg">
+<meta property="og:url" content="https://ejdms499-wq.github.io/simmyo-walk/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="fonts/fonts-m.css?v=2">
+<link rel="stylesheet" href="simmyo.css?v=15">
+</head>
+<body>
+
+<!-- 오프닝 — 수배지가 찢어지며 심묘가 빠져나옴 (수배지에서 들어올 때만) -->
+<div class="open" id="open" hidden aria-hidden="true"><div class="op-l"><b>사람을 차즘</b><span>수배 제268호</span></div><div class="op-r"><img src="assets/simmyo/g/paw.png" alt=""></div></div>
+
+<!-- 장소 사이 이동 — 발자국 -->
+<div class="trail" id="trail" aria-hidden="true"></div>
+
+<!-- 소리 · 멸치 (모든 화면 오른쪽 위) -->
+<div class="hud"><span class="fish" id="fishN" title="멸치">멸치 <b>0</b></span><button type="button" class="snd" id="snd" aria-pressed="true">소리 켬</button></div>
+
+<!-- ⓪ 오프닝 — 실제 수배 사진이 망점으로 흩어지며 지금의 심묘로 -->
+<div class="opn" id="intro" hidden>
+  <div class="in-flash"></div>
+  <div class="in-notice">
+    <div class="in-top"><b>尋猫</b><span>手配 第二六八號<br>京城 印刷所 屆出</span></div>
+    <div class="in-ph">
+      <img class="in-now" src="assets/simmyo/ref/simmyo_cel.png" alt="지금의 심묘">
+      <img class="in-photo" src="assets/simmyo/ref/wanted268.jpg" alt="수배 사진 · 268번 까만 고양이">
+      <img class="in-dots" src="assets/simmyo/ref/wanted268_h.jpg" alt="">
+    </div>
+    <p class="in-bot">까만 고양이 한 마리. 보신 분은 알려 주시오.</p>
+  </div>
+  <p class="in-title">그 고양이가, 오늘 경성을 걷소.</p>
+  <button type="button" class="in-skip" id="inSkip">건너뛰기 ›</button>
+</div>
+
+<!-- ① 표지 -->
+<section class="v v-cover" id="cover" data-v="cover">
+  <figure class="cv-art"><picture><source id="cvSrc" media="(min-width:900px)" srcset="assets/simmyo/s/cover_v3_w.webp"><img id="cvImg" src="assets/simmyo/s/cover_v3_m.webp" alt="심묘한 산책 — 1930년대 경성 한옥 골목과 전찻길에 나선 까만 고양이 심묘 (재현 그림)"></picture><span class="rt">그림 · 재현</span></figure>
+  <div class="cv-txt">
+    <p class="cv-k">1899 — 1937 · 경성 여덟 곳</p>
+    <h1 class="cv-logo sr"><picture><source media="(min-width:900px)" srcset="assets/simmyo/g/logo_h_bg.webp"><img src="assets/simmyo/g/logo_v_bg.webp" alt="심묘한 산책 — 심묘가 보는 경성"></picture></h1>
+    <p class="cv-say" id="cvSay">「따라오든지 말든지. …따라오시오.」</p>
+    <p class="cv-d">광고면 수배지에서 달아난 까만 고양이 <b>심묘</b>. 글을 모르는 이 고양이의 눈높이로 1899년부터 1937년까지 경성 여덟 곳을 걷습니다. 고양이에게는 벽보도 간판도 다 흰 종이입니다. <b>사람 눈</b>으로 바꿔 보면, 그 자리에 진짜 그 시절 지면이 열립니다.</p>
+    <div class="cv-btns"><button class="btn" type="button" data-go="map" id="cvGo">산책 따라가기</button><button class="btn ghost" type="button" data-go="about">심묘는 누구</button></div>
+    <p class="cv-peek"><button type="button" class="lnk" data-go="peek">바쁜 분은 · 결말 먼저 보기 →</button></p>
+    <div class="fortune" id="fortune"><p class="fo-k">오늘의 심묘 점괘</p><p class="fo-t" id="foT"></p><p class="fo-p" id="foP"></p></div>
+    <p class="cv-n">그림은 모두 재현입니다. 장소 · 연도 · 지면 · 출처는 사실입니다.</p>
+    <p class="cv-links"><a href="making.html">만든 이야기</a></p>
+  </div>
+</section>
+
+<!-- 산책 길 — 장소로 갈 때 심묘가 총총 걸어 그 건물 앞에 섬 -->
+<div class="walkov" id="walkov" hidden aria-hidden="true"><div class="wo-track" id="woTrack"></div><div class="town-road"></div><div class="wo-dest" id="woDest"></div><div class="town-cat wo-cat"><img src="assets/simmyo/g/walk_cat.webp" alt=""><i class="dust"></i><i class="dust d2"></i></div><p class="wo-t" id="woT"></p></div>
+
+<!-- ② 산책 지도 -->
+<section class="v v-map" id="map" data-v="map" hidden>
+  <header class="tb"><button type="button" class="tb-b" data-go="cover">‹ 표지</button><b class="tb-t">산책 지도</b><span class="tb-r">도장 <b id="mpN">0</b>/8</span></header>
+  <div class="mp-wrap">
+    <figure class="mp-art" id="mpArt"><img src="assets/simmyo/s/map_v2.webp" alt="북악산 아래 1930년대 경성을 내려다보는 손그림 지도와 심묘 (재현 그림)"><span class="rt">그림 · 재현</span></figure>
+    <div class="mp-side">
+      <div class="days" id="mpDays" role="tablist"><button type="button" data-day="1" role="tab">첫째 날 <small>0/8</small></button><button type="button" data-day="2" role="tab">둘째 날 <small>0/8</small></button></div>
+      <p class="day-n" id="mpDayNote"></p>
+      <p class="say"><i class="face"></i><span id="mpSay">「오늘은 어디 냄새가 나는지 보오.」</span></p>
+      <ol class="mp-list" id="mpList"></ol>
+      <div class="book"><p class="pouch-k">도장첩</p><div class="book-row" id="mpBook"></div></div>
+      <div class="pouch"><p class="pouch-k">주머니 · 빠진 글자</p><div class="pouch-row" id="mpPouch"></div></div>
+      <p class="mp-n">지도는 그림이라 자리가 대강입니다. 순서 없이 골라 걸으세요. 여덟 곳 도장을 다 모으거나 밤 12시에 오면 ★ 자리가 열립니다.</p>
+      <p class="mp-n"><button type="button" class="lnk" data-go="about">심묘의 수첩 · 모은 쪽지 보기 →</button></p>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 장소 -->
+<section class="v v-place" id="place" data-v="place" hidden>
+  <header class="tb"><button type="button" class="tb-b" data-go="map">‹ 지도</button><b class="tb-t" id="plT"></b><span class="tb-r" id="plY"></span></header>
+  <div class="pl-wrap">
+    <div class="pl-stage">
+      <figure class="pl-art" id="plArt"><img id="plImg" class="pl-mono" alt=""><img id="plCol" class="pl-col" alt="" aria-hidden="true"><span class="rt">그림 · 재현</span><span class="pl-mode" id="plMode">사람들의 기록 속 경성 · 흑백</span><img class="stamp" id="plStamp" alt="" aria-hidden="true"><span class="drop" id="plDrop" aria-hidden="true"></span><div class="hs" id="plHs"></div></figure>
+      <p class="say pl-say"><i class="face" id="plFace"></i><span id="plSay"></span></p>
+    </div>
+    <div class="pl-side" id="plSide"><h2 class="pl-h" id="plH"></h2>
+      <nav class="sense" id="sense" aria-label="감각">
+        <button type="button" data-s="eye"><i class="ic ic-eye"></i><span>심묘 눈</span></button>
+        <button type="button" data-s="nose"><i class="ic ic-nose"></i><span>킁킁</span></button>
+        <button type="button" data-s="ear"><i class="ic ic-ear"></i><span>귀</span></button>
+        <button type="button" data-s="human"><i class="ic ic-human"></i><span>사람 눈</span></button>
+      </nav>
+      <p class="sense-n" id="senseN">그림 속 반짝이는 자리를 눌러 보세요. 두 가지만 열어도 도장이 찍힙니다.</p>
+      <button type="button" class="play" id="plPlay"><span class="play-k">10초 놀이</span><b id="plPlayT"></b><em id="plPlayS"></em></button>
+      <div class="card" id="plCard" hidden></div>
+      <section class="folk" id="plFolk" hidden></section>
+      <figure class="pl-wide" id="plWide" hidden><img id="plWideImg" alt="" loading="lazy"><figcaption>한 걸음 물러서 보기 · 누르면 크게</figcaption><span class="rt">그림 · 재현</span></figure>
+      <div class="pl-nav"><button type="button" class="btn ghost" id="plPrev">‹ 전 장소</button><button type="button" class="btn ghost" id="plNext">다음 장소 ›</button></div>
+      <p class="pl-go" id="plGo"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ④ 자정의 편집국 -->
+<section class="v v-mid" id="mid" data-v="mid" hidden>
+  <header class="tb"><button type="button" class="tb-b" data-go="map">‹ 지도</button><b class="tb-t" id="mdTitle">★ 자정 · 편집국</b><span class="tb-r" id="mdClock"></span></header>
+  <div class="md-wrap">
+    <figure class="md-art"><img id="mdImg" src="assets/simmyo/s/midnight.webp" alt="자정의 신문 편집국, 괘종시계 옆 어둠 속 호박색 눈 (재현 그림)"><span class="rt">그림 · 재현</span></figure>
+    <div class="md-side">
+      <div id="mdLock"><img class="md-stp lock" src="assets/simmyo/g/stp_mid.png" alt=""><p class="md-h">문이 아직 닫혀 있습니다.</p><p class="md-p" id="mdLockP">여덟 곳 발바닥 도장을 다 모으거나, 진짜 밤 12시(00:00 ~ 00:59)에 다시 오세요.</p><p class="md-p">지금 모은 도장 <b id="mdN">0</b>/8</p></div>
+      <div id="mdOpen" hidden>
+        <p class="md-peek" id="mdPeek" hidden>미리 보기입니다. 직접 걸으면 여덟 곳에서 글자를 하나씩 모아 이 문장을 완성합니다. <button type="button" class="lnk" data-go="map">산책하러 가기 →</button></p>
+        <img class="md-stp" src="assets/simmyo/g/stp_mid.png" alt="자정 도장"><p class="say"><i class="face"></i><span id="mdSay">「늦엇구려. 나는 늘 여기 잇섯소.」</span></p>
+        <button type="button" class="btn" id="mdBell">괘종 울리기</button>
+        <p class="md-p">모은 글자를 순서대로 눌러 칸에 놓으세요. <small>칸 아래 도장이 그 글자를 준 곳입니다.</small></p>
+        <div class="slots" id="mdSlots"></div>
+        <div class="tiles" id="mdTiles"></div>
+        <div class="md-end" id="mdEnd" hidden>
+          <p class="md-sent">심묘는 오늘도 잇소.</p>
+          <div class="md-note"><p class="k" id="mdNoteK"></p><p id="mdNoteT"></p></div>
+          <div class="wanted"><p class="w-k">수배 제268호 · 풀린 수수께끼</p><dl><dt>죄목</dt><dd id="wCrime"></dd><dt>현상금</dt><dd id="wReward"></dd><dt>까닭</dt><dd id="wWhy"></dd></dl><small>설정 · 지어낸 이야기</small></div>
+          <!-- 읽을 수 없는 지면 -->
+          <div class="blind" id="blind">
+            <p class="bl-k">이 지면을 읽어 보세요.</p>
+            <figure class="bl-paper" id="blPaper"><img id="blImg" alt="" loading="lazy"><span class="bl-veil"></span></figure>
+            <p class="bl-q" id="blQ">읽을 수 없지요. 심묘의 눈에는 이 지면이 이렇게 보였습니다.</p>
+            <button type="button" class="btn ghost" id="blBtn">사람 눈으로 다시 보기</button>
+            <p class="bl-cap" id="blCap"></p>
+          </div>
+          <div class="fact" id="mdFact" hidden><p class="big"><b>78%</b></p><p id="fact1"></p><p class="fact-q">그 시절 많은 사람에게 경성은 — 방금 심묘가 걸은, 흰 종이의 거리였습니다.</p><p id="fact2"></p><small id="factSrc"></small></div>
+          <div class="gifts" id="mdGifts" hidden>
+            <p class="g-k">산책 선물</p>
+            <button type="button" class="btn" data-go="card">오늘의 심묘 엽서 · 결과 카드 · 배경화면</button>
+            <button type="button" class="btn ghost" id="mdDay2">둘째 날도 걸어 보기 →</button>
+          </div>
+        </div>
+        <!-- 둘째 날 밤 -->
+        <div class="md-end" id="md2End" hidden>
+          <p class="md-sent">내일도 산책하겟소.</p>
+          <div class="md-note"><p class="k" id="md2NoteK"></p><p id="md2NoteT"></p></div>
+          <div class="course">
+            <p class="crs-k">오려 둔 잡지 한 쪽</p>
+            <h3 id="crsT"></h3>
+            <p class="crs-d"><b>첫째 날</b><span id="crs1"></span></p>
+            <p class="crs-d"><b>둘째 날</b><span id="crs2"></span></p>
+            <p id="crsP1"></p><p id="crsP2"></p><p class="crs-q" id="crsP3"></p>
+            <small id="crsSrc"></small>
+          </div>
+          <div class="gifts"><p class="g-k">산책 선물</p><button type="button" class="btn" data-go="card">엽서 · 결과 카드 · 배경화면</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 엽서 · 결과 카드 · 배경화면 · 스티커 -->
+<section class="v v-card" id="card" data-v="card" hidden>
+  <header class="tb"><button type="button" class="tb-b" data-go="map">‹ 지도</button><b class="tb-t">산책 선물</b><span class="tb-r"></span></header>
+  <div class="cd-wrap">
+    <div class="tabs" role="tablist"><button type="button" class="on" data-t="post">엽서</button><button type="button" data-t="res">결과 카드</button><button type="button" data-t="wall">배경화면</button></div>
+    <canvas id="cdCv" width="900" height="1300" aria-label="오늘의 심묘 엽서"></canvas>
+    <div class="cd-btns"><a class="btn" id="cdSave" download="오늘의_심묘.png">저장</a><button type="button" class="btn ghost" id="cdShare" hidden>보내기</button><button type="button" class="btn ghost" id="cdWall2" hidden>밤 배경으로</button></div>
+    <section class="stk"><h2 class="stk-h">심묘 스티커</h2><p class="stk-p">멸치를 모으면 하나씩 열립니다. 눌러서 내려받으세요.</p><div class="stk-row" id="stkRow"></div></section>
+    <button type="button" class="reset" id="reset">산책을 처음부터 다시</button>
+  </div>
+</section>
+
+<!-- ⑥ 심묘 소개 · 수첩 -->
+<section class="v v-about" id="about" data-v="about" hidden>
+  <header class="tb"><button type="button" class="tb-b" id="abBack">‹ 돌아가기</button><b class="tb-t">심묘는 누구</b><span class="tb-r"></span></header>
+  <div class="ab-wrap">
+    <p class="ab-k">심묘한 산책 · 연재 만화</p>
+    <div class="strips"><article class="strip"><header class="sh"><span class="sh-n">심묘 만화 · 제1화</span><b>수배 제268호</b></header><div class="kp"><img src="assets/simmyo/s/midnight.webp" alt="" style="object-position:50% 40%" loading="lazy"><span class="cap">자정 무렵 · 신문사 식자실</span><b class="bub off">활자 「ㄱ」이 또 없어졌다!</b></div><div class="kp st"><img class="kp-st" src="assets/simmyo/g/sk_peek.png" alt=""><b class="bub">…</b><i class="type">ㄱ</i></div><div class="kp"><img src="assets/simmyo/s/escape.webp" alt="" style="object-position:50% 60%" loading="lazy"><span class="cap">다음 날 광고면</span><span class="notice"><b>사람을 차즘</b>수배 제268호<br>현상금 · 멸치 한 줌</span></div><div class="kp st"><img class="kp-st" src="assets/simmyo/g/sk_sit.png" alt=""><b class="bub">꼬리랑 닮앗길래 가져갓소.<br>그게 죄요?</b></div><p class="sf">설정 · 지어낸 이야기</p></article><article class="strip"><header class="sh"><span class="sh-n">심묘 만화 · 제2화</span><b>나이 불명</b></header><div class="kp"><img src="assets/simmyo/s/midnight_done.webp" alt="" style="object-position:50% 55%" loading="lazy"><span class="cap">최고참 식자공의 말</span><b class="bub off">내가 견습일 때도 저 놈이 저 의자에 있었어.</b></div><div class="kp"><img src="assets/simmyo/s/tram_w.webp" alt="" style="object-position:50% 30%" loading="lazy"><span class="cap">1899년 첫 전차 그림 속에도…</span></div><div class="kp"><img src="assets/simmyo/s/mitsu.webp" alt="" style="object-position:40% 45%" loading="lazy"><span class="cap">1930년 백화점 옥상 그림 속에도…</span></div><div class="kp st"><img class="kp-st" src="assets/simmyo/g/sk_yawn.png" alt=""><b class="bub">나이는 묻지 마시오.<br>…하품.</b></div><p class="sf">설정 · 지어낸 이야기</p></article><article class="strip"><header class="sh"><span class="sh-n">심묘 만화 · 제3화</span><b>넷째 목숨</b></header><div class="kp st"><img class="kp-st" src="assets/simmyo/g/sk_wow.png" alt=""><span class="cap">첫째 목숨</span><b class="bub">빗자루다!</b></div><div class="kp"><img src="assets/simmyo/s/stadium.webp" alt="" style="object-position:50% 60%" loading="lazy"><span class="cap">둘째 목숨 · 개를 피해서</span><b class="bub">달려!</b></div><div class="kp"><img src="assets/simmyo/s/sm_naeng.webp" alt="" style="object-position:50% 50%" loading="lazy"><span class="cap">셋째 목숨 · 냉면 배달 자전거</span></div><div class="kp st"><img class="kp-st" src="assets/simmyo/g/sk_sleep.png" alt=""><span class="cap">지금은 넷째 목숨</span><b class="bub">목숨 하나 잃으면 하품 한 번.<br>그게 다요.</b></div><p class="sf">소문마다 연도가 수십 년씩 다르다 · 지어낸 이야기</p></article></div>
+    <article class="wanted-pos">
+      <p class="wp-h">사람을 차즘</p>
+      <p class="wp-s">수배 제268호 · 까만 고양이 한 마리</p>
+      <img src="assets/simmyo/g/sk_sit.png" alt="정면으로 앉은 심묘">
+      <ul>
+        <li><b>이름</b> 심묘 — 「찾을 심 + 고양이 묘」. 다들 「이백륙십팔이」, 아이들은 「깜장이」라 부름</li>
+        <li><b>나이</b> 모름 · 늙지도 크지도 않음</li>
+        <li><b>사는 곳</b> 정한 데 없음 · 어디에도 속하지 않은 길고양이</li>
+        <li><b>특징</b> 넓적한 얼굴, 작고 넓게 벌어진 귀, 졸린 호박색 눈, 목엔 아무것도 없음</li>
+        <li><b>좋아함</b> 멸치 · 따뜻한 윤전기 · 흰 종이 위 낮잠 · 활자 「ㄱ」</li>
+        <li><b>싫어함</b> 빗자루 · 물 · 순사 호루라기 · 새로 칠한 길</li>
+      </ul>
+      <p class="wp-r">현상금 · 멸치 한 줌<span>보신 분은 신문사 광고부로</span></p>
+    </article>
+    <h3 class="ab-h">사람들이 본 고양이 <small>진짜 지면</small></h3>
+    <p class="ab-p">그 시절 신문과 잡지는 고양이를 저마다 다르게 봤습니다. 복이라기도, 요물이라기도, 방화범이라기도.</p>
+    <div class="scraps">
+      <article class="scrap"><p class="sc-d">1929. 4. 1 · 『별건곤』 제20호 69~70쪽</p><h4 class="sc-t">「절처봉생(絶處逢生)」 실담 중 장순손 이야기</h4><p class="sc-q">“고양이를 보면 吉事가 잇서서”</p><p class="sc-v">시선 · <b>복을 부르는 고양이</b></p><p class="sc-n">장순손 한 사람의 이야기입니다. 그 고양이가 까맸다는 기록은 없습니다.</p><div class="sc-cat"><img src="assets/simmyo/char/drowsy.png" alt="졸린 심묘" loading="lazy"><b>「알 바 아니오.」</b></div></article>
+      <article class="scrap"><p class="sc-d">1932. 1. 13 · 『동아일보』 5면</p><h4 class="sc-t">「名作에 나오는 動物; 애물? 요물?」 — 포오의 「黑猫」</h4><p class="sc-v">시선 · <b>소설 속 요물</b></p><p class="sc-n">서양 소설에 나오는 동물을 소개한 연재입니다. 경성 사람들이 실제 검은 고양이를 어떻게 여겼는지를 보여주는 기사는 아닙니다.</p><div class="sc-cat"><img src="assets/simmyo/char/yawn.png" alt="하품하는 심묘" loading="lazy"><b>「…하품.」</b></div></article>
+      <article class="scrap"><p class="sc-d">1923. 11. 20 · 『동아일보』 3면</p><h4 class="sc-t">「本町火災의 放火犯은 고양이」</h4><p class="sc-v">시선 · <b>사고뭉치</b></p><p class="sc-n">고양이를 불난 까닭으로 지목한 기사 제목입니다.</p><div class="sc-cat"><img src="assets/simmyo/char/peek.png" alt="곁눈질하는 심묘" loading="lazy"><b>「내가 뭘 했다고.」</b></div></article>
+      <article class="scrap"><p class="sc-d">1938. 5. 29 · 『동아일보』 4면</p><h4 class="sc-t">「반짝이는 까닭 고양이 눈이」 [어린이상식]</h4><p class="sc-v">시선 · <b>신기한 눈</b></p><p class="sc-n">고양이 눈을 아이들에게 설명한 상식 기사입니다.</p><div class="sc-cat"><img src="assets/simmyo/char/close.png" alt="눈을 뜬 심묘" loading="lazy"><b>「뭘 그리 보시오.」</b></div></article>
+    </div>
+    <p class="sc-src">날짜 · 제목 · 지면은 국사편찬위원회 한국사데이터베이스 기준이고, 『별건곤』 인용은 원문에서 옮겼습니다. 네 기사가 그 시절 여론 전체를 대표하지는 않습니다. 심묘의 말은 지어낸 것입니다.</p>
+    <h3 class="ab-h">표정</h3>
+    <div class="ab-faces"><img src="assets/simmyo/g/sk_sit.png" alt="앉기"><img src="assets/simmyo/g/sk_yawn.png" alt="하품"><img src="assets/simmyo/g/sk_wow.png" alt="놀람"><img src="assets/simmyo/g/sk_fish.png" alt="멸치"><img src="assets/simmyo/g/sk_peek.png" alt="빼꼼"><img src="assets/simmyo/g/sk_sleep.png" alt="낮잠"></div>
+    <h3 class="ab-h">심묘 말버릇</h3>
+    <div class="ab-talk" id="abTalk"></div>
+    <h3 class="ab-h">심묘의 수첩 <small id="abNoteN"></small></h3>
+    <p class="ab-p">장소마다 도장을 찍으면 쪽지가 하나씩 생깁니다. 지어낸 이야기입니다.</p>
+    <ol class="ab-notes" id="abNotes"></ol>
+  </div>
+</section>
+
+<!-- 10초 놀이 -->
+<div class="game" id="game" hidden role="dialog" aria-label="10초 놀이">
+  <div class="gm-box">
+    <p class="gm-k">10초 놀이</p><h3 class="gm-t" id="gmT"></h3><p class="gm-how" id="gmHow"></p>
+    <div class="gm-stage" id="gmStage"></div>
+    <p class="gm-msg" id="gmMsg" aria-live="polite"></p>
+    <div class="gm-btns" id="gmBtns"></div>
+    <button type="button" class="gm-x" id="gmX" aria-label="닫기">닫기</button>
+  </div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-label="크게 보기"><figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure></div>
+<div class="demo" id="demo" hidden><b>시연</b><button type="button" data-d="all">16곳 완료</button><button type="button" data-d="mid">자정으로</button><button type="button" data-d="mid2">둘째 밤</button><button type="button" data-d="reset">처음부터</button></div>
+
+<footer class="ft"><img class="ft-em" src="assets/simmyo/g/emblem.png" alt="" width="56" height="56">심묘한 산책 · 그림은 재현 · 심묘는 지어낸 고양이 · 장소와 연도와 지면은 사실<br><a href="making.html">만든 이야기</a></footer>
+<script src="simmyo-data.js?v=3"></script>
+<script src="simmyo-data-fix.js"></script>
+<script src="simmyo.js?v=12"></script>
+<script src="simmyo-city.js?v=3"></script>
+</body>
+</html>
