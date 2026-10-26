@@ -4,7 +4,7 @@
    카카오톡 바로 보내기를 쓰려면 아래 KAKAO_KEY 에 카카오 개발자 JavaScript 키를 넣으시오(없으면 휴대폰 공유창/링크 복사로 대신함). */
 (function(){
 var KAKAO_KEY=window.KAKAO_KEY||'';
-var SITE='심묘한 산책 · 京城野錄';
+var SITE='심묘한 산책 · 경성야록';
 var css=''+
 '#shr{position:fixed;inset:0;z-index:9000;display:none;align-items:flex-end;justify-content:center;background:rgba(29,25,21,.6)}'+
 '#shr.on{display:flex}'+

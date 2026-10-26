@@ -267,7 +267,7 @@ html.ph #eskip{top:10px;right:auto;left:10px}html.ph #ebtn{bottom:calc(5% + env(
 <div id="vig"></div><div id="grain"></div>
 
 <div id="hud"><svg viewBox="0 0 64 44" aria-hidden="true"><path d="M6 8H54V40" fill="none" stroke="#c9b48e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path id="hudp" d="M6 8H54V40" fill="none" stroke="#211c17" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="100" stroke-dasharray="0 100"/><circle id="hudd" r="4.5" fill="#d99a2b" stroke="#211c17" stroke-width="1.5" cx="6" cy="8"/></svg><div>심묘한 산책<small id="where">해 질 녘 · 경성야록 편집국 앞</small></div></div>
-<div id="strip" aria-label="신문 연재 「심묘」"><button id="stl" aria-label="신문 연재 「심묘」 읽기"><small>京城野錄 連載</small><b>신문 연재 「심묘」</b><i class="nw" aria-hidden="true"></i></button></div>
+<div id="strip" aria-label="신문 연재 「심묘」"><button id="stl" aria-label="신문 연재 「심묘」 읽기"><small>경성야록 연재</small><b>신문 연재 「심묘」</b><i class="nw" aria-hidden="true"></i></button></div>
 <div id="hint"><svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true"><path d="M2 3H22V16" fill="none" stroke="#d99a2b" stroke-width="3" stroke-linecap="round"/></svg><span id="hintt">스크롤하거나 옆으로 밀면 심묘가 걷소</span></div>
 <div id="stop" role="region" aria-live="polite"><img id="sph" alt=""><div><div class="t" id="sname"></div><q id="sq"></q><button id="sgo"></button></div></div>
 <div id="ctrl"><button id="bk" aria-label="뒤로 걷기">←<span class="pl"> 뒤로</span></button><button id="fw" aria-label="앞으로 걷기"><span class="pl">앞으로 </span>→</button></div>
@@ -276,13 +276,13 @@ html.ph #eskip{top:10px;right:auto;left:10px}html.ph #ebtn{bottom:calc(5% + env(
 
 <div id="open">
   <div id="hoe" role="button" tabindex="0" aria-label="호외 · 누르면 산책 시작">
-    <div class="mh"><b>京城野錄</b><span>號 外</span></div>
+    <div class="mh"><b>경성야록</b><span>호외</span></div>
     <h1 class="gap">고양이를 찾습니다</h1>
     <div class="row">
       <figure style="margin:0"><div class="ph" id="ph"><img id="wimg" src="wanted.jpg?v=4" alt="망점으로 찍힌 까만 고양이 수배 사진, 눈만 꿀색"><i style="left:23.9%"></i><i style="left:52.7%"></i></div><figcaption>수배 사진 · 본사 식자실 앞에서</figcaption></figure>
       <p class="gap">경성야록 식자실에서 한글 공부 부록의 자모표에 들어갈 낱자 활자 하나가 없어졌다. 없어진 것은 「ㄱ」. 가져간 것은 편집국을 제 집처럼 드나들던 까만 고양이로, 몸은 통통하고 눈은 꿀빛이며 언제나 표정이 없다. 기자들은 그를 그냥 「어이, 그 까만 것」이라 불렀다. 분한 편집국은 오늘 이 호외의 ㄱ 자리를 모두 비워 두기로 하였다. 고양이를 보신 분은 본사로 엽서를 보내 주시라.</p>
     </div>
-    <div class="feat"><h2 class="gap">이런 고양이를 보시거든</h2><ol><li class="gap"><b>一</b>눈이 꿀빛이고 언제나 표정이 없음</li><li class="gap"><b>二</b>입에 작은 쇳조각 하나를 물었음</li><li class="gap"><b>三</b>불러도 오지 않음. 사람을 구경함</li></ol></div>
+    <div class="feat"><h2 class="gap">이런 고양이를 보시거든</h2><ol><li class="gap"><b>1</b>눈이 꿀빛이고 언제나 표정이 없음</li><li class="gap"><b>2</b>입에 작은 쇳조각 하나를 물었음</li><li class="gap"><b>3</b>불러도 오지 않음. 사람을 구경함</li></ol></div>
     <div class="foot"><span>현상금 · 멸치 한 줌</span><span>경성야록 편집국 백</span></div>
   </div>
 </div>
@@ -295,7 +295,7 @@ html.ph #eskip{top:10px;right:auto;left:10px}html.ph #ebtn{bottom:calc(5% + env(
 <script src="../side/new-places2.js"></script>
 <script src="../side-art.js"></script>
 <script src="../night.js"></script><script src="../sfx.js?v=7"></script>
-<script src="../share.js?v=3"></script>
+<script src="../share.js?v=4"></script>
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
@@ -503,7 +503,7 @@ function cam(d,p){var t=Math.max(0,Math.min(1,(d-DC)/380));t=t*t*(3-2*t);
 var D=0,T=0,last=0,moving=-1e9,face=1,acc=0,spd=0,gait=0;
 var qs=new URLSearchParams(location.search),from=+qs.get('from')||0;
 /* 경성야록 광고면(심인 광고)에서 넘어온 손님: 호외에 「광고면에서」 도장 + 안내 한 줄 */
-if(qs.get('from')==='yarok'){(function(){var h=$('hoe');if(h){var st=document.createElement('span');st.className='ykst';st.innerHTML='京城野錄<br>廣告面에서';h.appendChild(st)}var oh=$('ohint');if(oh&&oh.lastChild&&oh.lastChild.nodeType===3)oh.lastChild.nodeValue='광고면의 그 고양이요 · 호외를 누르시오'})()}
+if(qs.get('from')==='yarok'){(function(){var h=$('hoe');if(h){var st=document.createElement('span');st.className='ykst';st.innerHTML='경성야록<br>광고면에서';h.appendChild(st)}var oh=$('ohint');if(oh&&oh.lastChild&&oh.lastChild.nodeType===3)oh.lastChild.nodeValue='광고면의 그 고양이요 · 호외를 누르시오'})()}
 var atD=+qs.get('at')||0;
 if(from){var fp=PL.filter(function(p){return p.n===from})[0];if(fp){D=T=fp.n===8?fp.d-70:Math.min(TOT,fp.d+170)}history.replaceState(null,'',location.pathname)}
 else if(atD){D=T=Math.max(0,Math.min(atD,TOT));history.replaceState(null,'',location.pathname)}
@@ -686,7 +686,7 @@ function runFinal(){if(runFinal.d)return;runFinal.d=1;try{localStorage.setItem('
    '<section><div class="k">다음 날 아침 · 편집장 책상</div><h2>엽서를 지도 위에 이어 보니</h2>'+
    '<div class="fmapw" id="fmapw"><img src="fmap.webp" alt="1927년 경성부관내도. 붉은 줄이 전차 길"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline id="fth2" fill="none" stroke="#f3ecdb" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:11px" points=""/><polyline id="fth" fill="none" stroke="#b3261e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="stroke-width:5px" points=""/></svg><div class="fbig" id="fbig">ㄱ</div></div>'+
    '<div class="k" style="text-align:center;margin-top:8px">바탕: 1927년 「경성부관내도」(실제 자료) · 핀 자리는 대략이고, 실은 편집장이 이은 것</div></section>'+
-   '<section class="fhoe" id="fhoe"><div class="mh"><b>京城野錄</b><span>號 外</span></div><h1>고양이를 찾았습니다</h1>'+
+   '<section class="fhoe" id="fhoe"><div class="mh"><b>경성야록</b><span>호외</span></div><h1>고양이를 찾았습니다</h1>'+
    '<p>어젯밤 자정, 없어졌던 낱자 활자 「ㄱ」이 편집장 책상 위에 돌아와 있었다. 그 곁에는 까만 고양이가 둥글게 말려 자고 있었다. 한글 공부 부록은 오늘 아침 자모표에 빈칸 없이 나갔고, 호외의 ㄱ 자리도 모두 제 글자를 찾았다. 엽서를 보내 주신 경성 여러분께 고맙다는 말씀을 드린다. 현상금 멸치 한 줌은 고양이 본인이 받아 갔다.</p></section>'+
    '<section><div class="k">경성 사람들이 보낸 목격 엽서</div><h2>사람들이 본 심묘</h2><div class="fposts">'+posts+'</div>'+
    '<div class="fsleep" style="margin-top:18px"><img src="w/press.webp" alt="신문사 지하 윤전실, 신문지 더미 옆에서 자는 심묘" style="width:min(420px,70%);border:1px solid #8d7d63"><span>심묘는 지금 자는 중이오.<br><small style="font:13px/1.4 var(--ui)">숨은 심묘 '+gagFound.length+'/8 찾음</small></span></div></section>'+
@@ -770,7 +770,7 @@ hoe.addEventListener('click',begin);hoe.addEventListener('keydown',function(e){i
 if(atD&&!from){started=true;op.remove();$('ohint').remove();$('hint').classList.add('off');setTimeout(function(){toast('곁골목에서 돌아옴')},300)}
 if(from){started=true;op.remove();$('ohint').remove();$('hint').classList.add('off');stamp(from,true);passed[from]=1;setTimeout(function(){toast(from+'번 골목 다녀옴 · 신문 연재에 한 회 실림')},300)}
 var toastUntil=0;function toast(t){toastUntil=performance.now()+3200;var w=$('where');w.textContent=t;w.style.color='#a8402c'}
-if(!from&&!atD){var seenP=false;try{seenP=sessionStorage.getItem('simmyo_pro')==='1';sessionStorage.setItem('simmyo_pro','1')}catch(e){}if(!seenP&&!reduce)runPrologue()}
+if(!from&&!atD){var seenP=false;try{seenP=sessionStorage.getItem('simmyo_pro')==='1';sessionStorage.setItem('simmyo_pro','1')}catch(e){}if((!seenP||qs.get('from')==='yarok')&&!reduce)runPrologue()}
 requestAnimationFrame(frame);
 })();
 </script>

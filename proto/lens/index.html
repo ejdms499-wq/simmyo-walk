@@ -114,7 +114,7 @@
         <h2 class="h">목격 엽서<span class="badge b-fic">지어낸 이야기</span></h2>
         <div class="post" id="post" tabindex="0" role="button" aria-label="엽서 뒤집기">
           <div class="in">
-            <div class="face f"><span class="stamp">京城<br>郵便</span><p id="pq"></p><span class="from" id="pfrom"></span></div>
+            <div class="face f"><span class="stamp">경성<br>우편</span><p id="pq"></p><span class="from" id="pfrom"></span></div>
             <div class="face b"><h3 id="nk"></h3><p class="nt" id="nt"></p><div class="fic">엽서 앞면과 이 메모는 지어낸 이야기</div></div>
           </div>
         </div>
@@ -129,7 +129,7 @@
   </footer>
 </div>
 <script src="../night.js"></script><script src="../sfx.js?v=7"></script>
-<script src="../share.js?v=3"></script>
+<script src="../share.js?v=4"></script>
 <script>
 (function(){
 var A='../../assets/walk/';
@@ -189,7 +189,7 @@ function $(i){return document.getElementById(i)}
 document.title='심묘한 산책 · '+P.name;
 if(n===5){document.getElementById('m0').textContent='사람들의 눈 · 재현 그림'}
 var YS={1:['1899~','이른 봄'],2:['1935','가을'],3:['1916~','초가을 밤'],4:['1926','시월'],5:['1930년대','초여름'],6:['1924','칠월'],7:['1934','비 오는 밤'],8:['1930년대','한겨울']};
-$('pnum').textContent='京城野錄 · '+n+'번째 골목';$('pname').textContent=P.name;$('pyr').innerHTML=YS[n][0]+'<br>'+YS[n][1];
+$('pnum').textContent='경성야록 · '+n+'번째 골목';$('pname').textContent=P.name;$('pyr').innerHTML=YS[n][0]+'<br>'+YS[n][1];
 $('bw').src='p/b'+n+'.webp';$('bw').alt=P.name+' — 사람들의 눈. 실제 자료 위에 합성한 까만 고양이';
 $('color').src='p/c'+n+'.webp?v=4';var es=document.getElementById('eyeshr');es.setAttribute('data-share-src','p/c'+n+'.webp');es.setAttribute('data-share-title',P.name+' · 심묘의 눈');es.setAttribute('data-share-caption','고양이 눈높이로 본 '+P.name);$('color').alt=P.name+' — 심묘의 눈으로 본 재현 그림';
 $('capb').textContent=P.capb;
@@ -295,7 +295,7 @@ HL.forEach(function(h,i){var b=document.createElement('button');b.className='hid
 hidCount();
 var PLN={1:['「지붕 손님」','나뭇가지는 엎드리고 통풍구는 뛰어넘기','tram'],2:['「나팔 속 노래」','레코드 소리 순서대로 따라 누르기','rec'],3:['「군밤 한 톨」','떨어지는 군밤 받기, 숯불은 피하기','yasi'],4:['「맨 앞자리」','줄 맨 앞에 끼어드는 손님 돌려보내기','dan'],5:['「방망이 장단」','빨래방망이 장단에 맞춰 탁!','cheong'],6:['「뚝배기 쌓기」','배달통 위에 뚝배기 높이 쌓기','seol'],7:['「…툭.」','급사가 안 볼 때 찻잔 밀기','dabang'],8:['「얼음 구멍」','찌가 쑥 잠길 때 낚아채기','han']};
 if(PLN[n]){$('plc').href='../play/index.html?p='+n;$('plimg').src='../play/bg/'+PLN[n][2]+'.webp';$('plimg').alt='';$('pln').textContent=PLN[n][0];$('plt').textContent=PLN[n][1]}
-var EPN={1:['第四回','지붕 손님','tram'],2:['第五回','나팔 속 노래','rec'],3:['第六回','군밤 한 톨','yasi'],4:['第七回','맨 앞자리','dan'],5:['第八回','발자국 넷','cheong'],6:['第九回','배달통 위','seol'],7:['第十回','창가의 손님','dabang'],8:['第十一回','얼음 구멍','han']};
+var EPN={1:['제4회','지붕 손님','tram'],2:['제5회','나팔 속 노래','rec'],3:['제6회','군밤 한 톨','yasi'],4:['제7회','맨 앞자리','dan'],5:['제8회','발자국 넷','cheong'],6:['제9회','배달통 위','seol'],7:['제10회','창가의 손님','dabang'],8:['제11회','얼음 구멍','han']};
 if(EPN[n]){$('epc').href='../album/index.html?ep='+(n+3);$('epimg').src='../album/ep/'+EPN[n][2]+'1.webp';$('epimg').alt=P.name+' 연재만화 첫 칸';$('epno2').textContent=EPN[n][0];$('ept').textContent='「'+EPN[n][1]+'」'}
 var NOTES={ear:'<b>귀</b> — '+P.ear[2],nose:P.nose?'<b>코</b> — '+P.nose[2]+(P.nose[3]?'<small>'+P.nose[3]+'</small>':''):''};
 var EARS={1:'bell',2:'crackle',3:'bell',4:'crackle',5:'splash',6:'steam',7:'drip',8:'ice'};
